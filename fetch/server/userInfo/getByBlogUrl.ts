@@ -8,6 +8,7 @@ export default async function getByBlogUrl(blogUrl: UserInfoResponseByBlogUrl['b
 
     try {
         const result = await fetch(apiUrl, { cache: "force-cache", next: { tags: ['all', blogUrl] } });
+        console.log(result)
         const data: Response<UserInfoResponseByBlogUrl> = await result.json();
         return data;
     } catch (error) {
