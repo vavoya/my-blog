@@ -1,0 +1,12 @@
+
+
+
+const USER_NAME_LIMIT = 24;
+const BLOG_NAME_LIMIT = 10;
+const BLOG_URL_LIMIT = 30;
+
+export {
+    USER_NAME_LIMIT,
+    BLOG_NAME_LIMIT,
+    BLOG_URL_LIMIT
+}
