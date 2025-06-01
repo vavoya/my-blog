@@ -4,8 +4,6 @@ import {FolderInfoResponse} from "@/lib/mongoDB/types/documents/folderInfo.type"
 import getByFolderId from "@/fetch/client/paginatedPost/getByFolderId";
 import {UserInfoResponse} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {useRef} from "react";
-import {PostInfoResponse} from "@/lib/mongoDB/types/documents/postInfo.type";
-
 
 export function usePaginatedPostsQuery(userId: UserInfoResponse['_id'], folderId: FolderInfoResponse['_id'], maxPage: number) {
     const maxPageRef = useRef(maxPage)
