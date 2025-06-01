@@ -1,0 +1,49 @@
+
+
+
+.article {
+    width: 800px;
+    margin:  160px auto;
+}
+
+.article > .header {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    align-items: center;
+    padding: 50px 0 100px;
+    width: 100%;
+}
+
+
+.article > .header > .taglist {
+    display: flex;
+    gap: 10px;
+    list-style-type: none;
+    justify-content: center;
+}
+
+
+
+.article > .header > .taglist > li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: white solid 1px;
+    border-radius: 10px;
+    padding: 3px 10px;
+}
+
+.article > .header > h1 {
+    text-align: center;
+    font-size: 64px;
+    font-weight: bold;
+}
+
+.article > .header > p {
+    font-size: 14px;
+}
+
+.article > .header > figure {
+    background: white;
+}
