@@ -1,0 +1,21 @@
+
+.name {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    align-items: flex-start;
+    font-size: 1rem;
+    line-height: 1.5em;
+}
+
+.name > span {
+    text-align: left;
+}
+
+.count {
+    font-size: 0.8rem;
+    line-height: 1.5em;
+    opacity: 0.5;
+}

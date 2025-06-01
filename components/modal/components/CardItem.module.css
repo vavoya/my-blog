@@ -1,0 +1,56 @@
+.metadata {
+    margin: 10px 10px 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.metadata > * {
+    font-size: 0.75rem;
+    line-height: 1.5em;
+    opacity: 0.5;
+}
+
+.metadata > span {
+    flex: 1;
+    overflow: hidden; /* 오버플로우를 숨김 */
+    text-overflow: ellipsis; /* 오버플로우된 텍스트를 '...'로 표시 */
+    margin-right: 10px;
+    white-space: nowrap;
+}
+
+.title {
+    margin: 0 10px 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.title > * {
+    font-size: 1.25rem;
+    line-height: 1.5em;
+    font-weight: 500;
+}
+
+.title > span {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.description {
+    margin: 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical
+}
+
+.description > span {
+    font-size: 0.875rem;
+    line-height: 1.5em;
+    font-weight: 300;
+}
