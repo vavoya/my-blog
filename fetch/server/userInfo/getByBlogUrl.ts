@@ -1,0 +1,20 @@
+import {response} from "@/app/api/_utils/createResponse";
+import {route} from "@/app/api/server/user-info/by-blogurl/route";
+import {UserInfoResponseByBlogUrl} from "@/models/user_info/types";
+import {Response} from "@/app/api/types";
+
+export default async function getByBlogUrl(blogUrl: UserInfoResponseByBlogUrl['blog_url']) {
+    const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${route}?blogurl=${blogUrl}`;
+
+    try {
+        const result = await fetch(apiUrl, { cache: "force-cache", next: { tags: ['all', blogUrl] } });
+        const data: Response<UserInfoResponseByBlogUrl> = await result.json();
+        return data;
+    } catch (error) {
+        const isNetworkError = error instanceof TypeError;
+        const message = isNetworkError
+            ? '통신 실패: 서버에 연결할 수 없습니다.'
+            : '예상치 못한 오류가 발생했습니다.';
+        return response.timeout(message);
+    }
+}
