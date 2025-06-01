@@ -70,7 +70,7 @@ export const createDeletePostAsyncTask: CreateAddPostAsyncTask = (params, store)
             const initFolderId = params.folderId
 
             // 2. 관련 폴더 페이지 네이션 초기화
-            updatePaginatedPostsQuery(initFolderId)
+            updatePaginatedPostsQuery(params.userId, initFolderId)
 
             store.setFolderObj({
                 ...store.folderObj,

@@ -1,11 +1,11 @@
-import {route} from "@/app/api/server/post-info/by-posturl/route";
 import {response} from "@/app/api/_utils/createResponse";
 import {UserInfoResponse} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {PostInfoResponse} from "@/lib/mongoDB/types/documents/postInfo.type";
 import {Response} from "@/app/api/types";
+import {path} from "@/app/api/server/post-info/by-posturl/path";
 
 export default async function getByPostUrl(userId: UserInfoResponse['_id'], postUrl: PostInfoResponse['post_url']) {
-    const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${route}?userid=${userId}&posturl=${postUrl}`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${path}?userid=${userId}&posturl=${postUrl}`;
 
     try {
         const result = await fetch(apiUrl, { cache: "force-cache", next: { tags: ['all', userId, `${userId}-${postUrl}`] } });

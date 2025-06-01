@@ -4,7 +4,6 @@ import validateAndTransform from "@/app/api/validateAndTransform";
 import {jsonResponse} from "@/app/api/server/jsonResponse";
 import getUserInfoByBlogUrl from "@/models/user_info/getUserInfoByBlogUrl";
 
-export const route = '/api/server/user-info/by-blogurl'
 /**
  * GET /api/server/user-info/by-blogurl
  *

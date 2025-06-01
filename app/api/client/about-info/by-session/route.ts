@@ -8,7 +8,6 @@ import patchByUserId from "@/services/server/about/patchByUserId/patchByUserId";
 import {validateUpdateAbout} from "@/validation/server/about/validateUpdateAbout";
 import {revalidateTag} from "next/cache";
 
-export const route = '/api/client/about-info/by-session'
 /**
  * PATCH /api/client/about-info/by-session
  *

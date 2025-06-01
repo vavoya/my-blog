@@ -7,7 +7,6 @@ import {auth} from "@/auth";
 import {validateRegister} from "@/validation/server/regist/validateRegister";
 import {revalidateTag} from "next/cache";
 
-export const route = '/api/client/registration/by-session'
 /**
  * POST /api/client/registration/by-session
  *

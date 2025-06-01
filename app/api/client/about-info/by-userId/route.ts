@@ -5,7 +5,6 @@ import validateAndTransform from "@/app/api/validateAndTransform";
 import {jsonResponse} from "@/app/api/client/jsonResponse";
 import findOneAboutInfoByUserId from "@/models/about_info/findOneAboutInfoByUserId";
 
-export const route = '/api/client/about-info/by-userId'
 /**
  * GET /api/client/about-info/by-userId
  *

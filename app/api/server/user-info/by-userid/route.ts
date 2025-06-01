@@ -4,7 +4,6 @@ import {jsonResponse} from "@/app/api/server/jsonResponse";
 import {ObjectId} from "mongodb";
 import {checkAuth} from "@/app/api/_utils/checkAuth";
 
-export const route = '/api/server/user-info/by-userid'
 /**
  * GET /api/server/user-info/by-userid
  *

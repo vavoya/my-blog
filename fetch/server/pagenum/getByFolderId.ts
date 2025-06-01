@@ -1,13 +1,13 @@
-import {route} from "@/app/api/server/pagenum/by-folderid/route";
 import {response} from "@/app/api/_utils/createResponse";
 import {FolderInfoResponse} from "@/lib/mongoDB/types/documents/folderInfo.type";
 import {UserInfoResponse} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {PostInfoResponse} from "@/lib/mongoDB/types/documents/postInfo.type";
 import {PageNumberResult} from "@/models/pagination/pageNum/type";
 import {Response} from "@/app/api/types";
+import {path} from "@/app/api/server/pagenum/by-folderid/path";
 
 export default async function getByFolderId(userId: UserInfoResponse['_id'], folderId: FolderInfoResponse['_id'], postId: PostInfoResponse['_id']) {
-    const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${route}?userid=${userId}&folderid=${folderId}&postid=${postId}`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${path}?userid=${userId}&folderid=${folderId}&postid=${postId}`;
 
     try {
         const result = await fetch(apiUrl, { cache: "force-cache", next: { tags: ['all', userId, `${userId}-folder-${folderId}}`] } });

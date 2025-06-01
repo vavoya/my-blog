@@ -14,7 +14,6 @@ import {validateMoveFolder} from "@/validation/server/folder/validateMoveFolder"
 import {validateRenameFolder} from "@/validation/server/folder/validateRenameFolder"
 import {revalidateTag} from "next/cache";
 
-export const route = '/api/client/post-info/by-session/[folderId]'
 /**
  * PATCH /api/client/post-info/by-session/[folderId]
  *

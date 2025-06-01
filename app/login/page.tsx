@@ -10,7 +10,7 @@ type SearchParams = {
     [key: string]: string | string[] | undefined;
 }
 
-export default async function Page({searchParams}: {searchParams: SearchParams}) {
+export default async function Page({searchParams}: {searchParams: Promise<SearchParams>}) {
     const {redirectTo} = await searchParams
 
     const signInGoogle = async () => {

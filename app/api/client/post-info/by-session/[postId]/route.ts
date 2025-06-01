@@ -12,7 +12,6 @@ import {deleteInputShape} from "@/services/server/post/deleteByUserId/type";
 import {validateUpdatePost} from "@/validation/server/post/validateUpdatePost";
 import {revalidateTag} from "next/cache";
 
-export const route = '/api/client/post-info/by-session/[folderId]'
 /**
  * PATCH /api/client/post-info/by-session/[folderId]
  *

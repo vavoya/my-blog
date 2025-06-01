@@ -8,7 +8,6 @@ import {ResBodyType} from "@/app/api/client/post-info/by-session/type";
 import {validatePost} from "@/validation/server/post/validatePost";
 import {revalidateTag} from "next/cache";
 
-export const route = '/api/client/post-info/by-session'
 /**
  * POST /api/client/post-info/by-session
  *

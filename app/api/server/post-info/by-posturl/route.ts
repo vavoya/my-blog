@@ -5,7 +5,6 @@ import validateAndTransform from "@/app/api/validateAndTransform";
 import {jsonResponse} from "@/app/api/server/jsonResponse";
 import getPostByPostUrl from "@/models/post_info/getPostByPostUrl";
 
-export const route = '/api/server/post-info/by-posturl'
 /**
  * GET /api/server/post-info/by-posturl
  *

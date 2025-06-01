@@ -5,7 +5,7 @@ type SearchParams = {
     [key: string]: string | string[] | undefined;
 }
 
-export default async function Page({searchParams}: {searchParams: SearchParams}) {
+export default async function Page({searchParams}: {searchParams: Promise<SearchParams>}) {
     const params = await searchParams;
     const href = Array.isArray(params.homeUrl) ? params.homeUrl[0] : params.homeUrl ?? '/';
     const name = Array.isArray(params.name) ? params.name[0] : params.name ?? '';

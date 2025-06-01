@@ -1,0 +1,1 @@
+export const path = '/api/server/folder-info/by-userid'

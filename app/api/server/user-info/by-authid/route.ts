@@ -4,7 +4,6 @@ import getUserIdByAuthId from "@/models/user_info/getUserIdByAuthId";
 import {NextRequest} from "next/server";
 import validateAndTransform from "@/app/api/validateAndTransform";
 
-export const route = '/api/server/user-info/by-authid'
 /**
  * GET /api/server/user-info/by-authid
  *

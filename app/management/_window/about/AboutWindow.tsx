@@ -65,8 +65,7 @@ export default function AboutWindow() {
                 userId: userInfo._id,
                 content: aboutState.data.content,
                 lastModified: userInfo.last_modified
-            },
-            {}
+            }
         ))
     }
 

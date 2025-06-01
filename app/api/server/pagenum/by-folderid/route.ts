@@ -5,7 +5,6 @@ import validateAndTransform from "@/app/api/validateAndTransform";
 import {jsonResponse} from "@/app/api/server/jsonResponse";
 import getByFolderId from "@/models/pagination/pageNum/getByFolderId";
 
-export const route = '/api/server/pagenum/by-folderid'
 /**
  * GET /api/server/pagenum/by-folderid
  *

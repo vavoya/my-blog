@@ -5,7 +5,6 @@ import { response } from "@/app/api/_utils/createResponse";
 import validateAndTransform from "@/app/api/validateAndTransform";
 import {jsonResponse} from "@/app/api/server/jsonResponse";
 
-export const route = '/api/server/series-info/by-userid'
 /**
  * GET /api/server/folder-info/by-userid
  *

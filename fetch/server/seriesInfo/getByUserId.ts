@@ -1,11 +1,11 @@
-import {route} from "@/app/api/server/series-info/by-userid/route";
 import {response} from "@/app/api/_utils/createResponse";
 import {UserInfoResponse} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {SeriesInfoResponse} from "@/lib/mongoDB/types/documents/seriesInfo.type";
 import {Response} from "@/app/api/types";
+import {path} from "@/app/api/server/series-info/by-userid/path";
 
 export default async function getByUserId(userId: UserInfoResponse['_id']) {
-    const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${route}?userid=${userId}`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${path}?userid=${userId}`;
 
     try {
         const result = await fetch(apiUrl, { cache: "force-cache", next: { tags: ['all', userId, 'series'] } });

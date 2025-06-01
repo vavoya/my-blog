@@ -1,0 +1,1 @@
+export const path = '/api/server/pagenum/by-folderid'

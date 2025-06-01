@@ -8,7 +8,6 @@ import {isConvertibleToDate} from "@/utils/isConvertibleToDate";
 import {ResBodyType} from "@/app/api/client/folder-info/by-session/type";
 import {revalidateTag} from "next/cache";
 
-export const route = '/api/client/folder-info/by-session'
 /**
  * POST /api/client/folder-info/by-session
  *

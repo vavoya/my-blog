@@ -1,10 +1,10 @@
 import {response} from "@/app/api/_utils/createResponse";
-import {route} from "@/app/api/server/user-info/by-blogurl/route";
 import {UserInfoResponseByBlogUrl} from "@/models/user_info/types";
 import {Response} from "@/app/api/types";
+import {path} from "@/app/api/server/user-info/by-blogurl/path";
 
 export default async function getByBlogUrl(blogUrl: UserInfoResponseByBlogUrl['blog_url']) {
-    const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${route}?blogurl=${blogUrl}`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${path}?blogurl=${blogUrl}`;
 
     try {
         const result = await fetch(apiUrl, { cache: "force-cache", next: { tags: ['all', blogUrl] } });

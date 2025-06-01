@@ -1,11 +1,11 @@
 import {response} from "@/app/api/_utils/createResponse";
-import {route} from "@/app/api/server/user-info/by-userid/route";
 import {UserInfoResponse} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {cookies} from "next/headers";
 import {Response} from "@/app/api/types";
+import {path} from "@/app/api/server/user-info/by-userid/path";
 
 export default async function getBySession() {
-    const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${route}`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${path}`;
 
     const cookie  = await cookies();
 
