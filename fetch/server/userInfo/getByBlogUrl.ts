@@ -11,6 +11,7 @@ export default async function getByBlogUrl(blogUrl: UserInfoResponseByBlogUrl['b
         const data: Response<UserInfoResponseByBlogUrl> = await result.json();
         return data;
     } catch (error) {
+        console.log(process.env.NEXT_PUBLIC_BASE_URL, error, path)
         const isNetworkError = error instanceof TypeError;
         const message = isNetworkError
             ? '통신 실패: 서버에 연결할 수 없습니다.'
