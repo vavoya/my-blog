@@ -58,7 +58,7 @@ export const route = '/api/client/post-info/by-session/[folderId]'
  *     "lastModified": "2024-05-28T01:23:45.678Z"
  *   }
  */
-export async function PATCH(req: NextRequest, { params }: { params: { folderId: string } }): Promise<NextResponse<PatchResBodyType>> {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ folderId: string }> }): Promise<NextResponse<PatchResBodyType>> {
     const authResult = await checkAuth();
 
     // authResult가 string이면 userId, 아니면 바로 응답 객체
@@ -165,7 +165,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { folderId: 
  *     "lastModified": "2024-05-28T01:23:45.678Z"
  *   }
  */
-export async function DELETE(req: NextRequest, { params }: { params: { folderId: string } }): Promise<NextResponse<DeleteResBodyType>> {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ folderId: string }> }): Promise<NextResponse<DeleteResBodyType>> {
     const authResult = await checkAuth();
 
     // authResult가 string이면 userId, 아니면 바로 응답 객체

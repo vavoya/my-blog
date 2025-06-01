@@ -3,7 +3,7 @@ import SideBar from "@/components/sideBar/SideBar";
 import React from "react";
 import getByUserId from "@/fetch/server/aboutInfo/getByUserId";
 
-export default async function Page({params}: {params: {blog: string}}) {
+export default async function Page({params}: {params: Promise<{blog: string}>}) {
     // 블로그 이름에 따른 유저 정보 가져오기 (id, 블로그 이름)
 
     const pageParams = await params;

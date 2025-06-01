@@ -5,7 +5,7 @@ import {renderPost} from "@/app/[blog]/[post]/_render/renderPost";
 import SideBar from "@/components/sideBar/SideBar";
 import {renderError} from "@/app/_error/renderError";
 
-export default async function Page({ params }: { params: { blog: string, post: string } }) {
+export default async function Page({ params }: { params: Promise<{ blog: string, post: string }> }) {
     const pageParams = await params;
     const blog = decodeURIComponent(pageParams.blog)
     const post = decodeURIComponent(pageParams.post)
