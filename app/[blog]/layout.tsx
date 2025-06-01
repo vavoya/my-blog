@@ -10,7 +10,8 @@ export default async function Layout({children, params}: {children: React.ReactN
     const userInfoResponse = await getByBlogUrl(blog);
 
     if (userInfoResponse.status !== 200) {
-        return renderError(userInfoResponse.status, '/');
+        return JSON.stringify(userInfoResponse, null, 2);
+        //return renderError(userInfoResponse.status, '/');
     }
 
     return (
