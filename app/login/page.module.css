@@ -1,0 +1,55 @@
+
+
+.container {
+    display: flex;
+    width: 100%;
+    height: 87px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo {
+    width: 100%;
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgb(var(--primary-color));
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 2rem;
+    line-height: 1.5em;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.oauthButtonSection {
+    display: grid;
+    grid-template-columns: repeat(2, auto); /* 2개의 컬럼을 자동 크기로 생성 */
+    grid-auto-rows: auto; /* 아이템이 자신의 크기를 유지할 수 있도록 자동 행 높이 설정 */
+    gap: 50px; /* 아이템 사이의 간격 설정 */
+
+}
+
+.oauthButtonSection > form > button {
+    width: 110px;
+    height: 110px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.3s, border-radius 0.3s;
+}
+
+.oauthButtonSection > form > button:hover {
+    background-color: rgba(var(--primary-color), 0.1);
+    border-radius: 10px;
+}
+
+.oauthButtonSection > form > button > span {
+    font-size: 1rem;
+    line-height: 1.5em;
+    font-weight: 500;
+}
