@@ -1,0 +1,27 @@
+
+
+.container {
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(var(--secondary-color), 0.5);
+}
+
+.container > button {
+    font-size: 1.5rem;
+    line-height: 1.5em;
+    font-weight: bold;
+    padding: 5px 10px;
+    transition: background-color 0.3s, border-radius 0.3s;
+}
+
+.container > button:hover {
+    background-color: rgba(var(--primary-color), 0.1);
+    border-radius: 5px;
+}
