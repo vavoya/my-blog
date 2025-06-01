@@ -1,0 +1,128 @@
+@use "@/app/globals" as *;
+
+
+.windowLayout,
+.windowLayout_disabled {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: rgb(var(--background-color));
+}
+.windowLayout {
+    border: 1px solid rgb(var(--primary-color));
+}
+.windowLayout_disabled {
+    border: 1px solid rgba(var(--primary-color), 0.3);
+}
+
+
+.windowPointerLayout,
+.windowPointerLayout_disabled {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.windowPointerLayout {
+    pointer-events: auto;
+}
+.windowPointerLayout_disabled {
+    pointer-events: none;
+}
+
+.windowHeader {
+    position: relative;
+    width: 100%;
+    height: 24px;
+    min-height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+
+    h2 {
+        font-size: 0.875rem;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    button {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 2px;
+        right: 2px;
+
+        @include interaction-effect("normal", 5px);
+    }
+}
+
+.windowBody {
+    position: relative;
+    padding: 0 15px 15px 15px;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    overflow: scroll;
+
+    .windowBottom {
+        bottom: 0;
+        left: 15px;
+        right: 15px;
+        height: 15px;
+    }
+
+    .windowLeft {
+        top: 0;
+        bottom: 15px;
+        left: 0;
+        width: 15px;
+    }
+
+    .windowRight {
+        top: 0;
+        bottom: 15px;
+        right: 0;
+        width: 15px;
+    }
+
+    .windowRightBottom {
+        right: 0;
+        bottom: 0;
+        width: 15px;
+        height: 15px;
+    }
+
+    .windowLeftBottom {
+        left: 0;
+        bottom: 0;
+        width: 15px;
+        height: 15px;
+    }
+
+    .windowLeft,
+    .windowRight,
+    .windowRightBottom,
+    .windowLeftBottom,
+    .windowBottom {
+        position: absolute;
+        @include interaction-effect("normal");
+    }
+}
+
+.windowBodyScroll {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    overflow: scroll;
+}

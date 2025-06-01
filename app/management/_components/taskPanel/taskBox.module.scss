@@ -1,0 +1,50 @@
+@use "@/app/globals" as *;
+
+
+.animationWrapper {
+  height: 0;
+  transition: height 0.3s;
+  overflow: hidden;
+}
+
+.box {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.defaultTitle,
+.errorTitle {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.defaultTitle {
+
+}
+
+.errorTitle {
+  color: rgb(var(--error-color));
+}
+
+.content {
+  font-size: 0.75rem;
+}
+
+
+.button,
+.errorButton {
+  padding: 5px;
+}
+.button {
+  @include interaction-effect("normal", 5px);
+}
+
+.errorButton {
+  @include interaction-effect("weak", 5px);
+}
+
+.buttonText {
+  font-size: 0.875rem;
+}

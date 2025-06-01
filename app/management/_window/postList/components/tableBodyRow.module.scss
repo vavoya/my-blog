@@ -1,0 +1,11 @@
+@use "app/globals" as *;
+
+.row {
+    min-height: 28px;
+    cursor: pointer;
+    @include interaction-effect("normal", 5px)
+}
+
+.cell {
+    font-size: 0.875rem;
+}

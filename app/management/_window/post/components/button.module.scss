@@ -1,0 +1,32 @@
+@use "app/globals" as *;
+
+.buttonArea {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  padding-top: 10px;
+}
+
+.actionButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.secondary,
+.primary {
+  font-size: 1.25rem;
+  font-weight: 500;
+  height: 36px;
+  padding: 0 20px;
+}
+
+.secondary {
+  @include interaction-effect("weak", 5px);
+}
+
+.primary {
+  @include interaction-effect("strong", 5px);
+}

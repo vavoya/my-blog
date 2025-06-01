@@ -1,0 +1,10 @@
+
+
+.row {
+    height: 30px;
+    border-bottom: 1px solid rgb(var(--primary-color));
+}
+
+.cell {
+    font-size: 0.825rem;
+}

@@ -1,0 +1,56 @@
+@use "@/app/globals" as *;
+
+.modal {
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    min-width: 300px;
+    transform: translate(-50%);
+    background: rgb(var(--background-color));
+    padding: 15px 15px;
+    border: 1px solid rgb(var(--primary-color));
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.modalContentBox {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.modalHeader {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.modalText {
+    font-size: 0.875rem;
+}
+
+.modalButtons {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.modalButton {
+    height: 36px;
+    padding: 0 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.primary {
+    @include interaction-effect("strong", 5px);
+}
+
+.cancel {
+    @include interaction-effect("weak", 5px);
+}

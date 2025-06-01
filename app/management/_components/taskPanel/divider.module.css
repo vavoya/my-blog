@@ -1,0 +1,8 @@
+
+
+
+.divider {
+    margin: 0 10px;
+    height: 1px;
+    background: rgb(var(--primary-color));
+}

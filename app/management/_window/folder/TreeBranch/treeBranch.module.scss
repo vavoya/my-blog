@@ -1,0 +1,73 @@
+@use "@/app/globals" as *;
+
+.treeBranch {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        height: 100%;
+        width: 1px;
+        left: -1px;
+        background: rgb(var(--primary-color));
+    }
+
+    &:last-child::before {
+        content: none;
+
+    }
+}
+
+.folder {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 10px;
+    min-width: 100px;
+    width: max-content;
+    height: 30px;
+    gap: 20px;
+    border-bottom: rgb(var(--primary-color)) 1px solid;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: -1px;
+        width: 1px;
+        left: -1px;
+        background: rgb(var(--primary-color));
+    }
+}
+
+.folderInfo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.folderName {
+    font-size: 0.875rem;
+}
+
+.postCount {
+    font-size: 0.75rem;
+    opacity: 0.5;
+}
+
+.folderOptionButton {
+    height: 26px;
+    width: 15px;
+    justify-content: center;
+    align-items: center;
+    @include interaction-effect("normal", 1px);
+}
+
+.children {
+    position: relative;
+    margin-top: 30px;
+}
