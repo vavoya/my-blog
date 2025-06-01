@@ -1,0 +1,52 @@
+@mixin interaction-effect($strength: "normal", $border-radius: 0) {
+  transition: background-color 0.3s, border-radius 0.3s;
+
+  // disabled state (default)
+  &:disabled,
+  &[disabled] {
+    background: rgba(var(--primary-color), 0.04);
+    color: rgba(var(--primary-color), 0.4);
+    cursor: not-allowed;
+    opacity: 0.6;
+    pointer-events: none;
+    border-radius: $border-radius;
+  }
+
+  @if $strength == "weak" {
+    background: rgba(var(--primary-color), 0.05);
+    border-radius: $border-radius;
+    &:hover, &:focus {
+      background: rgba(var(--primary-color), 0.1);
+      border-radius: $border-radius;
+    }
+    &:active {
+      background: rgba(var(--primary-color), 0.3);
+      color: rgb(var(--background-color));
+      border-radius: $border-radius;
+    }
+  } @else if $strength == "strong" {
+    background: rgba(var(--primary-color), 0.15);
+    border-radius: $border-radius;
+    &:hover, &:focus {
+      background: rgba(var(--primary-color), 0.3);
+      border-radius: $border-radius;
+    }
+    &:active {
+      background: rgba(var(--primary-color), 0.5);
+      border-radius: $border-radius;
+      color: rgb(var(--background-color));
+    }
+  } @else { // "normal" 또는 기타 값
+    background: rgb(var(--background-color));
+    &:hover, &:focus {
+      background: rgba(var(--primary-color), 0.1);
+      border-radius: $border-radius;
+    }
+    &:active {
+      background: rgba(var(--primary-color), 0.3);
+      border-radius: $border-radius;
+    }
+  }
+}
+
+

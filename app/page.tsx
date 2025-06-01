@@ -1,7 +1,20 @@
+
 import Image from "next/image";
 import styles from "./page.module.css";
+import {auth} from "@/auth";
+import getBySession from "@/fetch/server/userInfo/getBySession";
+import {redirect} from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
+
+  if (session?.userId) {
+    const result = await getBySession();
+    if (result.status === 200) {
+      return redirect(result.data.blog_url);
+    }
+  }
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>

@@ -1,33 +1,43 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+
+  --background-color: 225, 225, 225;
+  --primary-color: 0, 0, 0; /* 검은색의 RGB 값 */
+  --secondary-color: 255, 255, 255; /* 흰색의 RGB 값 */
+  --error-color: 244, 91, 91;
 }
+
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background-color: 30, 30, 30;
+    --primary-color: 255, 255, 255; /* 흰색의 RGB 값 */
+    --secondary-color: 0, 0, 0; /* 검은색의 RGB 값 */
+    --error-color: 244, 91, 91;
   }
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  html {
+    color-scheme: dark;
+  }
 }
 
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  font-size: 16px
+}
+
+html,
+body {
+  min-height: 100vh;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: rgb(var(--primary-color));
+  background-color: rgb(var(--background-color));
+  font-family: ui-sans-serif, -apple-system, system-ui, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", sans-serif, Helvetica, "Apple Color Emoji", Arial, "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 a {
@@ -35,8 +45,154 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+button {
+  background: none;
+  border: none;
+  color: rgb(var(--primary-color));
+  cursor: pointer;
+}
+
+input {
+  /* 모든 브라우저에서 기본 스타일 제거 */
+  all: unset;
+
+  /* 또는 각 속성을 개별적으로 초기화 */
+  border: none;
+  outline: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
+
+  /* 필요에 따라 기본적인 스타일을 추가 */
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+textarea {
+  all: unset; /* 모든 기본 스타일 제거 */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+article > section {
+  overflow: hidden; /* overflow를 hidden으로 설정하여 드래그 영역을 제한 */
+}
+
+/* 섹션의 첫 번째 요소 */
+article >  section > :first-child {
+  margin-top: 0;
+}
+
+/* 섹션의 마지막 요소 */
+article >  section > :last-child {
+  margin-bottom: 0;
+}
+
+/* 제목 스타일 */
+article >  section > h2 {
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1.4;
+  margin-top: 3rem; /* 상단 여백 크게 조정 */
+  margin-bottom: 0.5rem; /* 하단 여백 작게 조정 */
+}
+
+article >  section > h3 {
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  margin-top: 2.5rem; /* 상단 여백 크게 조정 */
+  margin-bottom: 0.5rem; /* 하단 여백 작게 조정 */
+}
+
+article >  section > h4 {
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.2;
+  margin-top: 2rem; /* 상단 여백 크게 조정 */
+  margin-bottom: 0.5rem; /* 하단 여백 작게 조정 */
+}
+
+/* p 스타일 */
+article >  section > p {
+  margin-top: 1rem; /* 상단 여백 추가 */
+  margin-bottom: 1rem; /* 하단 여백 추가 */
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.strikethrough {
+  text-decoration: line-through;
+}
+
+.highlight {
+  background-color: rgba(255, 208, 0, 0.4);
+}
+
+
+
+
+.underline {
+  text-decoration: underline;
+}
+
+
+
+/* 반응형 디자인을 위한 미디어 쿼리 */
+@media (max-width: 768px) {
+  article > section {
+    padding: 1rem;
+    margin: 0.5rem;
   }
+
+  article > section > h2 {
+    font-size: 1.75rem;
+    margin-top: 2rem;
+  }
+
+  article > section > h3 {
+    font-size: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  article > section > h4 {
+    font-size: 1rem;
+    margin-top: 1rem;
+  }
+}
+
+/* 스크린 리더 - 숨기기*/
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
 }
