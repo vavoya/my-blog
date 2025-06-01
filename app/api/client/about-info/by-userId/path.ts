@@ -1,0 +1,1 @@
+export const path = '/api/client/about-info/by-userId'

@@ -1,0 +1,1 @@
+export const path = '/api/client/paginated-posts/by-folderid';

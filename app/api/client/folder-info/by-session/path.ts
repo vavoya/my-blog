@@ -1,0 +1,1 @@
+export const path = '/api/client/folder-info/by-session'
