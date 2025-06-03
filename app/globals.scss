@@ -1,7 +1,7 @@
-@mixin interaction-effect($strength: "normal", $border-radius: 0) {
+@mixin interaction-effect($strength: "normal", $border-radius: 0, $inherit-bg: false) {
   transition: background-color 0.3s, border-radius 0.3s;
 
-  // disabled state (default)
+  // disabled 상태
   &:disabled,
   &[disabled] {
     background: rgba(var(--primary-color), 0.04);
@@ -13,40 +13,56 @@
   }
 
   @if $strength == "weak" {
-    background: rgba(var(--primary-color), 0.05);
+    @if not $inherit-bg {
+      background: rgba(var(--primary-color), 0.05);
+    }
     border-radius: $border-radius;
-    &:hover, &:focus {
+
+    &:hover,
+    &:focus {
       background: rgba(var(--primary-color), 0.1);
       border-radius: $border-radius;
     }
+
     &:active {
       background: rgba(var(--primary-color), 0.3);
       color: rgb(var(--background-color));
       border-radius: $border-radius;
     }
+
   } @else if $strength == "strong" {
-    background: rgba(var(--primary-color), 0.15);
+    @if not $inherit-bg {
+      background: rgba(var(--primary-color), 0.15);
+    }
     border-radius: $border-radius;
-    &:hover, &:focus {
+
+    &:hover,
+    &:focus {
       background: rgba(var(--primary-color), 0.3);
       border-radius: $border-radius;
     }
+
     &:active {
       background: rgba(var(--primary-color), 0.5);
-      border-radius: $border-radius;
       color: rgb(var(--background-color));
+      border-radius: $border-radius;
     }
-  } @else { // "normal" 또는 기타 값
-    background: rgb(var(--background-color));
-    &:hover, &:focus {
+
+  } @else {
+    // 기본값 "normal"
+    @if not $inherit-bg {
+      background: rgb(var(--background-color));
+    }
+
+    &:hover,
+    &:focus {
       background: rgba(var(--primary-color), 0.1);
       border-radius: $border-radius;
     }
+
     &:active {
       background: rgba(var(--primary-color), 0.3);
       border-radius: $border-radius;
     }
   }
 }
-
-

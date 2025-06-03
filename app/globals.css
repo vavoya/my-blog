@@ -20,6 +20,7 @@
   }
 }
 
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -195,4 +196,12 @@ ul {
   list-style: none;
   padding-left: 0;
   margin: 0;
+}
+
+
+@media (max-width: 499px) {
+
+  * {
+    font-size: 14px
+  }
 }
