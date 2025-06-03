@@ -57,7 +57,7 @@
     font-size: 1rem;
     font-weight: 500;
     line-height: 1.5em;
-    @include interaction-effect("normal", 5px);
+    @include interaction-effect("normal", 5px, true);
 }
 
 
@@ -81,8 +81,6 @@
 .current {
     background-color: rgba(var(--primary-color), 0.1);
 }
-
-
 
 .management > span, .statistics > span {
     font-size: 20px;
