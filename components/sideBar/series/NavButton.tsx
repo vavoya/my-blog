@@ -1,6 +1,6 @@
 'use client'
 
-import styles from "@/components/sideBar/sideBar.module.css";
+import styles from "@/components/sideBar/sideBar.module.scss";
 import React, {useState} from "react";
 import {createPortal} from "react-dom";
 import {IconLabel} from "@/components/sideBar/series/IconLabel";

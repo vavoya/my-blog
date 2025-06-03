@@ -1,4 +1,4 @@
-import styles from "@/components/sideBar/sideBar.module.css";
+import styles from "@/components/sideBar/sideBar.module.scss";
 import {IconLabel} from "@/components/sideBar/series/IconLabel";
 
 export default function FallBackButton() {

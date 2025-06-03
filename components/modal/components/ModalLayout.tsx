@@ -1,6 +1,10 @@
 import styles from "@/components/modal/components/modal.module.scss";
 import SvgClose from "@/components/svg/Close";
-import React, {ReactElement, useEffect} from "react";
+import React, {ReactElement, useEffect, useState} from "react";
+import NavOpenButton from "@/components/modal/components/navButton/NavOpenButton";
+import NavCloseButton from "@/components/modal/components/navButton/NavCloseButton";
+import queryClient from "@/components/modal/_queries";
+import {QueryClientProvider} from "@tanstack/react-query";
 
 // Modal 컴포넌트의 props 타입 정의
 export interface ModalLayoutProps {
@@ -11,6 +15,8 @@ export interface ModalLayoutProps {
 }
 
 export default function ModalLayout({closeModal, NavHeader, NavBody, CardSection}: ModalLayoutProps) {
+    const [ navOpen, setNavOpen ] = useState(false);
+
 
     useEffect(() => {
         // esc 키로 모달 닫기
@@ -33,27 +39,30 @@ export default function ModalLayout({closeModal, NavHeader, NavBody, CardSection
     }, [closeModal]);
 
     return (
-        <Backdrop closeModal={closeModal}>
-            <ModalContainer>
-                <div className={styles.modalNavSection}>
-                    <div className={styles.modalNavHeader}>
-                        {NavHeader}
+        <QueryClientProvider client={queryClient}>
+            <Backdrop closeModal={closeModal}>
+                <ModalContainer>
+                    <div className={`${styles.modalNavSection} ${navOpen ? styles.open : ''}` }>
+                        <div className={styles.modalNavHeader}>
+                            {NavHeader}
+                        </div>
+                        <div className={styles.modalNavBody}>
+                            {NavBody}
+                        </div>
+                        <NavCloseButton onClick={() => setNavOpen(false)}/>
                     </div>
-                    <div className={styles.modalNavBody}>
-                        {NavBody}
+                    <div className={styles.modalCardSection}>
+                        {CardSection}
                     </div>
-                </div>
-                <div className={styles.modalCardSection}>
-                    {CardSection}
-                </div>
-                <button
-                    onClick={closeModal}
-                    className={styles.modalCloseButton}>
-                    <SvgClose />
-                </button>
-            </ModalContainer>
-        </Backdrop>
-
+                    <button
+                        onClick={closeModal}
+                        className={styles.modalCloseButton}>
+                        <SvgClose />
+                    </button>
+                    <NavOpenButton onClick={() => setNavOpen(true)}/>
+                </ModalContainer>
+            </Backdrop>
+        </QueryClientProvider>
     )
 }
 

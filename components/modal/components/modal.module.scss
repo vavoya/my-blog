@@ -20,6 +20,7 @@
     flex-direction: row;
     border-radius: 10px;
     overflow: hidden;
+    width: max-content;
 }
 
 
@@ -35,7 +36,20 @@
     background-color: rgb(var(--background-color));
     display: flex;
     flex-direction: column;
+    
+    @media (max-width: 499px) {
+        position: absolute;
+        left: 0;
+        transform: translateX(-100%);
+        transition: transform 0.3s;
+
+        &.open {
+            transform: translateX(0);
+        }
+    }
 }
+
+
 
 .modalNavHeader {
     display: flex;
@@ -109,13 +123,28 @@
 모달 card
 */
 .modalCardSection {
-    width: 1200px;
     height: calc(100vh - 90px);
     background-color: rgb(var(--background-color));
     display: flex;
     flex-direction: column;
     position: relative;
+    width: 1200px; // 기본값 (가장 넓은 해상도)
+
+    @media (max-width: 1399px) {
+        width: 900px;
+    }
+
+    @media (max-width: 1099px) {
+        width: 600px;
+    }
+
+    @media (max-width: 799px) {
+        width: 300px;
+    }
+
 }
+
+
 
 .modalCardHeader {
     position: absolute;
@@ -155,7 +184,6 @@
     flex-wrap: wrap;
     overflow-x: hidden;
     overflow-y: scroll;
-    height: 100%;
     padding: 130px 0 50px;
 }
 
