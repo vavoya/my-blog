@@ -70,7 +70,7 @@ export default function PostContent({postName, postContent, onNextStep, onDanger
                           placeholder={"내용을 입력하세요."}
                           maxLength={POST_CONTENT_LIMIT}
                           onChange={e => {
-                              setContent(e.target.value);
+                              setContent(e.target.value.replace(/\u00A0/g, ' '));
                           }}/>
             </div>
             <Button primary={{text: "다음", onClick: () => onNextStep(name, content)}} secondary={{text: "미리보기", onClick: onPreview}} danger={onDanger ? {text: "삭제", onClick: onDanger} : undefined}/>

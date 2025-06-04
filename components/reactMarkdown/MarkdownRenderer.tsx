@@ -19,7 +19,7 @@ export function MarkdownRenderer({ markdown }: MarkdownRendererProps) {
         shikiPromise.then()
     }, [])
 
-    const ast = parseBlocks(markdown.replace(/\u00A0/g, ' ').split('\n'))
+    const ast = parseBlocks(markdown.split('\n'))
 
     return (
         <article className="markdown-body" style={{ padding: '1rem' }}>
