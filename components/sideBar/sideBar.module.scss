@@ -29,6 +29,7 @@ $button-height: 80px;
     gap: 5px;
     opacity: 0.3; /* 기본 opacity 값을 0.7로 설정 */
     transition: opacity 0.3s ease-in-out; /* opacity 변화에 애니메이션 추가 */
+    font-size: 1rem;
 
     > div {
         width: 30px;
