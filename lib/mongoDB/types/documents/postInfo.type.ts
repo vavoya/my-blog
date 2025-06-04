@@ -27,7 +27,7 @@ export type PostInfoResponse = {
     post_updatedAt: string;
     post_description: string;
     post_content: string;
-    post_ast: string;
+    post_ast: object;
     thumb_url: string;
 }
 

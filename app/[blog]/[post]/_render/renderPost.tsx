@@ -3,6 +3,8 @@ import Image from "next/image";
 import React, {ReactNode} from "react";
 import {PostInfoResponse} from "@/lib/mongoDB/types/documents/postInfo.type";
 import {formatDate} from "@/utils/formatDate";
+import {AstRenderer} from "@/components/reactMarkdown/MarkdownRenderer";
+import {RootBlockNode} from "md-ast-parser";
 
 
 export const renderPost = (postInfo: PostInfoResponse): ReactNode => (
@@ -30,9 +32,7 @@ export const renderPost = (postInfo: PostInfoResponse): ReactNode => (
             }
         </header>
         <section>
-            <pre>
-                {JSON.stringify(postInfo.post_ast, null, 2)}
-            </pre>
+                <AstRenderer ast={postInfo.post_ast as RootBlockNode} />
         </section>
     </article>
 );

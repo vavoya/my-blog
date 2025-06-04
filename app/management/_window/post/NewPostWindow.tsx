@@ -68,6 +68,13 @@ export default function NewPostWindow() {
     }
 
 
-    if (!lastStep) return <PostContent postName={postState.postName} postContent={postState.postContent} onNextStep={onNextStep} />;
-    return <PostMeta isCreating={true} thumb={postMetaState.thumb} folderId={postMetaState.folderId} description={postMetaState.description} onPrevStep={onPrevStep} fetchPost={fetchPost}/>;
+    if (!lastStep) return <PostContent postName={postState.postName}
+                                       postContent={postState.postContent}
+                                       onNextStep={onNextStep} />;
+    return <PostMeta isCreating={true}
+                     thumb={postMetaState.thumb}
+                     folderId={postMetaState.folderId}
+                     description={postMetaState.description}
+                     onPrevStep={onPrevStep}
+                     fetchPost={fetchPost}/>;
 }
