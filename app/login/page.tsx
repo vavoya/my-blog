@@ -22,7 +22,7 @@ export default async function Page({searchParams}: {searchParams: Promise<Search
         <main style={{
             maxWidth: '400px',
             width: '100%',
-            minHeight: '100vh',
+            minHeight: '100dvh',
             margin: '0 auto',
             display: 'flex',
             justifyContent: 'center',
