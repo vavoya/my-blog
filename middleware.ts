@@ -1,7 +1,11 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
-const allowedOrigins = ['https://my-blog-ten-coral-80.vercel.app', 'https://my-blog-git-dev-010-vavoyas-projects.vercel.app', 'http://localhost:3000']
+const allowedOrigins = [
+    'https://www.sim-log.com',
+    'https://my-blog-ten-coral-80.vercel.app',
+    'https://my-blog-git-dev-010-vavoyas-projects.vercel.app',
+    'http://localhost:3000']
 
 const corsOptions = {
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
