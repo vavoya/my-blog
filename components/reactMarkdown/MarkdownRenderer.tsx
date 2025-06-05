@@ -22,21 +22,21 @@ export function MarkdownRenderer({ markdown }: MarkdownRendererProps) {
     const ast = parseBlocks(markdown.split('\n'))
 
     return (
-        <article className="markdown-body" style={{ padding: '1rem' }}>
+        <section className="markdown-body" style={{ padding: '1rem' }}>
             {
                 ast.children.map((block, index) => renderBlockNode(block, index))
             }
-        </article>
+        </section>
     )
 }
 
 export function AstRenderer({ ast }: { ast: RootBlockNode }) {
     return (
-        <article className="markdown-body" style={{ padding: '1rem' }}>
+        <section className="markdown-body" style={{ padding: '1rem' }}>
             {
                 ast.children.map((block, index) => renderBlockNode(block, index))
             }
-        </article>
+        </section>
     )
 }
 

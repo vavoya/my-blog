@@ -9,7 +9,13 @@ export default function ParagraphBlock({ node }: ParagraphBlockProps) {
 
     return (
         <p>
-            <InlineNodes nodeArray={node.children}/>
+            {
+                node.children.length === 0 ? (
+                    <br/>
+                ) : (
+                    <InlineNodes nodeArray={node.children} />
+                )
+            }
         </p>
     )
 }

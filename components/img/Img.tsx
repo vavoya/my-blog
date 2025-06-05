@@ -28,6 +28,7 @@ export default function Img({src}: ImgProps) {
 
     if (!isError) {
         return (
+
             <Image src={src}
                    alt={"대표 이미지 미리보기"}
                    fill

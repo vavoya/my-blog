@@ -7,6 +7,10 @@ $button-height: 80px;
     /*right: calc(50% + 430px);*/
     z-index: 1;
     transform: translate(0, -50%);
+
+    backdrop-filter: blur(10px);
+    /*-webkit-backdrop-filter: blur(10px);  사파리 호환성을 위한 추가 */
+    background-color: rgba(var(--background-color), 0.6);
 }
 
 .ul {
@@ -56,6 +60,8 @@ $button-height: 80px;
         top: auto;
         transform: none;
         bottom: 0;
+
+        border-top-right-radius: 5px;
     }
 
     .menuButton {

@@ -32,7 +32,7 @@
     position: relative;
     z-index: 3;
     width: 200px;
-    height: calc(100vh - 90px);
+    height: 100vh;
     background-color: rgb(var(--background-color));
     display: flex;
     flex-direction: column;
@@ -123,7 +123,7 @@
 모달 card
 */
 .modalCardSection {
-    height: calc(100vh - 90px);
+    height: 100vh;
     background-color: rgb(var(--background-color));
     display: flex;
     flex-direction: column;
