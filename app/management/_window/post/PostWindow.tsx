@@ -132,6 +132,13 @@ export default function PostWindow({paginatedPost}: PostWindowProps) {
         ));
     }
 
-    if (!lastStep) return <PostContent postName={postState.data.post_name} postContent={postState.data.post_content} onNextStep={onNextStep} onDanger={onDanger}/>;
-    return <PostMeta isCreating={false} thumb={postState.data.thumb_url} folderId={postState.data.folder_id} description={postState.data.post_description} onPrevStep={onPrevStep} fetchPost={fetchPost} onDanger={onDanger}/>;
+    if (!lastStep) return <PostContent postId={postState.data._id}
+                                       postName={postState.data.post_name}
+                                       postContent={postState.data.post_content}
+                                       onNextStep={onNextStep} onDanger={onDanger}/>;
+    return <PostMeta isCreating={false}
+                     thumb={postState.data.thumb_url}
+                     folderId={postState.data.folder_id}
+                     description={postState.data.post_description}
+                     onPrevStep={onPrevStep} fetchPost={fetchPost} onDanger={onDanger}/>;
 }

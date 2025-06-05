@@ -11,23 +11,32 @@ import PreviewWindow from "@/app/management/_window/preview/PreviewWindow";
 
 
 type PostContentProps = {
+    postId?: PostInfoResponse['_id'];
     postName: PostInfoResponse['post_name'],
     postContent: PostInfoResponse['post_content'],
     onNextStep: OnNextStep;
     onDanger?: OnDanger;
 }
-export default function PostContent({postName, postContent, onNextStep, onDanger}: PostContentProps) {
+export default function PostContent({postId, postName, postContent, onNextStep, onDanger}: PostContentProps) {
+    const isNew = !postId;
     const [name, setName] = useState(postName);
     const [content, setContent] = useState(postContent);
     const setWindows = useManagementStore((state) => state.setWindows);
     const previewWindowOpen = useRef(false) // 미리보기 윈도우 열림 여부
+
+    const windowId = `PreviewWindow-${isNew ? 'new' : postId}`;
+    const windowName = `${isNew ? '새 포스트 미리보기' : `${postName} 미리보기`}`;
 
     // 입력에 따른 미리보기 업데이트
     useEffect(() => {
         // 미리보기 윈도우가 열려있으면 미리보기 윈도우를 업데이트/
         if (previewWindowOpen.current) {
             const commands = new WindowCommandBuilder().update([
-                createWindowObj("PreviewWindow-new", "새 포스트 미리보기", <PreviewWindow markdown={content}/>, 0, 0, 600, 400)
+                createWindowObj(
+                    windowId,
+                    windowName,
+                    <PreviewWindow markdown={content}/>,
+                    0, 0, 600, 400)
             ]).returnCommand()
             setWindows(commands);
         }
@@ -35,15 +44,19 @@ export default function PostContent({postName, postContent, onNextStep, onDanger
         return () => {
             // 포스트 윈도우가 닫히면, 미리보기 윈도우를 닫아준다.
             if (previewWindowOpen.current) {
-                const commands = new WindowCommandBuilder().remove(["PreviewWindow-new"]).returnCommand()
+                const commands = new WindowCommandBuilder().remove([windowId]).returnCommand()
                 setWindows(commands);
             }
         }
-    }, [content, setWindows]);
+    }, [content, setWindows, windowId, windowName]);
 
     const onPreview = () => {
         const commands = new WindowCommandBuilder().add([
-            createWindowObj("PreviewWindow-new", "새 포스트 미리보기", <PreviewWindow markdown={content}/>, 0, 0, 600, 400)
+            createWindowObj(
+                windowId,
+                windowName,
+                <PreviewWindow markdown={content}/>,
+                0, 0, 600, 400)
         ]).returnCommand()
 
         previewWindowOpen.current = true;

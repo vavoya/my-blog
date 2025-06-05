@@ -113,7 +113,7 @@ function BackgroundContent({ userInfo, folderInfo, seriesInfo }: BackgroundProps
 
             <div className={styles.background}>
             <nav>
-                <ul>
+                <ul className={styles.ul}>
                     <li>
                         <button tabIndex={0}
                                 onClick={openFolder}>
