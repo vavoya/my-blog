@@ -2,10 +2,13 @@ import {NextRequest, NextResponse} from "next/server";
 import { response } from "@/app/api/_utils/createResponse";
 import {jsonResponse} from "@/app/api/client/jsonResponse";
 import {ResBodyType} from "@/app/api/client/registration/by-session/type";
+/*
 import createByAuthId from "@/services/server/registration/createByAuthId/createByAuthId";
 import {auth} from "@/auth";
 import {validateRegister} from "@/validation/server/regist/validateRegister";
 import {revalidateTag} from "next/cache";
+
+ */
 
 /**
  * POST /api/client/registration/by-session
@@ -39,6 +42,11 @@ import {revalidateTag} from "next/cache";
  *   3. createByAuthId() 호출 → 상황별 오류 분기 및 메시지 전송
  */
 export async function POST(req: NextRequest): Promise<NextResponse<ResBodyType>> {
+    if (req) {}
+    return jsonResponse(response.forbidden("회원가입은 현재 비활성화되어 있습니다."))
+
+    /*
+
     const session = await auth()
 
     if (!session) {
@@ -76,4 +84,6 @@ export async function POST(req: NextRequest): Promise<NextResponse<ResBodyType>>
         console.error(e);
         return jsonResponse(response.error('서버 오류: 포스트 정보를 처리하는 중 문제가 발생했습니다.'));
     }
+
+     */
 }

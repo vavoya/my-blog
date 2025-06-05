@@ -112,7 +112,7 @@ export default function Page() {
         } else {
             setIsSubmitting({
                 state: "submitted",
-                text: "서버에 문제가 발생했습니다."
+                text: result.message ?? "서버에 문제가 발생했습니다."
             })
         }
     }
