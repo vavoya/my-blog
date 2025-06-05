@@ -28,11 +28,13 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+
+
 html,
 body {
   min-height: 100vh;
-  max-width: 100vw;
   font-size: 16px;
+  max-width: 100vw;
   overflow-x: hidden;
 }
 
@@ -76,70 +78,6 @@ textarea {
   all: unset; /* 모든 기본 스타일 제거 */
 }
 
-
-
-
-
-
-
-
-
-
-
-
-article > section {
-  overflow: hidden; /* overflow를 hidden으로 설정하여 드래그 영역을 제한 */
-}
-
-/* 섹션의 첫 번째 요소 */
-article >  section > :first-child {
-  margin-top: 0;
-}
-
-/* 섹션의 마지막 요소 */
-article >  section > :last-child {
-  margin-bottom: 0;
-}
-
-/* 제목 스타일 */
-article >  section > h1 {
-  font-weight: 700;
-  font-size: 2.5rem;
-  line-height: 1.2;
-  margin-top: 3.5rem; /* 상단 여백 크게 조정 */
-  margin-bottom: 0.5rem; /* 하단 여백 작게 조정 */
-}
-
-article >  section > h2 {
-  font-weight: 700;
-  font-size: 2rem;
-  line-height: 1.4;
-  margin-top: 3rem; /* 상단 여백 크게 조정 */
-  margin-bottom: 0.5rem; /* 하단 여백 작게 조정 */
-}
-
-article >  section > h3 {
-  font-weight: 600;
-  font-size: 1.5rem;
-  line-height: 1.3;
-  margin-top: 2.5rem; /* 상단 여백 크게 조정 */
-  margin-bottom: 0.5rem; /* 하단 여백 작게 조정 */
-}
-
-article >  section > h4 {
-  font-weight: 600;
-  font-size: 1.25rem;
-  line-height: 1.2;
-  margin-top: 2rem; /* 상단 여백 크게 조정 */
-  margin-bottom: 0.5rem; /* 하단 여백 작게 조정 */
-}
-
-/* p 스타일 */
-article >  section > p {
-  margin-top: 1rem; /* 상단 여백 추가 */
-  margin-bottom: 1rem; /* 하단 여백 추가 */
-}
-
 .bold {
   font-weight: bold;
 }
@@ -163,8 +101,6 @@ article >  section > p {
   overflow: hidden;
   word-break: break-all;
 }
-
-
 
 .underline {
   text-decoration: underline;
@@ -213,6 +149,17 @@ article >  section > p {
 /* markdown 스타일의 바디 배경 없애기 */
 .markdown-body {
   background: transparent !important;
+
+  font-size: 16px;
+}
+
+@media (max-width: 576px) {
+
+  .markdown-body,
+  html,
+  body {
+    font-size: 14px
+  }
 }
 
 /* shiki 코드블럭 스타일 */
@@ -255,11 +202,4 @@ pre, code {
 }
 
 
-
-@media (max-width: 499px) {
-
-  * {
-    font-size: 14px
-  }
-}
 

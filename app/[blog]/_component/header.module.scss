@@ -18,14 +18,14 @@
     width: 100%;
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     height: 60px;
+    padding: 0 20px;
 }
 
 .logo {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 20px;
+
     display: flex;
     align-items: center;
 }
@@ -33,7 +33,13 @@
 .blogHome {
     width: fit-content;
     height: fit-content;
-    margin: auto;
+    padding: 0 10px;
+
+    // ... 처리
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 }
 
 .blogHome span {
@@ -43,10 +49,7 @@
 }
 
 .option {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 20px;
+    min-width: max-content;
     display: flex;
     align-items: center;
 }

@@ -4,6 +4,7 @@ import getByPostUrl from "@/fetch/server/postInfo/getByPostUrl";
 import {renderPost} from "@/app/[blog]/[post]/_render/renderPost";
 import SideBar from "@/components/sideBar/SideBar";
 import {renderError} from "@/app/_error/renderError";
+import styles from "@/app/[blog]/page.module.css";
 
 export default async function Page({ params }: { params: Promise<{ blog: string, post: string }> }) {
     const pageParams = await params;
@@ -27,15 +28,7 @@ export default async function Page({ params }: { params: Promise<{ blog: string,
     return (
         <>
             <SideBar url={{ blog, post }} userId={userInfoResponse.data._id} />
-            <main
-                style={{
-                    width: "800px",
-                    paddingTop: "60px",
-                    margin: "0 auto",
-                    display: "flex",
-                    flexDirection: "column",
-                }}
-            >
+            <main className={styles.main}>
                 {content}
             </main>
         </>

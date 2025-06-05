@@ -10,21 +10,28 @@ import {RootBlockNode} from "md-ast-parser";
 export const renderPost = (postInfo: PostInfoResponse): ReactNode => (
     <article className={styles.article}>
         <header className={styles.header}>
-            <ul className={styles.taglist}>
-                {/* postInfo.tag.map((tag, index) => (<li key={index}>{tag}</li>)) */}
+            {
+                /*
+                <ul className={styles.taglist}>
+                {postInfo.tag.map((tag, index) => (<li key={index}>{tag}</li>)) }
             </ul>
+                 */
+            }
             <h1>{postInfo.post_name}</h1>
             <span className={styles.date}>{`${formatDate(new Date(postInfo.post_createdAt))}`}</span>
             {
                 postInfo.thumb_url && (
-                    <figure style={{ height: `${800/3*2}px`, width: "800px", position: "relative" }}>
+                    <figure style={{
+                        width: "100%",
+                        aspectRatio: "3 / 2",
+                        position: "relative"
+                    }}>
                         <Image
                             src={postInfo.thumb_url}
-                            alt="Vercel Logo"
+                            alt="대표 이미지"
                             className={styles.vercelLogo}
                             fill
                             objectFit={"cover"}
-                            quality={100}
                             priority
                         />
                     </figure>
