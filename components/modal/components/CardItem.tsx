@@ -1,4 +1,3 @@
-import Link from "next/link";
 import styles from "@/components/modal/components/modal.module.scss";
 import styles2 from "@/components/modal/components/CardItem.module.css";
 import Image from "next/image";
