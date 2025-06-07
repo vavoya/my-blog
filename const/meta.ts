@@ -1,0 +1,9 @@
+
+
+const TITLE_LIMIT = 50;
+const DESCRIPTION_LIMIT = 150;
+
+export {
+    TITLE_LIMIT,
+    DESCRIPTION_LIMIT,
+}
