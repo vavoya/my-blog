@@ -1,9 +1,9 @@
 import styles from "./page.module.css"
 import SvgSLoG from "@/components/svg/S-Log";
-import Link from "next/link";
 import SvgApple from "@/components/svg/Apple";
 import SvgGoogle from "@/components/svg/Google";
 import {signIn} from "@/auth"
+import ProcessingOverlayLink from "@/components/ProcessingOverlayLink";
 
 
 type SearchParams = {
@@ -29,9 +29,9 @@ export default async function Page({searchParams}: {searchParams: Promise<Search
             alignItems: 'center',
         }}>
             <div className={styles.container}>
-                <Link href={'/'} className={styles.logo}>
+                <ProcessingOverlayLink href={'/'} className={styles.logo}>
                     <SvgSLoG />
-                </Link>
+                </ProcessingOverlayLink>
                 <span className={styles.title}>
                     로그인
                 </span>

@@ -110,8 +110,7 @@ function BackgroundContent({ userInfo, folderInfo, seriesInfo }: BackgroundProps
 
 
     return (
-
-            <div className={styles.background}>
+        <div className={styles.background}>
             <nav>
                 <ul className={styles.ul}>
                     <li>

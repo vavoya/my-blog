@@ -1,10 +1,10 @@
-import Link from "next/link";
 import SvgSLoGHeader from "@/components/svg/SL";
 import {UserInfoResponse} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {ReactNode} from "react";
 import styles from "./header.module.scss"
 import {auth, signOut} from "@/auth";
 import LogInButton from "@/app/[blog]/_component/LogInButton";
+import ProcessingOverlayLink from "@/components/ProcessingOverlayLink";
 
 type HeaderProps = {
     blog?: UserInfoResponse['blog_url'];
@@ -20,16 +20,16 @@ export default async function Header({blog, blogName, children}: HeaderProps) {
         <header className={styles.container}>
             <div className={styles.header}>
                 <div className={styles.logo}>
-                    <Link tabIndex={0} href={'/'}>
+                    <ProcessingOverlayLink tabIndex={0} href={'/'}>
                         <SvgSLoGHeader/>
-                    </Link>
+                    </ProcessingOverlayLink>
                 </div>
                 {
                     blog &&
                     <div className={styles.blogHome}>
-                        <Link tabIndex={0} href={blogUrl}>
+                        <ProcessingOverlayLink tabIndex={0} href={blogUrl}>
                             <span>{blogName}</span>
-                        </Link>
+                        </ProcessingOverlayLink>
                     </div>
                 }
                 <div className={styles.option}>
