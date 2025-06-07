@@ -8,6 +8,7 @@ import SeriesOrderBox from "@/components/modal/series/SeriesOrderBox";
 import {Url} from "@/components/sideBar/types";
 import {PostInfoResponse} from "@/lib/mongoDB/types/documents/postInfo.type";
 import {formatDate} from "@/utils/formatDate";
+import ProcessingOverlayLink from "@/components/ProcessingOverlayLink";
 
 type CardItemProps = {
     url: Url;
@@ -31,7 +32,7 @@ export default function CardItem({url, href, thumbUrl, name, description, create
     const currentHref = decodeURIComponent(`/${url.blog}/${url.post}`)
 
     return (
-        <Link
+        <ProcessingOverlayLink
             ref={ref}
             className={styles.modalCardItem}
             onClick={(e) => {
@@ -85,7 +86,7 @@ export default function CardItem({url, href, thumbUrl, name, description, create
                     {description}
                 </span>
             </div>
-        </Link>
+        </ProcessingOverlayLink>
 
     )
 }

@@ -21,6 +21,7 @@
     border-radius: 10px;
     overflow: hidden;
     width: max-content;
+    background: rgb(var(--background-color));
 }
 
 
@@ -33,7 +34,7 @@
     z-index: 3;
     width: 200px;
     height: 100dvh;
-    background-color: rgb(var(--background-color));
+    background-color: rgba(var(--background-color), 0.9);
     display: flex;
     flex-direction: column;
     
