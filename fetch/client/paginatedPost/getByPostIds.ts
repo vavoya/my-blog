@@ -5,7 +5,7 @@ import {path} from "@/app/api/client/paginated-posts/by-postids/path";
 import {PostInfoResponse} from "@/lib/mongoDB/types/documents/postInfo.type";
 import {Response} from "@/app/api/types";
 
-export default async function getByFolderId(userId: UserInfoResponse['_id'], postIds: PostInfoResponse['_id'][]) {
+export default async function getByPostIds(userId: UserInfoResponse['_id'], postIds: PostInfoResponse['_id'][]) {
     const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${path}?userid=${userId}&${postIds.map(postId => `postids=${postId}`).join('&')}`;
 
     try {
