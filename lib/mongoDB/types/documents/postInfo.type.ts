@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb'
 import {UserInfoDocument, UserInfoResponse} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {FolderInfoDocument, FolderInfoResponse} from "@/lib/mongoDB/types/documents/folderInfo.type";
+import {SeriesInfoDocument} from "@/lib/mongoDB/types/documents/seriesInfo.type";
 
 
 export type PostInfoDocument = {
@@ -15,6 +16,9 @@ export type PostInfoDocument = {
     post_content: string;
     post_ast: object;
     thumb_url: string;
+    series_id: SeriesInfoDocument['_id'] | null;
+    viewCount: number;
+
 }
 
 export type PostInfoResponse = {
@@ -29,6 +33,8 @@ export type PostInfoResponse = {
     post_content: string;
     post_ast: object;
     thumb_url: string;
+    series_id: string | null;
+    viewCount: number;
 }
 
 export const postInfoResponseShape = {
@@ -43,4 +49,6 @@ export const postInfoResponseShape = {
     post_content: "string",
     post_ast: "string",
     thumb_url: "string",
+    series_id: "string",
+    viewCount: "number",
 };

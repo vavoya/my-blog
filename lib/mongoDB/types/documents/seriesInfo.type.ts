@@ -9,6 +9,8 @@ export type SeriesInfoDocument = {
     series_name: string;
     series_description: string;
     post_list: PostInfoDocument["_id"][];
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export type SeriesInfoResponse = {
@@ -17,4 +19,16 @@ export type SeriesInfoResponse = {
     series_name: string;
     series_description: string;
     post_list: PostInfoResponse["_id"][];
+    createdAt: string;
+    updatedAt: string;
 }
+
+export const seriesInfoResponseShape = {
+    _id: "string",
+    user_id: "string",
+    series_name: "string",
+    series_description: "string",
+    post_list: ["string"],
+    createdAt: "string",
+    updatedAt: "string",
+};
