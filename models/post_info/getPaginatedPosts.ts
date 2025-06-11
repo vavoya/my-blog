@@ -1,18 +1,14 @@
 import {client} from "@/lib/mongoDB/mongoClient";
-import {UserInfoDocument} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {PostInfoDocument} from "@/lib/mongoDB/types/documents/postInfo.type";
 import {PaginatedPostsDocument} from "@/models/post_info/types";
 import {COLLECTION_POST, DB} from "@/lib/mongoDB/const";
 
+const LIMIT = 50;
 
-export default async function getPostsByPostIds(user_id: UserInfoDocument['_id'], post_ids: PostInfoDocument['_id'][]): Promise<PaginatedPostsDocument[]> {
+export default async function getPaginatedPosts(pagenum: number): Promise<PaginatedPostsDocument[]> {
     const coll = client.db(DB).collection<PostInfoDocument>(COLLECTION_POST);
 
     const filter = {
-        'user_id': user_id,
-        '_id': {
-            '$in': post_ids
-        }
     };
     const projection = {
         'post_url': 1,
@@ -24,7 +20,11 @@ export default async function getPostsByPostIds(user_id: UserInfoDocument['_id']
         'folder_id': 1,
         'series_id': 1,
     };
-
-    return coll.find<PaginatedPostsDocument>(filter, { projection }).toArray();
+    const sort = {
+        'post_createdAt': -1 as const,
+    };
+    const skip = LIMIT * (pagenum - 1);
+    const limit = LIMIT;
+    return coll.find<PaginatedPostsDocument>(filter, { projection, sort, skip, limit }).toArray();
 }
 

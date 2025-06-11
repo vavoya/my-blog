@@ -13,5 +13,5 @@ export default async function deletePostByPostId(user_id: UserInfoDocument['_id'
         '_id': post_id,
     };
 
-    return coll.deleteOne(filter, { session: session });
+    return coll.findOneAndDelete(filter, { session: session });
 }

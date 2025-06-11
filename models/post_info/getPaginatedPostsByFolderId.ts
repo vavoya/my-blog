@@ -22,6 +22,7 @@ export default async function getPaginatedPostsByFolderId(user_id: UserInfoDocum
         'post_updatedAt': 1,
         'thumb_url': 1,
         'folder_id': 1,
+        'series_id': 1,
     };
     const sort = {
         'post_createdAt': -1 as const,
