@@ -3,8 +3,8 @@ import SvgClose from "@/components/svg/Close";
 import React, {ReactElement, useEffect, useState} from "react";
 import NavOpenButton from "@/components/modal/components/navButton/NavOpenButton";
 import NavCloseButton from "@/components/modal/components/navButton/NavCloseButton";
-import queryClient from "@/components/modal/_queries";
 import {QueryClientProvider} from "@tanstack/react-query";
+import {QueryClient} from "@tanstack/query-core";
 
 // Modal 컴포넌트의 props 타입 정의
 export interface ModalLayoutProps {
@@ -12,9 +12,10 @@ export interface ModalLayoutProps {
     NavHeader: ReactElement;
     NavBody: ReactElement;
     CardSection: ReactElement;
+    queryClient: QueryClient;
 }
 
-export default function ModalLayout({closeModal, NavHeader, NavBody, CardSection}: ModalLayoutProps) {
+export default function ModalLayout({closeModal, NavHeader, NavBody, CardSection, queryClient}: ModalLayoutProps) {
     const [ navOpen, setNavOpen ] = useState(false);
 
 

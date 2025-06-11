@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useRef, useState, useTransition} from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import styles from "@/components/modal/components/modal.module.scss";
 import Pagination from "@/components/modal/components/Pagination";
 import PaginationSearch from "@/components/modal/components/PaginationSearch";
@@ -6,11 +6,10 @@ import CardBody from "@/components/modal/series/CardBody";
 import {UserInfoResponse} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {Url} from "@/components/sideBar/types";
 import {PageNumberResult} from "@/models/pagination/pageNum/type";
-import getByPostIds from "@/fetch/client/paginatedPost/getByPostIds";
-import {PaginatedPostsResponse} from "@/models/post_info/types";
 import {FolderObj, SeriesObj} from "@/components/modal/utils/toObj";
 import {SeriesInfoResponse} from "@/lib/mongoDB/types/documents/seriesInfo.type";
 import {LIMIT} from "@/const/page";
+import {usePaginatedPostIdsQuery} from "@/hook/usePaginatedPostIdsQuery";
 
 type CardSectionProps = {
     userId: UserInfoResponse['_id'];
@@ -23,39 +22,20 @@ type CardSectionProps = {
 
 export default function CardSection({userId, url, folderObj, seriesObj, seriesId, initPageNumber}: CardSectionProps) {
     const [pageNumber, setPageNumber] = useState(initPageNumber);
-    const [paginatedPosts, setPaginatedPosts] = useState<PaginatedPostsResponse[]>([]);
-    const [isLoading, startTransition] = useTransition();
-    const [isError, setIsError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
     const prevSeriesId = useRef(seriesId);
 
-    const getPaginatedPosts = useCallback((pageNumber: PageNumberResult['pageNumber'], seriesId: SeriesInfoResponse['_id']) => {
-
-        setPageNumber(pageNumber);
-        startTransition(async () => {
-            const postIds = seriesObj[seriesId].post_list.slice((pageNumber - 1) * LIMIT, pageNumber * LIMIT);
-            const result = await getByPostIds(userId, postIds);
-
-            if (result.status === 200) {
-                setIsError(false);
-                setPaginatedPosts(result.data);
-            } else {
-                setIsError(true);
-                setErrorMessage(result.message);
-            }
-        })
-    }, [seriesObj, userId]);
+    const postIds = useMemo(() => {
+        return (!!seriesId ? seriesObj[seriesId].post_list : []).slice(0, LIMIT * pageNumber);
+    }, [pageNumber, seriesId, seriesObj])
+    const { isFetching, data, isError, errorMessage } = usePaginatedPostIdsQuery(userId, postIds);
 
     useEffect(() => {
-        if (!seriesId) {
-            setPaginatedPosts([]);
-        } else if (seriesId !== prevSeriesId.current) {
-            getPaginatedPosts(1, seriesId);
-        } else {
-            getPaginatedPosts(pageNumber, seriesId);
+        // 시리즈 변경
+        if (seriesId !== prevSeriesId.current) {
+            setPageNumber(1);
         }
         prevSeriesId.current = seriesId;
-    }, [getPaginatedPosts, pageNumber, seriesId]);
+    }, [seriesId]);
 
     if (seriesId) {
         const postCount = seriesObj[seriesId].post_list.length;
@@ -71,21 +51,21 @@ export default function CardSection({userId, url, folderObj, seriesObj, seriesId
                     <span>{seriesObj[seriesId].series_description}</span>
                 </div>
                 <CardBody
-                    isLoading={isLoading}
+                    isLoading={isFetching}
                     isError={isError}
                     errorMessage={errorMessage}
                     postCount={postCount}
                     url={url}
                     series={seriesObj[seriesId]}
                     folderObj={folderObj}
-                    paginatedPosts={paginatedPosts}/>
+                    paginatedPosts={data}/>
                 <div className={styles.modalCardFooter}>
                     <Pagination
-                        getPaginatedPosts={(pageNumber) => getPaginatedPosts(pageNumber, seriesId)}
+                        getPaginatedPosts={(pageNumber) => setPageNumber(pageNumber)}
                         pageNum={pageNumber}
                         maxPageNum={maxPageNumber}/>
                     <PaginationSearch
-                        getPaginatedPosts={(pageNumber) => getPaginatedPosts(pageNumber, seriesId)}
+                        getPaginatedPosts={(pageNumber) => setPageNumber(pageNumber)}
                         maxPageNum={maxPageNumber}/>
                 </div>
             </div>

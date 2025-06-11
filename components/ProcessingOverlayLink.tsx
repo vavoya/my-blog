@@ -12,10 +12,11 @@ type Props = LinkProps & AnchorHTMLAttributes<HTMLAnchorElement> & {
 }
 export default function ProcessingOverlayLink({onClick, ...rest}: Props) {
     const [ isRouting, setIsRouting ] = useState(false);
-    const pathname = usePathname();
     const PROCESSING_TEXT = "페이지 이동 중입니다"
     const [ processingText, setProcessingText] = useState<string>(PROCESSING_TEXT)
     const precessingLevel = useRef(0);
+
+    const pathname = decodeURIComponent(usePathname());
 
     useEffect(() => {
         setIsRouting(false);
@@ -55,7 +56,11 @@ export default function ProcessingOverlayLink({onClick, ...rest}: Props) {
                       if (onClick) {
                           onClick(event)
                       }
-                      setIsRouting(true)
+                      if (pathname !== rest.href) {
+                          setIsRouting(true)
+                      } else {
+                          event.preventDefault()
+                      }
                   }}/>
             {
                 isRouting && createPortal(

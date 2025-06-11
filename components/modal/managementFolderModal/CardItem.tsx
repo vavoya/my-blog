@@ -3,47 +3,39 @@ import styles2 from "@/components/modal/components/CardItem.module.css";
 import Image from "next/image";
 import MoveBackgroundAnimation from "@/components/modal/components/MoveBackgroundAnimation";
 import {useEffect, useRef, useState} from "react";
-import SeriesOrderBox from "@/components/modal/series/SeriesOrderBox";
-import {Url} from "@/components/sideBar/types";
-import {PostInfoResponse} from "@/lib/mongoDB/types/documents/postInfo.type";
 import {formatDate} from "@/utils/formatDate";
-import ProcessingOverlayLink from "@/components/ProcessingOverlayLink";
+import {PaginatedPostsResponse} from "@/models/post_info/types";
+import {SeriesInfoResponse} from "@/lib/mongoDB/types/documents/seriesInfo.type";
 
 type CardItemProps = {
-    url: Url;
-    href: string;
-    thumbUrl: PostInfoResponse["thumb_url"];
-    name: PostInfoResponse['post_name'];
-    description: PostInfoResponse["post_description"];
-    createdAt: PostInfoResponse['post_createdAt'];
+    paginatedPost: PaginatedPostsResponse;
+    seriesId: SeriesInfoResponse['_id'];
+    setPost: (post: PaginatedPostsResponse) => void;
     path: string;
-    seriesOrder?: number;
 }
 
-export default function CardItem({url, href, thumbUrl, name, description, createdAt, path, seriesOrder = 0}: CardItemProps) {
-    const ref = useRef<HTMLAnchorElement>(null);
+export default function CardItem({paginatedPost, seriesId, setPost, path}: CardItemProps) {
+    const ref = useRef<HTMLDivElement>(null);
     const [isMounted, setIsMounted] = useState(false);
+    const disabled = (!!paginatedPost.series_id && paginatedPost.series_id !== seriesId)
 
     useEffect(() => {
         setIsMounted(true)
     }, []);
 
-    const currentHref = decodeURIComponent(`/${url.blog}/${url.post}`)
 
     return (
-        <ProcessingOverlayLink
-            ref={ref}
-            className={styles.modalCardItem}
-            href={href}>
+        <div ref={ref}
+                className={styles.modalCardItem}
+                onClick={() => {
+                    if (!disabled) {
+                        setPost(paginatedPost);
+                    }
+                }}>
             {
-                seriesOrder === 0
-                    ? null
-                    : <SeriesOrderBox sereisOrder={seriesOrder} />
-            }
-            {
-                thumbUrl && (
+                paginatedPost.thumb_url && (
                     <Image
-                        src={thumbUrl}
+                        src={paginatedPost.thumb_url}
                         width={300}
                         height={200}
                         objectFit={"cover"}
@@ -52,7 +44,7 @@ export default function CardItem({url, href, thumbUrl, name, description, create
 
             }
             {
-                currentHref === href
+                disabled
                     ? <div style={{
                         position: 'absolute',
                         top: 0,
@@ -68,20 +60,20 @@ export default function CardItem({url, href, thumbUrl, name, description, create
                     {path}
                 </span>
                 <time>
-                    {formatDate(new Date(createdAt))}
+                    {formatDate(new Date(paginatedPost.post_createdAt))}
                 </time>
             </div>
             <div className={styles2.title}>
                 <span>
-                    {name}
+                    {paginatedPost.post_name}
                 </span>
             </div>
             <div className={styles2.description}>
                 <span>
-                    {description}
+                    {paginatedPost.post_description}
                 </span>
             </div>
-        </ProcessingOverlayLink>
+        </div>
 
     )
 }

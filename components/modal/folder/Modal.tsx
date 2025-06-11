@@ -14,6 +14,8 @@ import CardSection from "@/components/modal/folder/CardSection";
 import {toObj} from "@/components/modal/utils/toObj";
 import {buildFolderPathIds} from "@/utils/buildFolderPathIds";
 
+import queryClient from "@/components/modal/_queries";
+
 // Modal 컴포넌트의 props 타입 정의
 type ModalProps = {
     userId: UserInfoResponse['_id'];
@@ -30,6 +32,7 @@ export default function Modal({userId, url, initPageNumber, initFolderId, folder
 
     return (
         <ModalLayout
+            queryClient={queryClient}
             closeModal={closeModal}
             NavHeader={<NavHeader folderPath={folderPath} setFolderPath={setFolderPath} />}
             NavBody={<NavBody folderInfo={folderInfo} folderPath={folderPath} setFolderPath={setFolderPath} />}

@@ -8,16 +8,18 @@ import folderInfoGetByUserId from "@/fetch/server/folderInfo/getByUserId";
 import getByPostUrl from "@/fetch/server/postInfo/getByPostUrl";
 import FallBackButton from "@/components/sideBar/folder/FallBackNavButton";
 import {LIMIT} from "@/const/page";
+import {SeriesInfoResponse} from "@/lib/mongoDB/types/documents/seriesInfo.type";
+import {FolderInfoResponse} from "@/lib/mongoDB/types/documents/folderInfo.type";
 
 
 export default async function DataProvider({url, userId}: {
     url: Url
     userId: UserInfoResponse['_id']
 }) {
-    let seriesId = null;
+    let seriesId: SeriesInfoResponse['_id'] | null = null;
     let pageNumber = 1;
-    let seriesInfo;
-    let folderInfo;
+    let seriesInfo: SeriesInfoResponse[];
+    let folderInfo: FolderInfoResponse[];
 
     try {
         const folderRes = await folderInfoGetByUserId(userId);
@@ -35,12 +37,12 @@ export default async function DataProvider({url, userId}: {
             if (postRes.status === 200) {
                 const postId = postRes.data._id;
 
-                const series = seriesInfo.find(({post_list}) => post_list.includes(postId));
-                if (series) {
-                    seriesId = series._id;
-
-                    const postIndex = series.post_list.findIndex(id => id === postId);
-                    pageNumber = Math.ceil((postIndex + 1) / LIMIT);
+                seriesId = postRes.data.series_id;
+                if (seriesId) {
+                    const series = seriesInfo.find(({_id}) => _id === seriesId);
+                    if (series) {
+                        pageNumber = Math.ceil((series.post_list.findIndex(id => id === postId) + 1) / LIMIT);
+                    }
                 }
             }
         }

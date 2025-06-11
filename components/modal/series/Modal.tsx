@@ -1,5 +1,6 @@
 import {useState} from "react";
 
+import queryClient from "@/components/modal/_queries";
 
 // _components
 import ModalLayout from "@/components/modal/components/ModalLayout";
@@ -30,6 +31,7 @@ export default function Modal({userId, url, initPageNumber, initSeriesId, series
 
     return (
         <ModalLayout
+            queryClient={queryClient}
             closeModal={closeModal}
             NavHeader={<NavHeader />}
             NavBody={<NavBody seriesInfo={seriesInfo} seriesId={seriesId} setSeriesId={setSeriesId}/>}
