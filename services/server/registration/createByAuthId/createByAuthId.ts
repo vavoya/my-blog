@@ -87,6 +87,8 @@ export default async function createByAuthId(params: CreateInput & { authId: str
                     series_name: "기본 시리즈",
                     series_description: "기본 시리즈입니다.",
                     post_list: [],
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
                 },
                 session
             )

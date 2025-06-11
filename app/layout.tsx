@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import Script from 'next/script'
 import {AnalyticsTracker} from "@/components/AnalyticsTracker";
 import {GA_MEASUREMENT_ID} from "@/lib/gtag";
+import ClientOnly from "@/components/ClientOnly";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,7 +45,9 @@ export default function RootLayout({
           `}
       </Script>
         {children}
-        <AnalyticsTracker />
+        <ClientOnly>
+            <AnalyticsTracker />
+        </ClientOnly>
       </body>
     </html>
   );

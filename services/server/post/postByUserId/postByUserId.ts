@@ -47,7 +47,9 @@ export default async function postByUserId({
             post_ast: parseBlocks(postContent.split('\n')),
             post_url: slugify(postName),
             folder_id: new ObjectId(folderId),
-            thumb_url: thumbUrl
+            thumb_url: thumbUrl,
+            series_id: null,
+            viewCount: 0
         }
 
         // 버전 체크 & postId 갱신
