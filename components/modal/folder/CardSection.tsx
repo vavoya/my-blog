@@ -1,4 +1,4 @@
-import {useCallback, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import styles from "@/components/modal/components/modal.module.scss";
 import Pagination from "@/components/modal/components/Pagination";
 import PaginationSearch from "@/components/modal/components/PaginationSearch";
@@ -35,6 +35,15 @@ export default function CardSection({userId, url, folderObj, folderPath, initPag
     const getPaginatedPosts = useCallback((newPageNumber: PageNumberResult['pageNumber']) => {
         setPageNumber(newPageNumber);
     }, [])
+
+    const prevFolderId = useRef(folderId);
+    useEffect(() => {
+        // 폴더 변경
+        if (folderId !== prevFolderId.current) {
+            setPageNumber(1);
+        }
+        prevFolderId.current = folderId;
+    }, [folderId]);
 
     return (
         <div className={styles.modalCardSection}>
