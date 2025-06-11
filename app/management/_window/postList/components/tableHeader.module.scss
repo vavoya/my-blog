@@ -1,5 +1,5 @@
 @use "app/management/_components/table/table.scss" as table;
 
 .row {
-    @include table.bRow();
+    @include table.hRow();
 }

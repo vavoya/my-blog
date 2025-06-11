@@ -13,7 +13,7 @@ import {validateUpdatePost} from "@/validation/server/post/validateUpdatePost";
 import {revalidateTag} from "next/cache";
 
 /**
- * PATCH /api/client/post-info/by-session/[folderId]
+ * PATCH /api/client/post-info/by-session/[seriesId]
  *
  * 인증된 사용자의 특정 포스트 정보를 전체 교체(덮어쓰기)한다.
  * 경로 파라미터 postId에 해당하는 포스트를, 요청 body의 데이터로 대체한다.
@@ -112,7 +112,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ po
 
 
 /**
- * DELETE /api/client/post-info/by-session/[folderId]
+ * DELETE /api/client/post-info/by-session/[seriesId]
  *
  * 인증된 사용자의 특정 포스트 정보를 삭제한다.
  * 경로 파라미터 postId에 해당하는 포스트를, 요청 body의 데이터 검증 후 삭제 처리한다.

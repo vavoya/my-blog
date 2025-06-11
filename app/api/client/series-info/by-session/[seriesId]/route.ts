@@ -2,20 +2,19 @@ import {NextRequest, NextResponse} from "next/server";
 import { response } from "@/app/api/_utils/createResponse";
 import {jsonResponse} from "@/app/api/client/jsonResponse";
 import {checkAuth} from "@/app/api/_utils/checkAuth";
-import {isShape} from "@/utils/isShape";
 import {isConvertibleToDate} from "@/utils/isConvertibleToDate";
 import {ResBodyType as PatchResBodyType} from "@/app/api/client/folder-info/by-session/[folderId]/patch.type";
 import {ResBodyType as DeleteResBodyType} from "@/app/api/client/folder-info/by-session/[folderId]/delete.type";
-import deleteByUserId from "@/services/server/folder/deleteByUserId/deleteByUserId";
-import {deleteInputShape} from "@/services/server/folder/deleteByUserId/type";
-import renameByUserId from "@/services/server/folder/renameByUserId/renameByUserId";
-import moveByUserId from "@/services/server/folder/moveByUserId/moveByUserId";
-import {validateMoveFolder} from "@/validation/server/folder/validateMoveFolder"
-import {validateRenameFolder} from "@/validation/server/folder/validateRenameFolder"
+import deleteByUserId from "@/services/server/series/deleteByUserId/deleteByUserId";
+import patchByUserId from "@/services/server/series/patchByUserId/patchByUserId";
 import {revalidateTag} from "next/cache";
+import {validatePatchSeries} from "@/validation/server/series/validatePatchSeries";
+import {validateDeleteSeries} from "@/validation/server/series/validateDeleteSeries";
 
+
+type Params = Promise<{ seriesId: string }>
 /**
- * PATCH /api/client/post-info/by-session/[seriesId]
+ * PATCH /api/client/series-info/by-session/[seriesId]
  *
  * 인증된 사용자의 특정 폴더 정보를 부분 수정한다.
  * 경로 파라미터 folderId에 해당하는 폴더의 이름 또는 위치(부모 폴더)를 수정한다.
@@ -57,7 +56,7 @@ import {revalidateTag} from "next/cache";
  *     "lastModified": "2024-05-28T01:23:45.678Z"
  *   }
  */
-export async function PATCH(req: NextRequest, { params }: { params: Promise<{ folderId: string }> }): Promise<NextResponse<PatchResBodyType>> {
+export async function PATCH(req: NextRequest, { params }: { params: Params }): Promise<NextResponse<PatchResBodyType>> {
     const authResult = await checkAuth();
 
     // authResult가 string이면 userId, 아니면 바로 응답 객체
@@ -71,35 +70,20 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ fo
     const lastModified = body["lastModified"];
     delete body["lastModified"];
 
-    const folderId = (await params).folderId;
+    const seriesId = (await params).seriesId;
 
-    if (!isConvertibleToDate(lastModified)) {
+    if (!isConvertibleToDate(lastModified) || !validatePatchSeries(body) || body.seriesId !== seriesId) {
         return jsonResponse(response.badRequest('입력 데이터가 유효하지 않습니다.'));
     }
-
-    let actionHandler;
-    if (validateRenameFolder(body) && body.folderId === folderId) {
-        actionHandler = () => renameByUserId({
-            ...body,
-            lastModified
-        });
-        // 이름 변경 로직
-    } else if (validateMoveFolder(body) && body.folderId === folderId) {
-        actionHandler = () => moveByUserId({
-            ...body,
-            lastModified
-        });
-        // 위치 이동 로직
-    } else {
-        return jsonResponse(response.badRequest('입력 데이터가 유효하지 않습니다.'));
-    }
-
 
     // 일단 한번 더 넣기.
     body.userId = userId;
 
     try {
-        const results = await actionHandler();
+        const results = await patchByUserId({
+            ...body,
+            lastModified
+        });
 
         if (results.success) {
             revalidateTag(`${userId}`);
@@ -122,14 +106,14 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ fo
         }
     } catch (e) {
         console.error(e);
-        return jsonResponse(response.error('서버 오류: 포스트 정보를 처리하는 중 문제가 발생했습니다.'));
+        return jsonResponse(response.error('서버 오류: 시리즈 정보를 처리하는 중 문제가 발생했습니다.'));
     }
 }
 
 
 
 /**
- * DELETE /api/client/post-info/by-session/[seriesId]
+ * DELETE /api/client/series-info/by-session/[seriesId]
  *
  * 인증된 사용자의 특정 폴더 정보를 삭제한다.
  * 경로 파라미터 folderId에 해당하는 폴더를, 요청 body 데이터 검증 후 삭제 처리한다.
@@ -164,7 +148,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ fo
  *     "lastModified": "2024-05-28T01:23:45.678Z"
  *   }
  */
-export async function DELETE(req: NextRequest, { params }: { params: Promise<{ folderId: string }> }): Promise<NextResponse<DeleteResBodyType>> {
+export async function DELETE(req: NextRequest, { params }: { params: Params }): Promise<NextResponse<DeleteResBodyType>> {
     const authResult = await checkAuth();
 
     // authResult가 string이면 userId, 아니면 바로 응답 객체
@@ -178,9 +162,9 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ f
     const lastModified = body["lastModified"];
     delete body["lastModified"];
 
-    const folderId = (await params).folderId;
+    const seriesId = (await params).seriesId;
 
-    if (!isConvertibleToDate(lastModified) || !isShape(body, deleteInputShape) || body.folderId !== folderId) {
+    if (!isConvertibleToDate(lastModified) || !validateDeleteSeries(body) || body.seriesId !== seriesId) {
         return jsonResponse(response.badRequest('입력 데이터가 유효하지 않습니다.'));
     }
 
@@ -203,15 +187,10 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ f
         switch (results.error) {
             case "LastModifiedMismatch":
                 return jsonResponse(response.conflict(results.message));
-            case "FolderNotFound":
-                return jsonResponse(response.notFound(results.message));
             case "UserNotFound":
                 return jsonResponse(response.notFound(results.message));
             case "UpdatePostFailed":
-            case "UpdateFolderFailed":
-                return jsonResponse(response.error(results.message));
             case "DeleteFailed":
-                return jsonResponse(response.error(results.message)); // 500 Internal Server Error
             case "TransactionError":
                 return jsonResponse(response.error(results.message)); // 500 Internal Server Error
             default:

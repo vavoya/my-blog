@@ -1,0 +1,107 @@
+@use "app/globals" as globals;
+@use "app/management/_components/table/table.scss" as table;
+
+.window {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  gap: 20px;
+}
+
+.series {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  overflow-x: scroll;
+}
+
+.seriesContent {
+  display: flex;
+  flex-direction: column;
+  gap: 10px
+}
+
+.seriesName {
+  font-size: 1.25rem;
+}
+
+.seriesDescription {
+  font-size: 1rem;
+}
+
+.seriesButtons {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  height: max-content;
+}
+
+.seriesDeleteButton {
+  @include globals.interaction-effect(weak, 5px);
+}
+
+.seriesEditButton {
+  @include globals.interaction-effect(strong, 5px);
+}
+
+.seriesDeleteButton,
+.seriesEditButton {
+  height: 36px;
+  padding: 0 20px;
+  min-width: max-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s;
+  span {
+    font-size: 1rem;
+  }
+}
+
+
+
+.table {
+  @include table.table();
+  overflow-x: scroll;
+  flex: 1;
+}
+
+.hRow {
+  @include table.hRow();
+}
+
+.ul {
+  @include table.ul();
+}
+
+.otherRow {
+  @include table.bRow();
+  justify-content: center;
+}
+
+.bRow {
+  @include table.bRow();
+}
+
+.col3 {
+  flex: 3;
+  min-width: 150px;
+}
+
+.col2 {
+  flex: 2;
+  min-width: 150px;
+}
+
+.col1 {
+  width: 50px;
+  max-width: 50px;
+}
+
+.col3,
+.col2,
+.col1 {
+  @include table.col();
+}

@@ -58,7 +58,7 @@ button {
 
 input {
   /* 모든 브라우저에서 기본 스타일 제거 */
-  all: unset;
+  /*all: unset;
 
   /* 또는 각 속성을 개별적으로 초기화 */
   border: none;
@@ -201,5 +201,17 @@ pre, code {
   font-family: monospace;
 }
 
+
+/* Chrome, Safari, Edge */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
 
 

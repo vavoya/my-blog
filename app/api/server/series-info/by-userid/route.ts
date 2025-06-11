@@ -6,7 +6,7 @@ import validateAndTransform from "@/app/api/validateAndTransform";
 import {jsonResponse} from "@/app/api/server/jsonResponse";
 
 /**
- * GET /api/server/folder-info/by-userid
+ * GET /api/server/series-info/by-userid
  *
  * 사용자 ID(`userid`)를 기준으로 해당 사용자가 소유한 시리즈 정보를 조회합니다.
  *

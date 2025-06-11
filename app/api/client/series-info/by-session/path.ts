@@ -1,0 +1,1 @@
+export const path = '/api/client/series-info/by-session'

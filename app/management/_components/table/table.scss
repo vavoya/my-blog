@@ -1,0 +1,58 @@
+@use "app/globals" as globals;
+
+// 헤더, 바디 공통 row 스타일
+@mixin row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  min-width: max-content;
+  padding: 0 8px;
+  gap: 5px;
+}
+
+// 테이블 스타일
+@mixin table() {
+  display: flex;
+  flex-direction: column;
+  min-width: 100%;
+  max-height: 100%;
+}
+
+// 헤더 로우 스타일
+@mixin hRow() {
+  @include row;
+
+  height: 30px;
+  border-bottom: 1px solid rgb(var(--primary-color));
+  font-size: 0.825rem;
+}
+
+// 바디 스타일
+@mixin ul() {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+  min-width: max-content;
+  overflow: scroll;
+}
+
+// 바디 로우 스타일
+@mixin bRow() {
+  @include row;
+
+  min-height: 28px;
+  cursor: pointer;
+  @include globals.interaction-effect("normal", 5px);
+  font-size: 0.875rem;
+}
+
+// 공통 col 스타일
+@mixin col() {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

@@ -9,7 +9,7 @@ import createWindowObj from "@/app/management/_window/provider/utils/createWindo
 import styles from "./folderWindow.module.css"
 import PostListWindow from "@/app/management/_window/postList/PostListWindow";
 import FolderOptionModal from "@/app/management/_window/folder/components/FolderOptionModal";
-import RemoveModal from "@/app/management/_window/folder/components/RemoveModal";
+import ConfirmModal from "@/app/management/_window/folder/components/ConfirmModal";
 import {createPortal} from "react-dom";
 import NameChangeModal from "@/app/management/_window/folder/components/NameChangeModal";
 import MoveModal from "@/app/management/_window/folder/components/MoveModal";
@@ -53,13 +53,15 @@ export default function FolderWindow() {
 
     const openFolder: OpenFolder = (e, folderId) => {
         e.stopPropagation()
+        const windowId = `PostListWindow-${folderId}`;
         const windowName = `[${folderObj[folderId].folder_name}] - 포스트 목록`;
-        const windowObj = createWindowObj(`PostListWindow-${folderId}`, windowName, <></>, 0, 0, 650)
-
-        windowObj.node = <PostListWindow folderId={folderId} windowObj={windowObj}/>;
 
         const commands = new WindowCommandBuilder().add([
-            windowObj
+            createWindowObj(
+                windowId,
+                windowName,
+                <PostListWindow folderId={folderId} windowId={windowId}/>,
+                0, 0, 650)
         ]).returnCommand()
 
         setWindows(commands)
@@ -122,11 +124,18 @@ export default function FolderWindow() {
             // 모달
             setSubWindow(
                 createPortal(
-                    <RemoveModal
+                    <ConfirmModal
                         ref={modalRef}
-                        name={folderObj[folderId].folder_name}
-                        deleteFolder={deleteFolder}
-                        cancel={cancel}/>, document.body
+                        modalTitle={`[${folderObj[folderId].folder_name}] 폴더 삭제`}
+                        modalText={['폴더 삭제 시, 하위 폴더 및 포스트는 상위 폴더로 이동합니다.']}
+                        secondary={{
+                            text: '취소',
+                            onClick: cancel
+                        }}
+                        primary={{
+                            text: '삭제',
+                            onClick: deleteFolder
+                        }} />, document.body
                 )
             )
         }

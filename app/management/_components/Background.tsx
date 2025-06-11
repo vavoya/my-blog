@@ -19,6 +19,7 @@ import {buildTrie} from "@/app/management/_utils/buildTrie";
 import TaskPanel from "@/app/management/_components/taskPanel/TaskPanel";
 import ClientOnly from "@/components/ClientOnly";
 import AboutWindow from "@/app/management/_window/about/AboutWindow";
+import SeriesWindow from "@/app/management/_window/series/SeriesWindow";
 
 
 type BackgroundProps = {
@@ -66,7 +67,22 @@ function BackgroundContent({ userInfo, folderInfo, seriesInfo }: BackgroundProps
     }, [])
 
     const openSeries = useCallback<MouseEventHandler>(() => {
+        const windowCommandBuilder = new WindowCommandBuilder()
 
+        const newCommands = windowCommandBuilder
+            .add([
+                createWindowObj(
+                    'SeriesWindow',
+                    '시리즈 목록',
+                    <SeriesWindow />,
+                    0,
+                    0,
+                    650
+                )
+            ])
+            .returnCommand()
+
+        setWindowCommands(newCommands)
     }, [])
 
     const openSetting = useCallback<MouseEventHandler>(() => {
