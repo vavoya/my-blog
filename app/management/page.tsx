@@ -6,7 +6,6 @@ import getSeriesInfoByUserId from "@/fetch/server/seriesInfo/getByUserId";
 import {redirect} from "next/navigation";
 import Background from "@/app/management/_components/Background";
 
-
 export default async function Page() {
 
     // 유저 정보 가져오기

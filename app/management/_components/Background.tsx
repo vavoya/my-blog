@@ -97,7 +97,7 @@ function BackgroundContent({ userInfo, folderInfo, seriesInfo }: BackgroundProps
             0,
             0,
             670,
-            450
+            520
         )
 
         const commands = new WindowCommandBuilder().add([

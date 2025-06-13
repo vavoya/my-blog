@@ -5,6 +5,9 @@
   --primary-color: 0, 0, 0; /* 검은색의 RGB 값 */
   --secondary-color: 255, 255, 255; /* 흰색의 RGB 값 */
   --error-color: 244, 91, 91;
+
+  --highlight-bg: rgba(76, 175, 80, 0.32); /* 라이트 모드: 더 진하고 뚜렷하게 */
+  --quote-text-color: rgb(80, 100, 80); /* 라이트 기본: 다소 진한 회색 */
 }
 
 
@@ -14,6 +17,9 @@
     --primary-color: 255, 255, 255; /* 흰색의 RGB 값 */
     --secondary-color: 0, 0, 0; /* 검은색의 RGB 값 */
     --error-color: 244, 91, 91;
+
+    --highlight-bg: rgba(129, 199, 132, 0.36); /* 다크 모드: 더 진하게 */
+    --quote-text-color: rgb(210, 220, 210); /* 다크: 밝은 회색 */
   }
   html {
     color-scheme: dark;
@@ -91,7 +97,7 @@ textarea {
 }
 
 .highlight {
-  background-color: rgba(255, 208, 0, 0.4);
+  background-color: var(--highlight-bg);
 }
 
 .syntax {
@@ -109,6 +115,7 @@ textarea {
 
 
 /* 반응형 디자인을 위한 미디어 쿼리 */
+/*
 @media (max-width: 768px) {
   article > section {
     padding: 1rem;
@@ -131,6 +138,8 @@ textarea {
   }
 }
 
+ */
+
 /* 스크린 리더 - 숨기기*/
 .sr-only {
   position: absolute;
@@ -151,6 +160,10 @@ textarea {
   background: transparent !important;
 
   font-size: 16px;
+
+  blockquote {
+    color: var(--quote-text-color) !important;
+  }
 }
 
 @media (max-width: 576px) {

@@ -76,8 +76,8 @@ export default function WindowProvider({ commands }: WindowProviderProps) {
                     newWindowMap.set(w.id, w);
                 } else {
                     // 존재하지 않는 윈도우
-                    newWindowMap.set(w.id, w);
-                    newWindowSet.add(w.id);
+                    //newWindowMap.set(w.id, w);
+                    //newWindowSet.add(w.id);
                 }
             })
         }

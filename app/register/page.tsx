@@ -151,7 +151,9 @@ export default function Page() {
                    beforeText={"/@"}
                    maxLength={BLOG_URL_LIMIT}
                    errorText={errorText.blogSlug} />
-            <label>
+            {
+                /*
+                <label>
                 <input
                     type="checkbox"
                     checked={true}
@@ -160,6 +162,8 @@ export default function Page() {
                 <a href="/terms" target="_blank">이용약관 자세히 보기</a> 및
                 <a href="/privacy" target="_blank">개인정보처리방침 자세히 보기</a>에 동의합니다.
             </label>
+                 */
+            }
 
 
             <button onClick={onSubmit}>
