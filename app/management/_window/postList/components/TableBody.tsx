@@ -38,7 +38,7 @@ export default function TableBody(rest: TableBodyProps) {
                             0,
                             0,
                             670,
-                            450
+                            520
                         )
 
                         const commands = new WindowCommandBuilder().add([
