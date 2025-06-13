@@ -1,6 +1,7 @@
 import {response} from "@/app/api/_utils/createResponse";
 import {path} from "@/app/api/client/series-info/by-session/path";
 import {ReqBodyType, ResBodyType} from "@/app/api/client/series-info/by-session/[seriesId]/delete.type";
+import {processApiResponse} from "@/fetch/utils/processApiResponse";
 
 export default async function deleteBySession(json: ReqBodyType) {
     const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${path}/${json.seriesId}`;
@@ -10,8 +11,7 @@ export default async function deleteBySession(json: ReqBodyType) {
             method: "DELETE",
             body: JSON.stringify(json)
         });
-        const data: ResBodyType = await result.json();
-        return data;
+        return await processApiResponse(result);
     } catch (error) {
         const isNetworkError = error instanceof TypeError;
         const message = isNetworkError
