@@ -11,7 +11,7 @@ export default async function patchBySession(json: ReqBodyType) {
             method: "PATCH",
             body: JSON.stringify(json)
         });
-        return await processApiResponse(result);
+        return await processApiResponse<ResBodyType>(result);
     } catch (error) {
         const isNetworkError = error instanceof TypeError;
         const message = isNetworkError

@@ -11,7 +11,7 @@ export default async function deleteBySession(json: ReqBodyType) {
             method: "DELETE",
             body: JSON.stringify(json)
         });
-        return await processApiResponse(result);
+        return await processApiResponse<ResBodyType>(result);
     } catch (error) {
         const isNetworkError = error instanceof TypeError;
         const message = isNetworkError

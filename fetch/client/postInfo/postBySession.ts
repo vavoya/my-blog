@@ -11,7 +11,7 @@ export default async function postBySession(json: ReqBodyType) {
             method: "POST",
             body: JSON.stringify(json)
         });
-        return await processApiResponse(result);
+        return await processApiResponse<ResBodyType>(result);
     } catch (error) {
         const isNetworkError = error instanceof TypeError;
         const message = isNetworkError
