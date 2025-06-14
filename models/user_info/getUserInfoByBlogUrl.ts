@@ -7,7 +7,7 @@ import {ClientSession} from "mongodb";
 
 export default async function getUserInfoByBlogUrl(blog_url: UserInfoDocument['blog_url'], session?: ClientSession): Promise<UserInfoDocumentByBlogUrl | null> {
     const coll = client.db(DB).collection<UserInfoDocument>(COLLECTION_USER);
-    const filter = { blog_url };
+    const filter = { blog_url};
     const projection = {
         'blog_name': 1,
         'blog_url': 1,

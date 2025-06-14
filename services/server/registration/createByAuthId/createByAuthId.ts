@@ -45,6 +45,7 @@ export default async function createByAuthId(params: CreateInput & { authId: str
                 next_post_id: 0,
                 registration_state: true,
                 last_modified: new Date(),
+                is_deleted: false,
             },
             session
         )

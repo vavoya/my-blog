@@ -11,6 +11,7 @@ export type UserInfoDocument = {
     next_post_id: number;
     registration_state: boolean;
     last_modified: Date;
+    is_deleted: boolean;
 }
 
 export type UserInfoResponse = {
@@ -23,6 +24,7 @@ export type UserInfoResponse = {
     next_post_id: number;
     registration_state: boolean;
     last_modified: string;
+    is_deleted: boolean;
 }
 
 export const userInfoResponseShape = {
@@ -35,4 +37,5 @@ export const userInfoResponseShape = {
     next_post_id: "number",
     registration_state: "boolean",
     last_modified: "string",
+    is_deleted: "boolean",
 }

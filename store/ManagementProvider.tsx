@@ -37,6 +37,7 @@ const dummyStore = createStore<Store>((set) => ({
         next_post_id: 0,
         registration_state: true,
         last_modified: "",
+        is_deleted: false,
     },
     setUserInfo: (userInfo) => set({ userInfo }),
     folderObj: {},
