@@ -21,6 +21,7 @@ export type State = {
 export default function Page() {
     const router = useRouter()
     const session = useSession()
+
     const [state, setState] = useState<Required<State>>({
         name: "",
         blogName: "",
@@ -118,6 +119,11 @@ export default function Page() {
     }
 
 
+
+
+    const email = session?.data?.user?.email ?? "";
+
+
     return (
         <main className={styles.registerPage}>
             <h1>
@@ -141,6 +147,11 @@ export default function Page() {
                    })}
                    maxLength={BLOG_NAME_LIMIT}
                    errorText={errorText.blogName} />
+            <Input id={"email"}
+                   title={"* 이메일"}
+                   value={email}
+                   readonly={true}
+                    />
             <Input id={"blogSlug"}
                    title={"* 블로그 주소"}
                    placeholder={"블로그 주소를 입력해 주세요"}

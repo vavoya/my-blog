@@ -75,18 +75,23 @@ export default function PostContent({postId, postName, postContent, onNextStep, 
                        defaultValue={name}
                        onChange={e => {
                            setName(e.target.value);
-                       }} />
+                       }}/>
                 <label className={'sr-only'} htmlFor="post-content">포스트 본문</label>
                 <textarea id="post-content"
                           className={styles.content}
                           defaultValue={content}
                           placeholder={"내용을 입력하세요."}
                           maxLength={POST_CONTENT_LIMIT}
+
                           onChange={e => {
+                              e.target.value.split('').forEach(char => {
+                                  console.log(char.charCodeAt(0));
+                              })
                               setContent(e.target.value.replace(/\u00A0/g, ' '));
                           }}/>
             </div>
-            <Button primary={{text: "다음", onClick: () => onNextStep(name, content)}} secondary={{text: "미리보기", onClick: onPreview}} danger={onDanger ? {text: "삭제", onClick: onDanger} : undefined}/>
+            <Button primary={{text: "다음", onClick: () => onNextStep(name, content)}}
+                    secondary={{text: "미리보기", onClick: onPreview}} danger={onDanger ? {text: "삭제", onClick: onDanger} : undefined}/>
         </div>
     )
 }

@@ -1,9 +1,8 @@
 import styles from "./page.module.css"
-import SvgSLoG from "@/components/svg/S-Log";
-import SvgApple from "@/components/svg/Apple";
-import SvgGoogle from "@/components/svg/Google";
+import Svgsimlog from "@/components/svg/Simlog";
 import {signIn} from "@/auth"
 import ProcessingOverlayLink from "@/components/ProcessingOverlayLink";
+import Image from "next/image";
 
 
 type SearchParams = {
@@ -13,9 +12,9 @@ type SearchParams = {
 export default async function Page({searchParams}: {searchParams: Promise<SearchParams>}) {
     const {redirectTo} = await searchParams
 
-    const signInGoogle = async () => {
+    const signInNaver = async () => {
         'use server'
-        await signIn("google", { redirectTo: `/register${redirectTo ? `?redirectTo=${redirectTo}` : ""}` })
+        await signIn("naver", { redirectTo: `/register${redirectTo ? `?redirectTo=${redirectTo}` : ""}` })
     }
 
     return (
@@ -30,26 +29,18 @@ export default async function Page({searchParams}: {searchParams: Promise<Search
         }}>
             <div className={styles.container}>
                 <ProcessingOverlayLink href={'/'} className={styles.logo}>
-                    <SvgSLoG />
+                    <Svgsimlog />
                 </ProcessingOverlayLink>
                 <span className={styles.title}>
                     로그인
                 </span>
                 <div className={styles.oauthButtonSection}>
                     <form
-                        action={signInGoogle}>
+                        action={signInNaver}>
                         <button>
-                            <SvgGoogle/>
+                            <Image width={70} height={70} src={"/png/naverLogin.png"} alt={"네이버 로그인"} />
                             <span>
-                                Google
-                            </span>
-                        </button>
-                    </form>
-                    <form>
-                        <button>
-                            <SvgApple/>
-                            <span>
-                                Apple
+                                네이버
                             </span>
                         </button>
                     </form>

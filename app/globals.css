@@ -82,6 +82,8 @@ input {
 
 textarea {
   all: unset; /* 모든 기본 스타일 제거 */
+  flex-direction: column;
+  white-space-collapse: preserve;
 }
 
 .bold {
