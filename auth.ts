@@ -2,6 +2,7 @@ import NextAuth, { Session, DefaultSession } from "next-auth"
 import Google from "next-auth/providers/google"
 import { JWT, DefaultJWT } from "next-auth/jwt"
 import getByAuthId from "@/fetch/server/userInfo/getByAuthId";
+import Naver from "@auth/core/providers/naver";
 
 declare module "next-auth" {
     interface Session extends DefaultSession {
@@ -26,6 +27,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         Google({
             clientId: process.env.GOOGLE_CLIENT_ID!,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+        }),
+        Naver({
+            clientId: process.env.AUTH_NAVER_ID!,
+            clientSecret: process.env.AUTH_NAVER_SECRET!,
         })
     ],
     callbacks: {
@@ -33,7 +38,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
             if (account) {
                 try {
-                    const result = await getByAuthId(account.providerAccountId)
+                    const auth_id = `${account.provider}_${account.providerAccountId}`;
+                    const result = await getByAuthId(auth_id)
                     if (result.status !== 200) throw new Error("No user found with id " + account.providerAccountId)
                     token.userId = result.data._id.toString();
                     token.registrationState = result.data.registration_state
@@ -45,8 +51,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     token.providerAccountId = account.providerAccountId
                 }
             } else if (token) {
+                const auth_id = `${token.provider}_${token.providerAccountId}`;
                 try {
-                    const result = await getByAuthId(token.providerAccountId)
+                    const result = await getByAuthId(auth_id)
                     if (result.status !== 200) throw new Error("No user found with id " + token.providerAccountId)
                     token.userId = result.data._id.toString();
                     token.registrationState = result.data.registration_state

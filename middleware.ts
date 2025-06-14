@@ -36,7 +36,7 @@ export default auth((request) => {
     const session = request.auth
 
     const isManagement = pathname.startsWith("/management")
-    const isRegister = pathname.startsWith("/register")
+    const isRegister = pathname === "/register"
     const isLogin = pathname.startsWith("/login")
 
     const needAuth = !session
@@ -56,6 +56,10 @@ export default auth((request) => {
     }
 
     // 로그인 페이지
+    if (isLogin && !needAuth && !needRegistration) {
+        return NextResponse.redirect(new URL("/", url.origin)) // 이미 완료된 사용자
+    }
+    /*
     if (isLogin) {
         if (needAuth) {
             // 로그인 페이지 접근 허용
@@ -68,6 +72,8 @@ export default auth((request) => {
             return NextResponse.redirect(new URL("/", url.origin)) // 이미 완료된 사용자
         }
     }
+
+     */
 
 
     // Handle simple requests
