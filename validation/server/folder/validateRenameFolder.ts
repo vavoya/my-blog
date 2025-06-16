@@ -1,9 +1,8 @@
 import {isShape} from "@/utils/isShape";
-import {renameInputShape, RenameInput} from "@/services/server/folder/renameByUserId/type";
+import {renameInputShape, RenameInput} from "@/services/server/folder/renameByUserId.type";
 
 
-type ValidateRenameFolder = (body: any) => body is RenameInput
-export const validateRenameFolder: ValidateRenameFolder = (body): body is RenameInput => {
+export function validateRenameFolder(body: any): body is RenameInput {
     if (!isShape(body, renameInputShape)) {
         return false
     }

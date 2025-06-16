@@ -1,8 +1,7 @@
-import {PatchInput, patchInputShape} from "@/services/server/post/patchByUserId/type";
+import {PatchInput, patchInputShape} from "@/services/server/post/patchByUserId.type";
 import {isShape} from "@/utils/isShape";
 
-type ValidatePost = (body: any) => body is PatchInput;
-export const validateUpdatePost: ValidatePost = (body): body is PatchInput => {
+export function validateUpdatePost(body: any): body is PatchInput {
     if (!isShape(body, patchInputShape)) {
         return false
     }
