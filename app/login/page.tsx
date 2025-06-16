@@ -10,11 +10,12 @@ type SearchParams = {
 }
 
 export default async function Page({searchParams}: {searchParams: Promise<SearchParams>}) {
-    const {redirectTo} = await searchParams
+    const { redirectTo } = await searchParams
+    const encodedRedirectTo = typeof redirectTo === 'string' ? encodeURIComponent(redirectTo) : ''
 
     const signInNaver = async () => {
         'use server'
-        await signIn("naver", { redirectTo: `/register${redirectTo ? `?redirectTo=${redirectTo}` : ""}` })
+        await signIn("naver", { redirectTo: `/register${encodedRedirectTo ? `?redirectTo=${encodedRedirectTo}` : ""}` })
     }
 
     return (
