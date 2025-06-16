@@ -1,5 +1,5 @@
-import getSitemapPage from "@/models/post_info/getSitemapPage";
-import getUserInfoByBlogUrl from "@/models/user_info/getUserInfoByBlogUrl";
+import getSitemapPage from "@/data-access/post-info/getSitemapPage";
+import getUserInfoByBlogUrl from "@/data-access/user-info/getUserInfoByBlogUrl";
 import { ObjectId } from "mongodb";
 
 type Params = Promise<{ blogSlug: string, page: string }>;

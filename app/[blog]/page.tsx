@@ -1,9 +1,9 @@
-import getByBlogUrl from "@/fetch/server/userInfo/getByBlogUrl";
+import getByBlogUrl from "@/fetch/server/users/getByBlogUrl";
 import SideBar from "@/components/sideBar/SideBar";
 import React from "react";
-import getByUserId from "@/fetch/server/aboutInfo/getByUserId";
+import getByUserId from "@/fetch/server/about/getByUserId";
 import {RootBlockNode} from "md-ast-parser";
-import {AstRenderer} from "@/components/reactMarkdown/MarkdownRenderer";
+import {AstRenderer} from "@/components/react-markdown/MarkdownRenderer";
 import styles from "./page.module.css";
 import {Metadata} from "next";
 import {DESCRIPTION_LIMIT, TITLE_LIMIT} from "@/const/meta";

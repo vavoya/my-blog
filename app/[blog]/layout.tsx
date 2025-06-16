@@ -1,5 +1,5 @@
 import React from "react";
-import getByBlogUrl from "@/fetch/server/userInfo/getByBlogUrl";
+import getByBlogUrl from "@/fetch/server/users/getByBlogUrl";
 import Header from "@/app/[blog]/_component/Header";
 import {renderError} from "@/app/_error/renderError";
 

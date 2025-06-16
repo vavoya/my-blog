@@ -1,4 +1,4 @@
-import getSitemapPage from "@/models/user_info/getSitemapPage";
+import getSitemapPage from "@/data-access/user-info/getSitemapPage";
 import { LIMIT } from "@/const/sitemap";
 
 type Params = Promise<{ page: string }>;

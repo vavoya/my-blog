@@ -34,7 +34,7 @@ export default async function Header({blog, blogName, children}: HeaderProps) {
                 }
                 <div className={styles.option}>
                     {
-                        session?.registrationState == true ?
+                        (session?.isLogin && session?.registrationState) ?
                             <form
                                 action={async () => {
                                     "use server"

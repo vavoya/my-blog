@@ -3,7 +3,7 @@ import Image from "next/image";
 import React, {ReactNode} from "react";
 import {PostInfoResponse} from "@/lib/mongoDB/types/documents/postInfo.type";
 import {formatDate} from "@/utils/formatDate";
-import {AstRenderer} from "@/components/reactMarkdown/MarkdownRenderer";
+import {AstRenderer} from "@/components/react-markdown/MarkdownRenderer";
 import {RootBlockNode} from "md-ast-parser";
 
 
@@ -13,7 +13,7 @@ export const renderPost = (postInfo: PostInfoResponse): ReactNode => (
             {
                 /*
                 <ul className={styles.taglist}>
-                {postInfo.tag.map((tag, index) => (<li key={index}>{tag}</li>)) }
+                {posts.tag.map((tag, index) => (<li key={index}>{tag}</li>)) }
             </ul>
                  */
             }

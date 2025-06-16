@@ -5,7 +5,7 @@ import {MouseEventHandler, useEffect, useState} from "react";
 import Input from "@/app/register/_components/Input";
 import {validateRegister} from "@/validation/client/regist/validateRegist";
 import registBySession from "@/fetch/client/regist/registBySession";
-import ProcessingOverlay from "@/components/processingOverlay/ProcessingOverlay";
+import ProcessingOverlay from "@/components/processing-overlay/ProcessingOverlay";
 import styles from "./page.module.scss"
 import {BLOG_NAME_LIMIT, BLOG_URL_LIMIT, USER_NAME_LIMIT} from "@/const/user";
 import {useSession} from "next-auth/react";

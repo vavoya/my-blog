@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og'
-import getByBlogUrl from "@/fetch/server/userInfo/getByBlogUrl";
-import getByPostUrl from "@/fetch/server/postInfo/getByPostUrl";
+import getByBlogUrl from "@/fetch/server/users/getByBlogUrl";
+import getByPostUrl from "@/fetch/server/posts/getByPostUrl";
 import {Props} from "@/app/[blog]/[post]/page";
 
 // Image metadata
