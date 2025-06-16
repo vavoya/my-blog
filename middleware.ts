@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
+import {logRequestWithContext} from "@/lib/logger";
 
 const allowedOrigins = [
     'https://www.sim-log.com',
@@ -9,7 +10,7 @@ const allowedOrigins = [
 
 const corsOptions = {
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Headers': 'Content-DeleteByUserIdType, Authorization',
 }
 
 export default auth((request) => {
@@ -29,15 +30,25 @@ export default auth((request) => {
         return new Response(null, { status: 204, headers: preflightHeaders });
     }
 
-
-
     const url = request.nextUrl
     const { pathname } = url;
+
+    // 내부 API 호출 검증
+    const isInternalApi = pathname.startsWith('/api/server')
+    const isServerFetch = request.headers.get('x-internal-secret') === process.env.INTERNAL_API_SECRET
+    if (isInternalApi && !isServerFetch) {
+        logRequestWithContext(request, pathname, '접근이 허용되지 않은 내부 API입니다.');
+        return new Response("접근이 허용되지 않은 내부 API입니다.", { status: 403 })
+    }
+
+
+
+    // 리디렉션 파트
     const session = request.auth
 
     const isManagement = pathname.startsWith("/management")
     const isRegister = pathname === "/register"
-    const isLogin = pathname.startsWith("/login")
+    const isLogin = pathname.startsWith("/loginByAuthId")
 
     const needAuth = !session
     const needRegistration = !(session?.registrationState)
