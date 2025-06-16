@@ -1,5 +1,5 @@
 import styles from "@/app/management/_window/post/components/postContent.module.scss";
-import { MarkdownRenderer } from "@/components/reactMarkdown/MarkdownRenderer";
+import { MarkdownRenderer } from "@/components/react-markdown/MarkdownRenderer";
 
 
 

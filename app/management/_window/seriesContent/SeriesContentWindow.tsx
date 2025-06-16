@@ -6,8 +6,8 @@ import styles from "./seriesContentWindow.module.scss";
 import {SERIES_DESCRIPTION_LIMIT, SERIES_NAME_LIMIT, SERIES_POST_LIMIT} from "@/const/series";
 import React, {MouseEventHandler, ReactNode, useCallback, useEffect, useRef, useState} from "react";
 import {createPortal} from "react-dom";
-import Modal from "@/components/modal/managementFolderModal/Modal";
-import {PaginatedPostsResponse} from "@/models/post_info/types";
+import Modal from "@/components/modal/management-folder-modal/Modal";
+import {PaginatedPostsResponse} from "@/data-access/post-info/types";
 import {formatDate} from "@/utils/formatDate";
 import useRootMouseDownOutside from "@/hook/useRootMouseDownOutside";
 import ConfirmModal from "@/app/management/_window/folder/components/ConfirmModal";
@@ -196,7 +196,7 @@ function SeriesContentSection({folderObj, seriesId, seriesObj, userInfo}: Series
                     <div role='row' className={styles.hRow}>
                         <span role='columnheader' id='col-title' className={styles.col1}>순서</span>
                         <span role='columnheader' id='col-title' className={styles.col3}>포스트 제목</span>
-                        <span role='columnheader' id='col-path' className={styles.col3}>포스트 경로</span>
+                        <span role='columnheader' id='col-createQuery' className={styles.col3}>포스트 경로</span>
                         <span role='columnheader' id='col-created' className={styles.col2}>생성일시</span>
                         <span role='columnheader' id='col-updated' className={styles.col2}>수정일시</span>
                     </div>
@@ -267,7 +267,7 @@ function SeriesContentSection({folderObj, seriesId, seriesObj, userInfo}: Series
                                         <span role='cell' id='title' className={styles.col3}>
                                             {post.post_name}
                                         </span>
-                                        <span role='cell' id='path' className={styles.col3}>
+                                        <span role='cell' id='createQuery' className={styles.col3}>
                                             {buildFolderPath(folderObj[post.folder_id], folderObj)}
                                         </span>
                                         <span role='cell' id='created' className={styles.col2}>

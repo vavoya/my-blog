@@ -1,4 +1,4 @@
-import postBySession from "@/fetch/client/postInfo/postBySession";
+import postBySession from "@/fetch/client/posts/postBySession";
 import {AsyncTaskUnit, typedAsyncTaskUnit} from "@/utils/AsyncTaskManager";
 import { UserInfoResponse } from "@/lib/mongoDB/types/documents/userInfo.type";
 import {FolderObj} from "@/components/modal/utils/toObj";

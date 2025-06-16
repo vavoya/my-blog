@@ -1,4 +1,4 @@
-import deleteBySession from "@/fetch/client/postInfo/deleteBySession";
+import deleteBySession from "@/fetch/client/posts/deleteBySession";
 import {AsyncTaskUnit, typedAsyncTaskUnit} from "@/utils/AsyncTaskManager";
 import { UserInfoResponse } from "@/lib/mongoDB/types/documents/userInfo.type";
 import {FolderObj} from "@/components/modal/utils/toObj";

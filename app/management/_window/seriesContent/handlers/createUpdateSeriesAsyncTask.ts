@@ -1,4 +1,4 @@
-import patchBySession from "@/fetch/client/seriesInfo/patchBySession";
+import patchBySession from "@/fetch/client/series/patchBySession";
 import {AsyncTaskUnit, typedAsyncTaskUnit} from "@/utils/AsyncTaskManager";
 import { UserInfoResponse } from "@/lib/mongoDB/types/documents/userInfo.type";
 import {SeriesObj} from "@/components/modal/utils/toObj";

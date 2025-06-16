@@ -1,4 +1,4 @@
-import deleteBySession from "@/fetch/client/folderInfo/deleteBySession";
+import deleteBySession from "@/fetch/client/folders/deleteBySession";
 import {buildTrie, FolderTrie} from "@/app/management/_utils/buildTrie";
 import {AsyncTaskUnit, typedAsyncTaskUnit} from "@/utils/AsyncTaskManager";
 import { UserInfoResponse } from "@/lib/mongoDB/types/documents/userInfo.type";

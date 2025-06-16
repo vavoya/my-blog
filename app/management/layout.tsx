@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "@/app/[blog]/_component/Header";
-import getBySession from "@/fetch/server/userInfo/getBySession";
+import getBySession from "@/fetch/server/users/getBySession";
 import {redirect} from "next/navigation";
 
 

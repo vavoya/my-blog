@@ -84,9 +84,6 @@ export default function PostContent({postId, postName, postContent, onNextStep, 
                           maxLength={POST_CONTENT_LIMIT}
 
                           onChange={e => {
-                              e.target.value.split('').forEach(char => {
-                                  console.log(char.charCodeAt(0));
-                              })
                               setContent(e.target.value.replace(/\u00A0/g, ' '));
                           }}/>
             </div>

@@ -2,7 +2,7 @@ import {AsyncTaskUnit, typedAsyncTaskUnit} from "@/utils/AsyncTaskManager";
 import { UserInfoResponse } from "@/lib/mongoDB/types/documents/userInfo.type";
 import {SeriesObj} from "@/components/modal/utils/toObj";
 import {SeriesInfoResponse} from "@/lib/mongoDB/types/documents/seriesInfo.type";
-import postBySession from "@/fetch/client/seriesInfo/postBySession";
+import postBySession from "@/fetch/client/series/postBySession";
 
 type Params = {
     userId: UserInfoResponse['_id'];

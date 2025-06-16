@@ -2,7 +2,7 @@ import styles from "./postListWindow.module.scss"
 import {FolderInfoResponse} from "@/lib/mongoDB/types/documents/folderInfo.type";
 import {useEffect, useRef} from "react";
 import TableHeader from "@/app/management/_window/postList/components/TableHeader";
-import {PaginatedPostsResponse} from "@/models/post_info/types";
+import {PaginatedPostsResponse} from "@/data-access/post-info/types";
 import {LIMIT} from "@/const/page";
 import {usePaginatedPostsQuery} from "@/app/management/_queries/usePaginatedPostsQuery";
 import {useManagementStore} from "@/store/ManagementProvider";

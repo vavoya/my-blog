@@ -1,15 +1,15 @@
 'use server'
 
-import getUserInfoByUserId from "@/fetch/server/userInfo/getBySession";
-import getFolderInfoByUserId from "@/fetch/server/folderInfo/getByUserId";
-import getSeriesInfoByUserId from "@/fetch/server/seriesInfo/getByUserId";
+import getBySession from "@/fetch/server/users/getBySession";
+import getFolderInfoByUserId from "@/fetch/server/folders/getByUserId";
+import getSeriesInfoByUserId from "@/fetch/server/series/getByUserId";
 import {redirect} from "next/navigation";
 import Background from "@/app/management/_components/Background";
 
 export default async function Page() {
 
     // 유저 정보 가져오기
-    const userInfoResponse = await getUserInfoByUserId()
+    const userInfoResponse = await getBySession()
     // 로그인 페이지로 보내버려
     if (userInfoResponse.status !== 200) {
         return redirect(`/login?redirectTo=/management`);

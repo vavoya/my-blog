@@ -1,5 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
-import getByUserId from "@/fetch/client/aboutInfo/getByUserId";
+import getByUserId from "@/fetch/client/about/getByUserId";
 import {UserInfoResponse} from "@/lib/mongoDB/types/documents/userInfo.type";
 
 

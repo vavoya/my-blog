@@ -6,7 +6,6 @@ import {UserInfoResponse} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {MouseEventHandler, useCallback, useMemo, useState} from "react";
 import {toObj} from "@/components/modal/utils/toObj";
 import WindowProvider from "@/app/management/_window/provider/WindowProvider";
-import {WindowObj} from "@/app/management/_window/provider/types";
 import {WindowCommandBuilder, WindowCommands} from "@/app/management/_window/provider/utils/windowCommands";
 import FolderWindow from "@/app/management/_window/folder/FolderWindow";
 import styles from "./background.module.scss"
@@ -35,7 +34,6 @@ export default function Background({ userInfo, folderInfo, seriesInfo }: Backgro
     )
 }
 
-export type SetWindowsToAdd = (windowObjs: WindowObj[]) => void;
 export type SetWindows = (windowCommands: WindowCommands) => void;
 function BackgroundContent({ userInfo, folderInfo, seriesInfo }: BackgroundProps) {
     const folderObj = toObj(folderInfo);

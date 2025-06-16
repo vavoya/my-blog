@@ -1,4 +1,4 @@
-import patchBySession from "@/fetch/client/folderInfo/patchBySession";
+import patchBySession from "@/fetch/client/folders/patchBySession";
 import {buildTrie, FolderTrie} from "@/app/management/_utils/buildTrie";
 import {AsyncTaskUnit, typedAsyncTaskUnit} from "@/utils/AsyncTaskManager";
 import { UserInfoResponse } from "@/lib/mongoDB/types/documents/userInfo.type";

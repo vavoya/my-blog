@@ -1,5 +1,5 @@
 import PostContent from "@/app/management/_window/post/components/PostContent";
-import {PaginatedPostsResponse} from "@/models/post_info/types";
+import {PaginatedPostsResponse} from "@/data-access/post-info/types";
 import {usePostQuery} from "@/app/management/_queries/usePostQuery";
 import LoadingPost from "@/app/management/_window/post/components/LoadingPost";
 import {useEffect, useState} from "react";
