@@ -23,4 +23,4 @@ export function isShape<T extends object>(obj: any, shape: T): obj is T {
     }
 
     return true;
-};
+}

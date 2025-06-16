@@ -15,4 +15,4 @@ export function getAddedAndRemovedObjectIds<T extends ObjectIdLike>(
     const remove = prev.filter(id => !nextSet.has(toStr(id)));
 
     return { add, remove };
-};
+}
