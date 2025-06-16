@@ -1,4 +1,4 @@
-import {NextRequest, NextResponse} from "next/server";
+import {NextResponse} from "next/server";
 import { response } from "@/app/api/_utils/createResponse";
 import {jsonResponse} from "@/app/api/client/jsonResponse";
 import {checkAuth} from "@/app/api/_utils/checkAuth";
@@ -7,6 +7,7 @@ import {ResBodyType} from "@/app/api/client/me/series/type";
 import {revalidateTag} from "next/cache";
 import postByUserId from "@/services/server/series/postByUserId";
 import {validateSeries} from "@/validation/server/series/validateSeries";
+import {auth} from "@/auth";
 
 /**
  * POST /api/client/series/by-session
@@ -32,8 +33,8 @@ import {validateSeries} from "@/validation/server/series/validateSeries";
  *   "lastModified": "2024-05-29T00:00:00.000Z" // ISO8601 문자열, 필수
  * }
  */
-export async function POST(req: NextRequest): Promise<NextResponse<ResBodyType>> {
-    const authResult = await checkAuth();
+export const POST =  auth(async function POST(req): Promise<NextResponse<ResBodyType>> {
+    const authResult = await checkAuth(req);
 
     // authResult가 string이면 userId, 아니면 바로 응답 객체
     if (typeof authResult !== 'string') {
@@ -84,4 +85,4 @@ export async function POST(req: NextRequest): Promise<NextResponse<ResBodyType>>
         console.error(e);
         return jsonResponse(response.error('서버 오류: 포스트 정보를 처리하는 중 문제가 발생했습니다.'));
     }
-}
+})

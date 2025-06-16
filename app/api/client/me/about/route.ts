@@ -1,4 +1,4 @@
-import {NextRequest, NextResponse} from "next/server";
+import {NextResponse} from "next/server";
 import { response } from "@/app/api/_utils/createResponse";
 import {jsonResponse} from "@/app/api/client/jsonResponse";
 import {checkAuth} from "@/app/api/_utils/checkAuth";
@@ -7,6 +7,7 @@ import {ResBodyType} from "@/app/api/client/me/about/type";
 import patchByUserId from "@/services/server/about/patchByUserId";
 import {validateUpdateAbout} from "@/validation/server/about/validateUpdateAbout";
 import {revalidateTag} from "next/cache";
+import {auth} from "@/auth";
 
 /**
  * PATCH /api/client/about/by-session
@@ -37,8 +38,8 @@ import {revalidateTag} from "next/cache";
  * }
  */
 
-export async function PATCH(req: NextRequest): Promise<NextResponse<ResBodyType>> {
-    const authResult = await checkAuth();
+export const PATCH = auth(async function PATCH(req): Promise<NextResponse<ResBodyType>> {
+    const authResult = await checkAuth(req);
 
     // authResult가 string이면 userId, 아니면 바로 응답 객체
     if (typeof authResult !== 'string') {
@@ -86,4 +87,4 @@ export async function PATCH(req: NextRequest): Promise<NextResponse<ResBodyType>
         console.error(e);
         return jsonResponse(response.error('서버 오류: 포스트 정보를 처리하는 중 문제가 발생했습니다.'));
     }
-}
+})

@@ -3,6 +3,7 @@ import {response} from "@/app/api/_utils/createResponse";
 import {jsonResponse} from "@/app/api/server/jsonResponse";
 import {ObjectId} from "mongodb";
 import {checkAuth} from "@/app/api/_utils/checkAuth";
+import {auth} from "@/auth";
 
 /**
  * GET /api/server/users/by-userid
@@ -16,8 +17,8 @@ import {checkAuth} from "@/app/api/_utils/checkAuth";
  * - 404 Not Found: 사용자 정보를 찾을 수 없음
  * - 500 Internal Server Error: 서버 내부 오류
  */
-export async function GET(): Promise<Response> {
-    const authResult = await checkAuth();
+export const GET = auth(async function GET(req): Promise<Response> {
+    const authResult = await checkAuth(req);
 
     // authResult가 string이면 userId, 아니면 바로 응답 객체
     if (typeof authResult !== 'string') {
@@ -35,4 +36,4 @@ export async function GET(): Promise<Response> {
 
         return jsonResponse(response.error('서버 오류: 유저 정보를 불러오는 중 문제가 발생했습니다.'));
     }
-}
+})

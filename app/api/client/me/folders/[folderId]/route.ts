@@ -1,4 +1,4 @@
-import {NextRequest, NextResponse} from "next/server";
+import {NextResponse} from "next/server";
 import { response } from "@/app/api/_utils/createResponse";
 import {jsonResponse} from "@/app/api/client/jsonResponse";
 import {checkAuth} from "@/app/api/_utils/checkAuth";
@@ -13,6 +13,7 @@ import moveByUserId from "@/services/server/folder/moveByUserId";
 import {validateMoveFolder} from "@/validation/server/folder/validateMoveFolder"
 import {validateRenameFolder} from "@/validation/server/folder/validateRenameFolder"
 import {revalidateTag} from "next/cache";
+import {auth} from "@/auth";
 
 /**
  * PATCH /api/client/posts/by-session/[seriesId]
@@ -57,8 +58,8 @@ import {revalidateTag} from "next/cache";
  *     "lastModified": "2024-05-28T01:23:45.678Z"
  *   }
  */
-export async function PATCH(req: NextRequest, { params }: { params: Promise<{ folderId: string }> }): Promise<NextResponse<PatchResBodyType>> {
-    const authResult = await checkAuth();
+export const PATCH = auth(async function PATCH(req, { params }: { params: Promise<{ folderId: string }> }): Promise<NextResponse<PatchResBodyType>> {
+    const authResult = await checkAuth(req);
 
     // authResult가 string이면 userId, 아니면 바로 응답 객체
     if (typeof authResult !== 'string') {
@@ -124,7 +125,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ fo
         console.error(e);
         return jsonResponse(response.error('서버 오류: 포스트 정보를 처리하는 중 문제가 발생했습니다.'));
     }
-}
+})
 
 
 
@@ -164,8 +165,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ fo
  *     "lastModified": "2024-05-28T01:23:45.678Z"
  *   }
  */
-export async function DELETE(req: NextRequest, { params }: { params: Promise<{ folderId: string }> }): Promise<NextResponse<DeleteResBodyType>> {
-    const authResult = await checkAuth();
+export const DELETE = auth(async function DELETE(req, { params }: { params: Promise<{ folderId: string }> }): Promise<NextResponse<DeleteResBodyType>> {
+    const authResult = await checkAuth(req);
 
     // authResult가 string이면 userId, 아니면 바로 응답 객체
     if (typeof authResult !== 'string') {
@@ -221,4 +222,4 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ f
         console.error(e);
         return jsonResponse(response.error('서버 오류: 포스트 정보를 처리하는 중 문제가 발생했습니다.'));
     }
-}
+})

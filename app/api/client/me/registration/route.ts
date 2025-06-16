@@ -1,4 +1,4 @@
-import {NextRequest, NextResponse} from "next/server";
+import {NextResponse} from "next/server";
 import { response } from "@/app/api/_utils/createResponse";
 import {jsonResponse} from "@/app/api/client/jsonResponse";
 import {ResBodyType} from "@/app/api/client/me/registration/type";
@@ -39,15 +39,8 @@ import {revalidateTag} from "next/cache";
  *   2. 요청 바디 유효성 검사 → 실패 시 400
  *   3. createByAuthId() 호출 → 상황별 오류 분기 및 메시지 전송
  */
-export async function POST(req: NextRequest): Promise<NextResponse<ResBodyType>> {
-    /*
-    if (req) {}
-    return jsonResponse(response.forbidden("회원가입은 현재 비활성화되어 있습니다."))
-
-     */
-
-
-    const session = await auth()
+export const POST = auth(async function POST(req): Promise<NextResponse<ResBodyType>> {
+    const session = req.auth;
 
     if (!session) {
         return jsonResponse(response.unauthorized('인증 오류1: 인증 정보가 없습니다.'));
@@ -88,4 +81,4 @@ export async function POST(req: NextRequest): Promise<NextResponse<ResBodyType>>
         return jsonResponse(response.error('서버 오류: 포스트 정보를 처리하는 중 문제가 발생했습니다.'));
     }
 
-}
+})

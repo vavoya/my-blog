@@ -1,10 +1,10 @@
-import {auth} from "@/auth";
 import {jsonResponse} from "@/app/api/client/jsonResponse";
 import {response} from "@/app/api/_utils/createResponse";
+import {NextAuthRequest} from "next-auth";
 
 // 401
-export const checkAuth = async () => {
-    const session = await auth()
+export const checkAuth = async (req: NextAuthRequest) => {
+    const session = req.auth;
 
     // 세션이 없거나
     // 유저 정보가 없거나
