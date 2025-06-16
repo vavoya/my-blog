@@ -10,8 +10,12 @@ export default async function updateNextPostIdAndLastModified(userId: UserInfoDo
             last_modified: lastModified,
         },
         {
-            $inc: { next_post_id: 1 },
-            $set: { last_modified: new Date() }
+            $inc: {
+                next_post_id: 1
+            },
+            $set: {
+                last_modified: new Date()
+            }
         },
         { returnDocument: 'after', session: session }
     );

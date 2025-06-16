@@ -4,12 +4,12 @@ import {PostInfoDocument} from "@/lib/mongoDB/types/documents/postInfo.type";
 import {COLLECTION_POST, DB} from "@/lib/mongoDB/const";
 
 
-export default async function getPostByPostId(user_id: UserInfoDocument['_id'], post_id: PostInfoDocument['_id']): Promise<PostInfoDocument | null> {
+export default async function getPostByPostUrl(userId: UserInfoDocument['_id'], postUrl: PostInfoDocument['post_url']): Promise<PostInfoDocument | null> {
     const coll = client.db(DB).collection<PostInfoDocument>(COLLECTION_POST);
 
     const filter = {
-        'user_id': user_id,
-        '_id': post_id,
+        user_id: userId,
+        post_url: postUrl,
     };
 
     return coll.findOne(filter);

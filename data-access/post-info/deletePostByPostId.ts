@@ -5,15 +5,13 @@ import {COLLECTION_POST, DB} from "@/lib/mongoDB/const";
 import {ClientSession} from "mongodb";
 
 
-export default async function replacePostByPostId(user_id: UserInfoDocument['_id'], post_id: PostInfoDocument['_id'], postDocument: PostInfoDocument, session?: ClientSession) {
+export default async function deletePostByPostId(userId: UserInfoDocument['_id'], postId: PostInfoDocument['_id'], session?: ClientSession) {
     const coll = client.db(DB).collection<PostInfoDocument>(COLLECTION_POST);
-    return await coll.replaceOne(
-        {
-            user_id: user_id,
-            _id: post_id,
-        },
-        postDocument,
-        {
-            session: session
-        });
+
+    const filter = {
+        user_id: userId,
+        _id: postId,
+    };
+
+    return coll.findOneAndDelete(filter, { session: session });
 }

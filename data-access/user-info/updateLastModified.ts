@@ -10,7 +10,9 @@ export default async function updateLastModified(userId: UserInfoDocument['_id']
             last_modified: lastModified,
         },
         {
-            $set: { last_modified: new Date() }
+            $set: {
+                last_modified: new Date()
+            }
         },
         { returnDocument: 'after', session: session }
     );

@@ -1,19 +1,22 @@
 import {FolderInfoDocument} from "@/lib/mongoDB/types/documents/folderInfo.type";
 import {PostInfoDocument} from "@/lib/mongoDB/types/documents/postInfo.type";
 import {client} from "@/lib/mongoDB/mongoClient";
-import {PageNumberResult} from "@/models/pagination/pageNum/type";
+import {PageNumberResult} from "@/data-access/pagination/page-num/type";
 import {LIMIT} from "@/const/page";
 import {UserInfoDocument} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {COLLECTION_POST, DB} from "@/lib/mongoDB/const";
 
 
-export default async function getByFolderId(user_id: UserInfoDocument['_id'], folder_id: FolderInfoDocument['_id'], post_id: PostInfoDocument['_id']): Promise<PageNumberResult | undefined> {
+export default async function getByFolderId(
+    userId: UserInfoDocument['_id'],
+    folderId: FolderInfoDocument['_id'],
+    postId: PostInfoDocument['_id']): Promise<PageNumberResult | undefined> {
 
     const pipeLine = [
         {
             $match: {
-                user_id,
-                folder_id
+                user_id: userId,
+                folder_id: folderId,
             }
         },
         {
@@ -25,7 +28,7 @@ export default async function getByFolderId(user_id: UserInfoDocument['_id'], fo
         },
         {
             $match: {
-                _id: post_id
+                _id: postId
             }
         },
         {

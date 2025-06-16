@@ -2,10 +2,10 @@ import {client} from "@/lib/mongoDB/mongoClient";
 import {COLLECTION_POST, DB} from "@/lib/mongoDB/const";
 import {LIMIT} from "@/const/sitemap";
 import {PostInfoDocument} from "@/lib/mongoDB/types/documents/postInfo.type";
-import {SitemapPage} from "@/models/post_info/types";
+import {SitemapPage} from "@/data-access/post-info/types";
 import {UserInfoDocument} from "@/lib/mongoDB/types/documents/userInfo.type";
 
-export default async function getSitemapPage(userId: UserInfoDocument['_id'], page: number) {
+export default async function getSitemapPage(userId: UserInfoDocument['_id'], pageNumber: number) {
     const coll = client.db(DB).collection<PostInfoDocument>(COLLECTION_POST);
 
     const filter = {
@@ -19,7 +19,7 @@ export default async function getSitemapPage(userId: UserInfoDocument['_id'], pa
         post_updatedAt: -1 as const,
     }
 
-    const skip = LIMIT * (page - 1);
+    const skip = LIMIT * (pageNumber - 1);
     const limit = LIMIT;
 
 
