@@ -1,6 +1,6 @@
 import {useQuery} from "@tanstack/react-query";
 import {FolderInfoResponse} from "@/lib/mongoDB/types/documents/folderInfo.type";
-import getByFolderId from "@/fetch/client/paginatedPost/getByFolderId";
+import getByFolderId from "@/fetch/client/paginated-post/getByFolderId";
 import {UserInfoResponse} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {QueryClient} from "@tanstack/query-core";
 

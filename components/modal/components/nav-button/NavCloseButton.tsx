@@ -1,4 +1,4 @@
-import styles from "@/components/modal/components/navButton/navButton.module.scss";
+import styles from "@/components/modal/components/nav-button/navButton.module.scss";
 import {MouseEventHandler} from "react";
 import SvgPrev from "@/components/svg/Prev";
 

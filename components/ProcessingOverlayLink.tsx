@@ -4,7 +4,7 @@ import Link, {LinkProps} from "next/link";
 import {AnchorHTMLAttributes, RefObject, useEffect, useRef, useState} from "react";
 import {usePathname} from "next/navigation";
 import {createPortal} from "react-dom";
-import ProcessingOverlay from "@/components/processingOverlay/ProcessingOverlay";
+import ProcessingOverlay from "@/components/processing-overlay/ProcessingOverlay";
 
 
 type Props = LinkProps & AnchorHTMLAttributes<HTMLAnchorElement> & {

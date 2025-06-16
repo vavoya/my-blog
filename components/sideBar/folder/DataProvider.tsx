@@ -3,10 +3,10 @@ import React from "react";
 import {NavButton} from "@/components/sideBar/folder/NavButton";
 import {UserInfoResponse} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {Url} from "@/components/sideBar/types";
-import getByUserId from "@/fetch/server/folderInfo/getByUserId";
-import getByPostUrl from "@/fetch/server/postInfo/getByPostUrl";
+import getByUserId from "@/fetch/server/folders/getByUserId";
+import getByPostUrl from "@/fetch/server/posts/getByPostUrl";
 import FallBackButton from "@/components/sideBar/folder/FallBackNavButton";
-import getByFolderId from "@/fetch/server/pagenum/getByFolderId";
+import getByFolderId from "@/fetch/server/page-number/getByFolderId";
 
 
 export default async function DataProvider({url, userId}: {
@@ -19,11 +19,11 @@ export default async function DataProvider({url, userId}: {
 
     try {
         const folderRes = await getByUserId(userId);
-        if (folderRes.status !== 200) throw new Error('folder fetch failed');
+        if (folderRes.status !== 200) throw new Error('folders fetch failed');
         folderInfo = folderRes.data;
 
         folderId = folderRes.data.find(({ pfolder_id }) => !pfolder_id)?._id;
-        if (!folderId) throw new Error('no root folder found');
+        if (!folderId) throw new Error('no root folders found');
 
         // 여기부터는 에러 처리할 필요가 없다.
         // 디폴트 값을 쓰면 되기 때문에

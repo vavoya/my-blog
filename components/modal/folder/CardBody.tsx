@@ -1,6 +1,6 @@
 import styles from "@/components/modal/components/modal.module.scss";
 import {Url} from "@/components/sideBar/types";
-import {PaginatedPostsResponse} from "@/models/post_info/types";
+import {PaginatedPostsResponse} from "@/data-access/post-info/types";
 import CardItem from "@/components/modal/components/CardItem";
 
 type CardBodyProps = {

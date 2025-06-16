@@ -1,5 +1,5 @@
 import {ListBlockNode} from "md-ast-parser";
-import {renderBlockNode} from "@/components/reactMarkdown/blockNode/renderBlockNode";
+import {renderBlockNode} from "@/components/react-markdown/block-node/renderBlockNode";
 
 
 type ListBlockProps = {

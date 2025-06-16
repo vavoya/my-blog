@@ -4,11 +4,11 @@ import Pagination from "@/components/modal/components/Pagination";
 import PaginationSearch from "@/components/modal/components/PaginationSearch";
 import {UserInfoResponse} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {FolderInfoResponse} from "@/lib/mongoDB/types/documents/folderInfo.type";
-import {PageNumberResult} from "@/models/pagination/pageNum/type";
+import {PageNumberResult} from "@/data-access/pagination/page-num/type";
 import {FolderObj} from "@/components/modal/utils/toObj";
 import {usePaginatedPostsQuery} from "@/components/modal/_queries/usePaginatedPostsQuery";
-import CardBody from "@/components/modal/managementFolderModal/CardBody";
-import {PaginatedPostsResponse} from "@/models/post_info/types";
+import CardBody from "@/components/modal/management-folder-modal/CardBody";
+import {PaginatedPostsResponse} from "@/data-access/post-info/types";
 import {SeriesInfoResponse} from "@/lib/mongoDB/types/documents/seriesInfo.type";
 
 type CardSectionProps = {

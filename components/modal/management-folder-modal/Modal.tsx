@@ -8,10 +8,10 @@ import {UserInfoResponse} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {FolderInfoResponse} from "@/lib/mongoDB/types/documents/folderInfo.type";
 import NavHeader from "@/components/modal/folder/NavHeader";
 import NavBody from "@/components/modal/folder/NavBody";
-import CardSection from "@/components/modal/managementFolderModal/CardSection";
+import CardSection from "@/components/modal/management-folder-modal/CardSection";
 import {FolderObj} from "@/components/modal/utils/toObj";
 import {buildFolderPathIds} from "@/utils/buildFolderPathIds";
-import {PaginatedPostsResponse} from "@/models/post_info/types";
+import {PaginatedPostsResponse} from "@/data-access/post-info/types";
 import {SeriesInfoResponse} from "@/lib/mongoDB/types/documents/seriesInfo.type";
 import {useQueryClient} from "@tanstack/react-query";
 

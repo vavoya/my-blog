@@ -1,6 +1,6 @@
 import styles from "@/components/modal/components/modal.module.scss";
-import {PaginatedPostsResponse} from "@/models/post_info/types";
-import CardItem from "@/components/modal/managementFolderModal/CardItem";
+import {PaginatedPostsResponse} from "@/data-access/post-info/types";
+import CardItem from "@/components/modal/management-folder-modal/CardItem";
 import {SeriesInfoResponse} from "@/lib/mongoDB/types/documents/seriesInfo.type";
 
 type CardBodyProps = {

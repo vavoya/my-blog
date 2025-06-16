@@ -4,7 +4,7 @@ import Image from "next/image";
 import MoveBackgroundAnimation from "@/components/modal/components/MoveBackgroundAnimation";
 import {useEffect, useRef, useState} from "react";
 import {formatDate} from "@/utils/formatDate";
-import {PaginatedPostsResponse} from "@/models/post_info/types";
+import {PaginatedPostsResponse} from "@/data-access/post-info/types";
 import {SeriesInfoResponse} from "@/lib/mongoDB/types/documents/seriesInfo.type";
 
 type CardItemProps = {

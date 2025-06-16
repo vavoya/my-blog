@@ -6,7 +6,7 @@ import ModalLayout from "@/components/modal/components/ModalLayout";
 // types
 import {UserInfoResponse} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {Url} from "@/components/sideBar/types";
-import {PageNumberResult} from "@/models/pagination/pageNum/type";
+import {PageNumberResult} from "@/data-access/pagination/page-num/type";
 import {FolderInfoResponse} from "@/lib/mongoDB/types/documents/folderInfo.type";
 import NavHeader from "@/components/modal/folder/NavHeader";
 import NavBody from "@/components/modal/folder/NavBody";

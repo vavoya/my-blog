@@ -1,8 +1,8 @@
 import styles from "@/components/modal/components/modal.module.scss";
 import SvgClose from "@/components/svg/Close";
 import React, {ReactElement, useEffect, useState} from "react";
-import NavOpenButton from "@/components/modal/components/navButton/NavOpenButton";
-import NavCloseButton from "@/components/modal/components/navButton/NavCloseButton";
+import NavOpenButton from "@/components/modal/components/nav-button/NavOpenButton";
+import NavCloseButton from "@/components/modal/components/nav-button/NavCloseButton";
 import {QueryClientProvider} from "@tanstack/react-query";
 import {QueryClient} from "@tanstack/query-core";
 

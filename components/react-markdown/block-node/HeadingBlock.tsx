@@ -1,5 +1,5 @@
 import {HeadingBlockNode} from "md-ast-parser";
-import InlineNodes from "@/components/reactMarkdown/inlineNode/InlineNode";
+import InlineNodes from "@/components/react-markdown/inline-node/InlineNode";
 import ReactPlayer from "react-player/lazy";
 import ClientOnly from "@/components/ClientOnly";
 

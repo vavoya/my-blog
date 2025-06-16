@@ -5,7 +5,7 @@ import PaginationSearch from "@/components/modal/components/PaginationSearch";
 import CardBody from "@/components/modal/series/CardBody";
 import {UserInfoResponse} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {Url} from "@/components/sideBar/types";
-import {PageNumberResult} from "@/models/pagination/pageNum/type";
+import {PageNumberResult} from "@/data-access/pagination/page-num/type";
 import {FolderObj, SeriesObj} from "@/components/modal/utils/toObj";
 import {SeriesInfoResponse} from "@/lib/mongoDB/types/documents/seriesInfo.type";
 import {LIMIT} from "@/const/page";

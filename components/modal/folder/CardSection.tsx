@@ -6,7 +6,7 @@ import CardBody from "@/components/modal/folder/CardBody";
 import {UserInfoResponse} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {Url} from "@/components/sideBar/types";
 import {FolderInfoResponse} from "@/lib/mongoDB/types/documents/folderInfo.type";
-import {PageNumberResult} from "@/models/pagination/pageNum/type";
+import {PageNumberResult} from "@/data-access/pagination/page-num/type";
 import {FolderObj} from "@/components/modal/utils/toObj";
 import {usePaginatedPostsQuery} from "@/components/modal/_queries/usePaginatedPostsQuery";
 

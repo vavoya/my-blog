@@ -3,9 +3,9 @@ import React from "react";
 import {NavButton} from "@/components/sideBar/series/NavButton";
 import {UserInfoResponse} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {Url} from "@/components/sideBar/types";
-import seriesInfoGetByUserId from "@/fetch/server/seriesInfo/getByUserId";
-import folderInfoGetByUserId from "@/fetch/server/folderInfo/getByUserId";
-import getByPostUrl from "@/fetch/server/postInfo/getByPostUrl";
+import seriesInfoGetByUserId from "@/fetch/server/series/getByUserId";
+import folderInfoGetByUserId from "@/fetch/server/folders/getByUserId";
+import getByPostUrl from "@/fetch/server/posts/getByPostUrl";
 import FallBackButton from "@/components/sideBar/folder/FallBackNavButton";
 import {LIMIT} from "@/const/page";
 import {SeriesInfoResponse} from "@/lib/mongoDB/types/documents/seriesInfo.type";
@@ -23,7 +23,7 @@ export default async function DataProvider({url, userId}: {
 
     try {
         const folderRes = await folderInfoGetByUserId(userId);
-        if (folderRes.status !== 200) throw new Error('folder fetch failed');
+        if (folderRes.status !== 200) throw new Error('folders fetch failed');
         folderInfo = folderRes.data;
 
         const seriesRes = await seriesInfoGetByUserId(userId);

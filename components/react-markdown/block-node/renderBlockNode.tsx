@@ -1,10 +1,10 @@
 import {BlockNode} from "md-ast-parser";
-import HeadingBlock from "@/components/reactMarkdown/blockNode/HeadingBlock";
-import ParagraphBlock from "@/components/reactMarkdown/blockNode/ParagraphBlock";
-import BlockquoteBlock from "@/components/reactMarkdown/blockNode/BlockquoteBlock";
-import ThematicBreakBlock from "@/components/reactMarkdown/blockNode/ThematicBreakBlock";
-import CodeBlock from "@/components/reactMarkdown/blockNode/CodeBlock";
-import ListBlock from "@/components/reactMarkdown/blockNode/ListBlock";
+import HeadingBlock from "@/components/react-markdown/block-node/HeadingBlock";
+import ParagraphBlock from "@/components/react-markdown/block-node/ParagraphBlock";
+import BlockquoteBlock from "@/components/react-markdown/block-node/BlockquoteBlock";
+import ThematicBreakBlock from "@/components/react-markdown/block-node/ThematicBreakBlock";
+import CodeBlock from "@/components/react-markdown/block-node/CodeBlock";
+import ListBlock from "@/components/react-markdown/block-node/ListBlock";
 
 
 

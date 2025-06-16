@@ -6,7 +6,7 @@ import {createPortal} from "react-dom";
 import {IconLabel} from "@/components/sideBar/folder/IconLabel";
 import {UserInfoResponse} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {Url} from "@/components/sideBar/types";
-import {PageNumberResult} from "@/models/pagination/pageNum/type";
+import {PageNumberResult} from "@/data-access/pagination/page-num/type";
 import {FolderInfoResponse} from "@/lib/mongoDB/types/documents/folderInfo.type";
 import Modal from "@/components/modal/folder/Modal";
 

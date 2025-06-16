@@ -8,7 +8,7 @@ import ProcessingOverlayLink from "@/components/ProcessingOverlayLink";
 export default async function SettingNavButton() {
     const session = await auth();
 
-    if (session?.userId) {
+    if (session?.isLogin && session?.userId) {
         return (
             <ProcessingOverlayLink href={'/management'}
                   className={styles.settingButton}>
