@@ -1,7 +1,7 @@
 import {UserInfoDocument, UserInfoResponse} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {ClientSession} from "mongodb";
-import updateLastModified from "@/models/user_info/updateLastModified";
-import getUserInfoByUserId from "@/models/user_info/getUserInfoByUserId";
+import updateLastModified from "@/data-access/user-info/updateLastModified";
+import getUserInfoByUserId from "@/data-access/user-info/getUserInfoByUserId";
 
 
 

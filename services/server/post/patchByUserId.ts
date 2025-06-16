@@ -1,11 +1,11 @@
 import {client} from "@/lib/mongoDB/mongoClient";
 import {ObjectId} from "mongodb";
 import {UserInfoDocument} from "@/lib/mongoDB/types/documents/userInfo.type";
-import findOneAndUpdatePostCount from "@/models/folder_info/findOneAndUpdatePostCount";
+import findOneAndUpdatePostCount from "@/data-access/folder-info/findOneAndUpdatePostCount";
 import {parseBlocks, shikiPromise} from "md-ast-parser";
-import getPostByPostId from "@/models/post_info/getPostByPostId";
-import {PatchInput} from "@/services/server/post/patchByUserId/type";
-import findOneAndUpdateByPostId from "@/models/post_info/findOneAndUpdateByPostId";
+import getPostByPostId from "@/data-access/post-info/getPostByPostId";
+import {PatchInput} from "@/services/server/post/patchByUserId.type";
+import findOneAndUpdateByPostId from "@/data-access/post-info/findOneAndUpdateByPostId";
 import {checkLastModified} from "@/services/server/checkLastModified";
 
 
@@ -69,6 +69,10 @@ export default async function patchByUserId({lastModified, ...post}: PatchInput 
             post_name: post.postName,
             post_updatedAt: new Date(),
             thumb_url: post.thumbUrl,
+            ad_review: {
+                ...oldPost.ad_review,
+                reviewed: false,
+            }
         };
 
         const result = await findOneAndUpdateByPostId(userIdObjId, postIdObjId, updateFields, session)

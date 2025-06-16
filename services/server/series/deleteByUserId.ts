@@ -1,24 +1,24 @@
 import {client} from "@/lib/mongoDB/mongoClient";
 import {ObjectId} from "mongodb";
 import {UserInfoDocument} from "@/lib/mongoDB/types/documents/userInfo.type";
-import findOneAndUpdatePostCount from "@/models/folder_info/findOneAndUpdatePostCount";
-import deletePostByPostId from "@/models/post_info/deletePostByPostId";
-import {Type} from "@/services/server/post/deleteByUserId/type";
+import {DeleteByUserIdType} from "@/services/server/series/deleteByUserId.type";
 import {checkLastModified} from "@/services/server/checkLastModified";
-import removePosts from "@/models/series_info/removePosts";
+import deleteSeries from "@/data-access/series-info/deleteSeries";
+import updateManyByPostIds from "@/data-access/post-info/updateManyByPostIds";
 
 export type DeleteByUserIdResult =
     | { success: true; data: {lastModified: UserInfoDocument['last_modified']}}
     | { success: false; error: "LastModifiedMismatch"; message: string }
     | { success: false; error: "UserNotFound"; message: string }
-    | { success: false; error: "FolderNotFound"; message: string }
     | { success: false; error: "DeleteFailed"; message: string }
+    | { success: false; error: "UpdatePostFailed"; message: string }
     | { success: false; error: "TransactionError"; message: string; stack?: string };
-export default async function deleteByUserId({lastModified, ...post}: Type & { lastModified: string }): Promise<DeleteByUserIdResult> {
+export default async function deleteByUserId({lastModified, ...post}: DeleteByUserIdType & { lastModified: string }): Promise<DeleteByUserIdResult> {
     const session = client.startSession()
 
     session.startTransaction();
 
+    const seriesIdObjId = new ObjectId(post.seriesId);
     const userIdObjId = new ObjectId(post.userId)
 
     try {
@@ -30,46 +30,29 @@ export default async function deleteByUserId({lastModified, ...post}: Type & { l
         }
         const newLastModified = checkedResult.lastModified;
 
-
-
-        // 포스트 찾고 삭제
-        const deletedPost = await deletePostByPostId(userIdObjId, new ObjectId(post.postId), session);
-        if (!deletedPost) {
-            // 포스트 정보 못찾음
+        // 1. 시리즈 찾고 삭제
+        const deletedSeries = await deleteSeries(userIdObjId, seriesIdObjId, session);
+        if (!deletedSeries) {
+            // 시리즈 정보 못찾음
             await session.abortTransaction();
             return {
                 success: false,
                 error: "DeleteFailed",
-                message: "포스트 정보를 찾을 수 없습니다."
+                message: "시리즈 삭제를 실패했습니다."
             }
         }
 
-        // 포스트가 series_id가 있으면 series_id에 포스트 삭제
-        if (deletedPost.series_id) {
-            const { acknowledged } = await removePosts(userIdObjId, deletedPost.series_id, [deletedPost._id], session)
-            if (!acknowledged) {
-                // 시리즈 정보 갱신 실패
-                await session.abortTransaction();
-                return {
-                    success: false,
-                    error: "DeleteFailed",
-                    message: "시리즈 정보 갱신에 실패했습니다."
-                }
-            }
-        }
-
-
-        // folderId 찾고 count 업데이트
-        const updatedPrevFolderInfo = await findOneAndUpdatePostCount(userIdObjId, new ObjectId(post.folderId), -1);
-        if (!updatedPrevFolderInfo) {
-            // 폴더 정보 못찾음
+        // 시리즈가 포스트가 있으면  포스트들의 series_id를 null로 변경
+        const { acknowledged } = await updateManyByPostIds(userIdObjId, deletedSeries.post_list, {series_id: null}, session)
+        if (!acknowledged) {
             await session.abortTransaction();
             return {
                 success: false,
-                error: "FolderNotFound",
-                message: "폴더 정보를 찾을 수 없습니다."
+                error: "UpdatePostFailed",
+                message: "포스트 정보 갱신에 실패했습니다."
             }
         }
+
 
         await session.commitTransaction();
         return {

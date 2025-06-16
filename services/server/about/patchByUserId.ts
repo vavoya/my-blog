@@ -2,8 +2,8 @@ import {client} from "@/lib/mongoDB/mongoClient";
 import {ObjectId} from "mongodb";
 import {UserInfoDocument} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {parseBlocks, shikiPromise} from "md-ast-parser";
-import {PatchInput} from "@/services/server/about/patchByUserId/type";
-import findOneAboutInfoByUserId from "@/models/about_info/findOneAndUpdateAboutInfoByUserId";
+import {PatchInput} from "@/services/server/about/patchByUserId.type";
+import findOneAboutInfoByUserId from "@/data-access/about-info/findOneAndUpdateAboutInfoByUserId";
 import {checkLastModified} from "@/services/server/checkLastModified";
 
 

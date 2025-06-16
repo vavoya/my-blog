@@ -1,28 +1,31 @@
 import {client} from "@/lib/mongoDB/mongoClient";
 import {ObjectId} from "mongodb";
 import {UserInfoDocument} from "@/lib/mongoDB/types/documents/userInfo.type";
-import {Type} from "@/services/server/series/deleteByUserId/type";
+import {MoveInput} from "@/services/server/folder/moveByUserId.type";
+import findOneAndUpdateByFolderId from "@/data-access/folder-info/findOneAndUpdateByFolderId";
 import {checkLastModified} from "@/services/server/checkLastModified";
-import deleteSeries from "@/models/series_info/deleteSeries";
-import updateManyByPostIds from "@/models/post_info/updateManyByPostIds";
 
-export type DeleteByUserIdResult =
+
+export type PostByUserIdResult =
     | { success: true; data: {lastModified: UserInfoDocument['last_modified']}}
     | { success: false; error: "LastModifiedMismatch"; message: string }
     | { success: false; error: "UserNotFound"; message: string }
-    | { success: false; error: "DeleteFailed"; message: string }
-    | { success: false; error: "UpdatePostFailed"; message: string }
+    | { success: false; error: "UpdateFailed"; message: string }
     | { success: false; error: "TransactionError"; message: string; stack?: string };
-export default async function deleteByUserId({lastModified, ...post}: Type & { lastModified: string }): Promise<DeleteByUserIdResult> {
+export default async function moveByUserId({
+                                                 userId,
+                                                 folderId,
+                                                 pFolderId,
+                                                 lastModified,
+                                             }: MoveInput & { lastModified: string }): Promise<PostByUserIdResult> {
     const session = client.startSession()
 
     session.startTransaction();
 
-    const seriesIdObjId = new ObjectId(post.seriesId);
-    const userIdObjId = new ObjectId(post.userId)
+    const userIdObjId = new ObjectId(userId)
 
     try {
-        // 버전 체크
+        // 버전 체크 & postId 갱신
         // 버전 체크
         const checkedResult = await checkLastModified(userIdObjId, lastModified, session);
         if (checkedResult.status === "failure") {
@@ -30,29 +33,16 @@ export default async function deleteByUserId({lastModified, ...post}: Type & { l
         }
         const newLastModified = checkedResult.lastModified;
 
-        // 1. 시리즈 찾고 삭제
-        const deletedSeries = await deleteSeries(userIdObjId, seriesIdObjId, session);
-        if (!deletedSeries) {
-            // 시리즈 정보 못찾음
+        // 2. 폴더 찾고 업데이트
+        const result = await findOneAndUpdateByFolderId(new ObjectId(userId), new ObjectId(folderId), {pfolder_id: new ObjectId(pFolderId)})
+        if (!result) {
             await session.abortTransaction();
             return {
                 success: false,
-                error: "DeleteFailed",
-                message: "시리즈 삭제를 실패했습니다."
+                error: "UpdateFailed",
+                message: "폴더 갱신에 실패했습니다."
             }
         }
-
-        // 시리즈가 포스트가 있으면  포스트들의 series_id를 null로 변경
-        const { acknowledged } = await updateManyByPostIds(userIdObjId, deletedSeries.post_list, {series_id: null}, session)
-        if (!acknowledged) {
-            await session.abortTransaction();
-            return {
-                success: false,
-                error: "UpdatePostFailed",
-                message: "포스트 정보 갱신에 실패했습니다."
-            }
-        }
-
 
         await session.commitTransaction();
         return {
@@ -78,7 +68,7 @@ export default async function deleteByUserId({lastModified, ...post}: Type & { l
 
         console.error(
             "[MongoDB 트랜잭션 에러]",
-            `userId: ${post.userId}`,
+            `userId: ${userId}`,
             `error: ${message}`,
             stack ? `stack: ${stack}` : ""
         );

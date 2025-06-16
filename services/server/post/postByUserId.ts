@@ -1,12 +1,12 @@
 import {client} from "@/lib/mongoDB/mongoClient";
 import {COLLECTION_POST, DB} from "@/lib/mongoDB/const";
 import {PostInfoDocument} from "@/lib/mongoDB/types/documents/postInfo.type";
-import {PostInput} from "@/services/server/post/postByUserId/type";
+import {PostInput} from "@/services/server/post/postByUserId.type";
 import {ObjectId} from "mongodb";
-import updateNextPostIdAndLastModified from "@/models/user_info/updateNextPostIdAndLastModified";
-import getUserInfoByUserId from "@/models/user_info/getUserInfoByUserId";
+import updateNextPostIdAndLastModified from "@/data-access/user-info/updateNextPostIdAndLastModified";
+import getUserInfoByUserId from "@/data-access/user-info/getUserInfoByUserId";
 import {UserInfoDocument} from "@/lib/mongoDB/types/documents/userInfo.type";
-import findOneAndUpdatePostCount from "@/models/folder_info/findOneAndUpdatePostCount";
+import findOneAndUpdatePostCount from "@/data-access/folder-info/findOneAndUpdatePostCount";
 import {parseBlocks, shikiPromise} from "md-ast-parser";
 import {slugify} from "@/utils/slugify";
 
@@ -49,7 +49,13 @@ export default async function postByUserId({
             folder_id: new ObjectId(folderId),
             thumb_url: thumbUrl,
             series_id: null,
-            viewCount: 0
+            viewCount: 0,
+            ad_review: {
+                reviewed: false,
+                suitable: false,
+                reviewedAt: null,
+                reviewedBy: ""
+            }
         }
 
         // 버전 체크 & postId 갱신
@@ -79,7 +85,7 @@ export default async function postByUserId({
             }
         }
 
-        // folderId 찾고 count 업데이트
+        // [folderId] 찾고 count 업데이트
         const updatedFolderInfo = await findOneAndUpdatePostCount(new ObjectId(userId), new ObjectId(folderId), 1);
         if (!updatedFolderInfo) {
             // 폴더 정보 못찾음

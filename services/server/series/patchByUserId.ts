@@ -1,9 +1,11 @@
 import {client} from "@/lib/mongoDB/mongoClient";
 import {ObjectId} from "mongodb";
 import {UserInfoDocument} from "@/lib/mongoDB/types/documents/userInfo.type";
-import {MoveInput} from "@/services/server/folder/moveByUserId/type";
-import findOneAndUpdateByFolderId from "@/models/folder_info/findOneAndUpdateByFolderId";
 import {checkLastModified} from "@/services/server/checkLastModified";
+import {PatchInput} from "@/services/server/series/patchByUserId.type";
+import findOneAndUpdate from "@/data-access/series-info/findOneAndUpdate";
+import updateManyByPostIds from "@/data-access/post-info/updateManyByPostIds";
+import {getAddedAndRemovedObjectIds} from "@/utils/getAddedAndRemovedObjectIds";
 
 
 export type PostByUserIdResult =
@@ -12,17 +14,20 @@ export type PostByUserIdResult =
     | { success: false; error: "UserNotFound"; message: string }
     | { success: false; error: "UpdateFailed"; message: string }
     | { success: false; error: "TransactionError"; message: string; stack?: string };
-export default async function moveByUserId({
-                                                 userId,
-                                                 folderId,
-                                                 pFolderId,
-                                                 lastModified,
-                                             }: MoveInput & { lastModified: string }): Promise<PostByUserIdResult> {
+export default async function patchByUserId({
+                                                userId,
+                                                seriesId,
+                                                seriesName,
+                                                seriesDescription,
+                                                newPostList,
+                                                lastModified,
+                                            }: PatchInput & { lastModified: string }): Promise<PostByUserIdResult> {
     const session = client.startSession()
 
     session.startTransaction();
 
     const userIdObjId = new ObjectId(userId)
+    const seriesIdObjId = new ObjectId(seriesId)
 
     try {
         // 버전 체크 & postId 갱신
@@ -33,14 +38,35 @@ export default async function moveByUserId({
         }
         const newLastModified = checkedResult.lastModified;
 
-        // 2. 폴더 찾고 업데이트
-        const result = await findOneAndUpdateByFolderId(new ObjectId(userId), new ObjectId(folderId), {pfolder_id: new ObjectId(pFolderId)})
-        if (!result) {
+        // 시리즈 findOneAndUpdate로 찾으면서 업데이트 하기
+        const newPostListObjId = newPostList.map(postId => new ObjectId(postId))
+        const seriesUpdateFields = {
+            series_name: seriesName,
+            series_description: seriesDescription,
+            post_list: newPostListObjId,
+            updatedAt: new Date(),
+        }
+        const prevSeries = await findOneAndUpdate(userIdObjId, seriesIdObjId, seriesUpdateFields, { session, returnDocument: 'before'})
+        if (!prevSeries) {
             await session.abortTransaction();
             return {
                 success: false,
                 error: "UpdateFailed",
-                message: "폴더 갱신에 실패했습니다."
+                message: "시리즈 갱신에 실패했습니다."
+            }
+        }
+
+        // 그리고 추가되는 녀석과 삭제 되는 녀석 분류해서 포스트 업데이트 하기
+        const {add, remove} = getAddedAndRemovedObjectIds(prevSeries.post_list, newPostListObjId);
+
+        const addResult = await updateManyByPostIds(userIdObjId, add, {series_id: seriesIdObjId}, session)
+        const removeResult = await updateManyByPostIds(userIdObjId, remove, {series_id: null}, session)
+        if (!addResult.acknowledged || !removeResult.acknowledged) {
+            await session.abortTransaction();
+            return {
+                success: false,
+                error: "UpdateFailed",
+                message: "포스트 정보 갱신에 실패했습니다."
             }
         }
 

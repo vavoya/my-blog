@@ -1,10 +1,10 @@
 import {client} from "@/lib/mongoDB/mongoClient";
 import {ObjectId} from "mongodb";
 import {UserInfoDocument} from "@/lib/mongoDB/types/documents/userInfo.type";
-import {PostInput} from "@/services/server/series/postByUserId/type";
+import {PostInput} from "@/services/server/series/postByUserId.type";
 import {checkLastModified} from "@/services/server/checkLastModified";
 import {SeriesInfoDocument} from "@/lib/mongoDB/types/documents/seriesInfo.type";
-import insertOne from "@/models/series_info/insertOne";
+import insertOne from "@/data-access/series-info/insertOne";
 
 
 export type Data = {

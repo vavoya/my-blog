@@ -1,28 +1,24 @@
 import {client} from "@/lib/mongoDB/mongoClient";
 import {ObjectId} from "mongodb";
 import {UserInfoDocument} from "@/lib/mongoDB/types/documents/userInfo.type";
-import findOneAndUpdatePostCount from "@/models/folder_info/findOneAndUpdatePostCount";
-import {Type} from "@/services/server/folder/deleteByUserId/type";
-import deleteFolderByPostId from "@/models/folder_info/findOneAndDeleteFolderByFolderId";
-import movePostsByFolderId from "@/models/post_info/movePostsByFolderId";
-import updateManyByPFolderId from "@/models/folder_info/updateManyByPFolderId";
+import findOneAndUpdatePostCount from "@/data-access/folder-info/findOneAndUpdatePostCount";
+import deletePostByPostId from "@/data-access/post-info/deletePostByPostId";
+import {DeleteByUserIdType} from "@/services/server/post/deleteByUserId.type";
 import {checkLastModified} from "@/services/server/checkLastModified";
+import removePosts from "@/data-access/series-info/removePosts";
 
 export type DeleteByUserIdResult =
     | { success: true; data: {lastModified: UserInfoDocument['last_modified']}}
     | { success: false; error: "LastModifiedMismatch"; message: string }
     | { success: false; error: "UserNotFound"; message: string }
     | { success: false; error: "FolderNotFound"; message: string }
-    | { success: false; error: "UpdateFolderFailed"; message: string }
     | { success: false; error: "DeleteFailed"; message: string }
-    | { success: false; error: "UpdatePostFailed"; message: string }
     | { success: false; error: "TransactionError"; message: string; stack?: string };
-export default async function deleteByUserId({lastModified, ...post}: Type & { lastModified: string }): Promise<DeleteByUserIdResult> {
+export default async function deleteByUserId({lastModified, ...post}: DeleteByUserIdType & { lastModified: string }): Promise<DeleteByUserIdResult> {
     const session = client.startSession()
 
     session.startTransaction();
 
-    const folderIdObjId = new ObjectId(post.folderId);
     const userIdObjId = new ObjectId(post.userId)
 
     try {
@@ -34,43 +30,38 @@ export default async function deleteByUserId({lastModified, ...post}: Type & { l
         }
         const newLastModified = checkedResult.lastModified;
 
-        // 1. 폴더 찾고 삭제
-        const deletedFolder = await deleteFolderByPostId(userIdObjId, folderIdObjId, session);
-        if (!deletedFolder) {
-            // 폴더 정보 못찾음
+
+
+        // 포스트 찾고 삭제
+        const deletedPost = await deletePostByPostId(userIdObjId, new ObjectId(post.postId), session);
+        if (!deletedPost) {
+            // 포스트 정보 못찾음
             await session.abortTransaction();
             return {
                 success: false,
                 error: "DeleteFailed",
-                message: "폴더 삭제를 실패했습니다."
-            }
-        }
-        const pFolderId = deletedFolder.pfolder_id
-        if (!pFolderId) {
-            // 폴더 정보 못찾음 -> 삭제 불가능한 폴더 (루트 폴더)
-            await session.abortTransaction();
-            return {
-                success: false,
-                error: "FolderNotFound",
-                message: "상위 폴더 탐색에 실패했습니다."
+                message: "포스트 정보를 찾을 수 없습니다."
             }
         }
 
-        // 2. 상위 폴더에 count 갱신
-        const { modifiedCount, acknowledged } = await movePostsByFolderId(userIdObjId, folderIdObjId, new ObjectId(pFolderId), session);
-        if (!acknowledged) {
-            // 포스트의 폴더 업데이트 실패
-            await session.abortTransaction();
-            return {
-                success: false,
-                error: "UpdatePostFailed",
-                message: "포스트 정보 갱신에 실패했습니다."
+        // 포스트가 series_id가 있으면 series_id에 포스트 삭제
+        if (deletedPost.series_id) {
+            const { acknowledged } = await removePosts(userIdObjId, deletedPost.series_id, [deletedPost._id], session)
+            if (!acknowledged) {
+                // 시리즈 정보 갱신 실패
+                await session.abortTransaction();
+                return {
+                    success: false,
+                    error: "DeleteFailed",
+                    message: "시리즈 정보 갱신에 실패했습니다."
+                }
             }
         }
 
-        // 3. folderId 찾고 count 업데이트
-        const updatedPFolder = await findOneAndUpdatePostCount(userIdObjId, folderIdObjId, modifiedCount);
-        if (!updatedPFolder) {
+
+        // [folderId] 찾고 count 업데이트
+        const updatedPrevFolderInfo = await findOneAndUpdatePostCount(userIdObjId, new ObjectId(post.folderId), -1);
+        if (!updatedPrevFolderInfo) {
             // 폴더 정보 못찾음
             await session.abortTransaction();
             return {
@@ -79,19 +70,6 @@ export default async function deleteByUserId({lastModified, ...post}: Type & { l
                 message: "폴더 정보를 찾을 수 없습니다."
             }
         }
-
-        // 4. 하위 폴더들의 부모 폴더 id 갱신
-        const updateResult = await updateManyByPFolderId(userIdObjId, folderIdObjId, {pfolder_id: pFolderId}, session)
-        if (!updateResult.acknowledged) {
-            // 폴더 정보 못찾음
-            await session.abortTransaction();
-            return {
-                success: false,
-                error: "UpdateFolderFailed",
-                message: "폴더 업데이트에 실패했습니다.."
-            }
-        }
-
 
         await session.commitTransaction();
         return {

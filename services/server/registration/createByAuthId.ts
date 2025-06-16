@@ -1,18 +1,23 @@
 import {client} from "@/lib/mongoDB/mongoClient";
 import {ObjectId} from "mongodb";
-import {CreateInput} from "@/services/server/registration/createByAuthId/type";
-import insertOneUserInfo from "@/models/user_info/insertOne";
-import insertOneAboutInfo from "@/models/about_info/insertOne";
-import insertOneFolder from "@/models/folder_info/insertOne";
-import insertOneSeries from "@/models/series_info/insertOne";
+import {CreateInput} from "@/services/server/registration/createByAuthId.type";
+import insertOneUserInfo from "@/data-access/user-info/insertOne";
+import insertOneAboutInfo from "@/data-access/about-info/insertOne";
+import insertOneFolder from "@/data-access/folder-info/insertOne";
+import insertOneSeries from "@/data-access/series-info/insertOne";
 import {parseBlocks, shikiPromise} from "md-ast-parser";
-import getUserInfoByBlogUrl from "@/models/user_info/getUserInfoByBlogUrl";
+import getUserInfoByBlogUrl from "@/data-access/user-info/getUserInfoByBlogUrl";
+import getBannedAuthDocument from "@/data-access/banned-auth-list/getBannedAuthDocument";
+import isSignupAllowed from "@/data-access/settings/isSignupAllowed";
 
 
 export type CreateByAuthIdResult =
     | { success: true;}
     | { success: false; error: "AlreadyRegistered"; message: string }
     | { success: false; error: "RegistrationFailed"; message: string }
+    | { success: false; error: "SignupDisabled"; message: string }
+    | { success: false; error: "BlogAlreadyExists"; message: string }
+    | { success: false; error: "BannedUser"; message: string }
     | { success: false; error: "TransactionError"; message: string; stack?: string };
 export default async function createByAuthId(params: CreateInput & { authId: string, email: string }): Promise<CreateByAuthIdResult> {
     const session = client.startSession()
@@ -33,7 +38,29 @@ export default async function createByAuthId(params: CreateInput & { authId: str
             }
         }
 
-        // userInfo 생성 -> userId 얻기
+        // 회원가입 가능한지 확인
+        const isAllowed = await isSignupAllowed();
+        if (!isAllowed) {
+            await session.abortTransaction();
+            return {
+                success: false,
+                error: "SignupDisabled",
+                message: "현재는 신규 가입이 제한되어 있습니다."
+            };
+        }
+
+        // 차단된 유저의 회원가입 막기
+        const bannedUserDocument = await getBannedAuthDocument(params.authId);
+        if (!!bannedUserDocument) {
+            await session.abortTransaction();
+            return {
+                success: false,
+                error: "BannedUser",
+                message: "해당 계정은 서비스 이용이 제한되었습니다."
+            };
+        }
+
+        // users 생성 -> userId 얻기
         const userInfo = await insertOneUserInfo(
             {
                 _id: new ObjectId(),
@@ -46,6 +73,7 @@ export default async function createByAuthId(params: CreateInput & { authId: str
                 registration_state: true,
                 last_modified: new Date(),
                 is_deleted: false,
+                last_login_at: new Date(),
             },
             session
         )
@@ -60,7 +88,7 @@ export default async function createByAuthId(params: CreateInput & { authId: str
 
         await shikiPromise;
 
-        // folder, series, about 기본 생성
+        // folders, series, about 기본 생성
         const results = await Promise.all([
             insertOneAboutInfo(
                 {

@@ -1,35 +1,28 @@
 import {client} from "@/lib/mongoDB/mongoClient";
-import {COLLECTION_FOLDER, DB} from "@/lib/mongoDB/const";
 import {ObjectId} from "mongodb";
 import {UserInfoDocument} from "@/lib/mongoDB/types/documents/userInfo.type";
-import getFolderInfoByUserId from "@/models/folder_info/getFolderInfoByUserId";
-import {FolderInfoDocument} from "@/lib/mongoDB/types/documents/folderInfo.type";
-import {PostInput} from "@/services/server/folder/postByUserId/type";
+import {RenameInput} from "@/services/server/folder/renameByUserId.type";
+import findOneAndUpdateByFolderId from "@/data-access/folder-info/findOneAndUpdateByFolderId";
 import {checkLastModified} from "@/services/server/checkLastModified";
 
 
-export type Data = {folderId: FolderInfoDocument['_id'], lastModified: UserInfoDocument['last_modified']}
 export type PostByUserIdResult =
-    | { success: true; data: Data}
+    | { success: true; data: {lastModified: UserInfoDocument['last_modified']}}
     | { success: false; error: "LastModifiedMismatch"; message: string }
     | { success: false; error: "UserNotFound"; message: string }
-    | { success: false; error: "FolderNotFound"; message: string }
-    | { success: false; error: "InsertFailed"; message: string }
+    | { success: false; error: "UpdateFailed"; message: string }
     | { success: false; error: "TransactionError"; message: string; stack?: string };
-export default async function postByUserId({
+export default async function renameByUserId({
                                                userId,
-                                               pFolderId,
+                                               folderId,
                                                folderName,
                                                lastModified,
-                                           }: PostInput & { lastModified: string }): Promise<PostByUserIdResult> {
+                                           }: RenameInput & { lastModified: string }): Promise<PostByUserIdResult> {
     const session = client.startSession()
-
-    const database = client.db(DB);
-    const folderInfoCollection = database.collection<FolderInfoDocument>(COLLECTION_FOLDER);
 
     session.startTransaction();
 
-    const userIdObjId = new ObjectId(userId);
+    const userIdObjId = new ObjectId(userId)
 
     try {
         // 버전 체크 & postId 갱신
@@ -40,34 +33,14 @@ export default async function postByUserId({
         }
         const newLastModified = checkedResult.lastModified;
 
-        // 1. 부모 folderId 확인
-        const updatedFolderInfo = await getFolderInfoByUserId(new ObjectId(userId), new ObjectId(pFolderId));
-        if (!updatedFolderInfo) {
-            // 폴더 정보 못찾음
+        // 2. 폴더 찾고 업데이트
+        const result = await findOneAndUpdateByFolderId(new ObjectId(userId), new ObjectId(folderId), {folder_name: folderName})
+        if (!result) {
             await session.abortTransaction();
             return {
                 success: false,
-                error: "FolderNotFound",
-                message: "폴더 정보를 찾을 수 없습니다."
-            }
-        }
-
-        const newFolder: FolderInfoDocument = {
-            _id: new ObjectId(),
-            folder_name: folderName,
-            pfolder_id: new ObjectId(pFolderId),
-            post_count: 0,
-            user_id: new ObjectId(userId),
-
-        }
-        // 2. 폴더 생성
-        const result = await folderInfoCollection.insertOne(newFolder, {forceServerObjectId: true, session: session})
-        if (!result.acknowledged) {
-            await session.abortTransaction();
-            return {
-                success: false,
-                error: "InsertFailed",
-                message: "폴더 생성에 실패했습니다."
+                error: "UpdateFailed",
+                message: "폴더 갱신에 실패했습니다."
             }
         }
 
@@ -75,8 +48,7 @@ export default async function postByUserId({
         return {
             success: true,
             data: {
-                folderId: result.insertedId,
-                lastModified: newLastModified,
+                lastModified: newLastModified
             }
         }
     } catch (error) {
