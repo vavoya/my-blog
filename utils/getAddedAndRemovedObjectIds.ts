@@ -2,10 +2,10 @@ import { ObjectId } from "mongodb";
 
 type ObjectIdLike = ObjectId | string;
 
-export const getAddedAndRemovedObjectIds = <T extends ObjectIdLike>(
+export function getAddedAndRemovedObjectIds<T extends ObjectIdLike>(
     prev: T[],
     next: T[]
-): { add: T[]; remove: T[] } => {
+): { add: T[]; remove: T[] } {
     const toStr = (id: T) => id.toString();
 
     const prevSet = new Set(prev.map(toStr));

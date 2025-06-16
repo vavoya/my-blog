@@ -1,7 +1,7 @@
 import {FolderInfoResponse} from "@/lib/mongoDB/types/documents/folderInfo.type";
 import {FolderObj} from "@/components/modal/utils/toObj";
 
-export const buildFolderPathIds = (initFolderId: FolderInfoResponse['_id'], folderObj: FolderObj) => {
+export function buildFolderPathIds(initFolderId: FolderInfoResponse['_id'], folderObj: FolderObj) {
     const reverseFolderPath = [initFolderId];
 
     let folderId = folderObj[initFolderId].pfolder_id;

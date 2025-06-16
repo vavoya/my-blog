@@ -1,4 +1,4 @@
-export const isShape = <T extends object>(obj: any, shape: T): obj is T => {
+export function isShape<T extends object>(obj: any, shape: T): obj is T {
     if (typeof obj !== 'object' || obj === null) return false;
 
     const objKeys = Object.keys(obj);
