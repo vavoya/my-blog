@@ -1,8 +1,8 @@
 import {SeriesInfoResponse} from "@/lib/mongoDB/types/documents/seriesInfo.type";
 import {UserInfoResponse} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {useQueryClient} from "@tanstack/react-query";
-import {PaginatedPostsResponse} from "@/models/post_info/types";
-import getByPostIds from "@/fetch/client/paginatedPost/getByPostIds";
+import {PaginatedPostsResponse} from "@/data-access/post-info/types";
+import getByPostIds from "@/fetch/client/paginated-post/getByPostIds";
 import {useCallback, useEffect, useRef, useState} from "react";
 import {QueryClient} from "@tanstack/query-core";
 
