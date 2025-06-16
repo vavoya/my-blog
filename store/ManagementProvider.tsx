@@ -38,6 +38,7 @@ const dummyStore = createStore<Store>((set) => ({
         registration_state: true,
         last_modified: "",
         is_deleted: false,
+        last_login_at: "",
     },
     setUserInfo: (userInfo) => set({ userInfo }),
     folderObj: {},
