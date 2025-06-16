@@ -12,6 +12,7 @@ export type UserInfoDocument = {
     registration_state: boolean;
     last_modified: Date;
     is_deleted: boolean;
+    last_login_at: Date;
 }
 
 export type UserInfoResponse = {
@@ -25,6 +26,7 @@ export type UserInfoResponse = {
     registration_state: boolean;
     last_modified: string;
     is_deleted: boolean;
+    last_login_at: string;
 }
 
 export const userInfoResponseShape = {
@@ -38,4 +40,5 @@ export const userInfoResponseShape = {
     registration_state: "boolean",
     last_modified: "string",
     is_deleted: "boolean",
+    last_login_at: "string",
 }

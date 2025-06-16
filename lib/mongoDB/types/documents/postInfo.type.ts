@@ -18,7 +18,12 @@ export type PostInfoDocument = {
     thumb_url: string;
     series_id: SeriesInfoDocument['_id'] | null;
     viewCount: number;
-
+    ad_review: {
+        reviewed: boolean;
+        suitable: boolean;
+        reviewedAt: Date | null;
+        reviewedBy: string;
+    }
 }
 
 export type PostInfoResponse = {
@@ -35,6 +40,12 @@ export type PostInfoResponse = {
     thumb_url: string;
     series_id: string | null;
     viewCount: number;
+    ad_review: {
+        reviewed: boolean;
+        suitable: boolean;
+        reviewedAt: Date | null;
+        reviewedBy: string;
+    }
 }
 
 export const postInfoResponseShape = {
@@ -51,4 +62,10 @@ export const postInfoResponseShape = {
     thumb_url: "string",
     series_id: "string",
     viewCount: "number",
+    ad_review: {
+        reviewed: "boolean",
+        suitable: "boolean",
+        reviewedAt: "string",
+        reviewedBy: "string",
+    }
 };
