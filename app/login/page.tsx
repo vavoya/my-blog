@@ -3,15 +3,18 @@ import Svgsimlog from "@/components/svg/Simlog";
 import {signIn} from "@/auth"
 import ProcessingOverlayLink from "@/components/ProcessingOverlayLink";
 import Image from "next/image";
+import {redirects} from "@/lib/redirects";
 
 
 type SearchParams = {
-    [key: string]: string | string[] | undefined;
+    redirectTo: string | undefined;
 }
 
 export default async function Page({searchParams}: {searchParams: Promise<SearchParams>}) {
     const { redirectTo } = await searchParams
     const encodedRedirectTo = typeof redirectTo === 'string' ? encodeURIComponent(redirectTo) : ''
+    await redirects('/login', redirectTo ?? '');
+
 
     const signInNaver = async () => {
         'use server'

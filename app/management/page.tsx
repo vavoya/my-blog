@@ -5,8 +5,11 @@ import getFolderInfoByUserId from "@/fetch/server/folders/getByUserId";
 import getSeriesInfoByUserId from "@/fetch/server/series/getByUserId";
 import {redirect} from "next/navigation";
 import Background from "@/app/management/_components/Background";
+import {redirects} from "@/lib/redirects";
 
 export default async function Page() {
+    await redirects('/management', '/login');
+
 
     // 유저 정보 가져오기
     const userInfoResponse = await getBySession()
