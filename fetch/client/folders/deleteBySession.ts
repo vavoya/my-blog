@@ -1,17 +1,17 @@
 import {response} from "@/app/api/_utils/createResponse";
-import {ReqBodyType, ResBodyType} from "@/app/api/client/me/registration/type";
-import {createRegistrationQuery} from "@/app/api/client/me/registration/createQuery";
+import {ReqBodyType, ResBodyType} from "@/app/api/client/me/folders/[folderId]/delete.type";
+import {processApiResponse} from "@/fetch/utils/processApiResponse";
+import {createFolderIdQuery} from "@/app/api/client/me/folders/[folderId]/createQuery";
 
-export default async function registBySession(json: ReqBodyType) {
-    const apiUrl = createRegistrationQuery();
+export default async function deleteBySession(json: ReqBodyType) {
+    const apiUrl = createFolderIdQuery(json.folderId) ;
 
     try {
         const result = await fetch(apiUrl, {
-            method: "POST",
+            method: "DELETE",
             body: JSON.stringify(json)
         });
-        const data: ResBodyType = await result.json();
-        return data;
+        return await processApiResponse<ResBodyType>(result);
     } catch (error) {
         const isNetworkError = error instanceof TypeError;
         const message = isNetworkError

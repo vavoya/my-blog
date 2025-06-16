@@ -1,17 +1,17 @@
 import {response} from "@/app/api/_utils/createResponse";
-import {ReqBodyType, ResBodyType} from "@/app/api/client/me/registration/type";
-import {createRegistrationQuery} from "@/app/api/client/me/registration/createQuery";
+import {ReqBodyType, ResBodyType} from "@/app/api/client/me/posts/[postId]/patch.type";
+import {processApiResponse} from "@/fetch/utils/processApiResponse";
+import {createPostIdQuery} from "@/app/api/client/me/posts/[postId]/createQuery";
 
-export default async function registBySession(json: ReqBodyType) {
-    const apiUrl = createRegistrationQuery();
+export default async function patchBySession(json: ReqBodyType) {
+    const apiUrl = createPostIdQuery(json._id);
 
     try {
         const result = await fetch(apiUrl, {
-            method: "POST",
+            method: "PATCH",
             body: JSON.stringify(json)
         });
-        const data: ResBodyType = await result.json();
-        return data;
+        return await processApiResponse<ResBodyType>(result);
     } catch (error) {
         const isNetworkError = error instanceof TypeError;
         const message = isNetworkError
