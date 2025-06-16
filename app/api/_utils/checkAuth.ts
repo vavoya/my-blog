@@ -6,12 +6,13 @@ import {response} from "@/app/api/_utils/createResponse";
 export const checkAuth = async () => {
     const session = await auth()
 
-    if (!session) {
+    // 세션이 없거나
+    // 유저 정보가 없거나
+    // 등록 상태가 없거나
+    // 로그인으로 인정하지 않는
+    // 경우
+    if (!session || !session.userId || !session?.registrationState || !session.isLogin) {
         return jsonResponse(response.unauthorized('인증 오류1: 인증 정보가 없습니다.'));
-    }
-
-    if (!session.userId) {
-        return jsonResponse(response.unauthorized('인증 오류2: 인증 정보가 없습니다.'));
     }
 
     return session.userId

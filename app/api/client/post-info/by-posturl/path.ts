@@ -1,1 +1,0 @@
-export const path = '/api/client/post-info/by-posturl'

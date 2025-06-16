@@ -1,1 +1,0 @@
-export const path = '/api/server/series-info/by-userid'

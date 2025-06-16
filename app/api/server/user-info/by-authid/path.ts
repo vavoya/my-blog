@@ -1,1 +1,0 @@
-export const path = '/api/server/user-info/by-authid'
