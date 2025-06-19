@@ -15,6 +15,7 @@ type Params = {
 type Store = {
     folderObj: FolderObj;
     setFolderObj: (newFolderObj: FolderObj) => void;
+    closePostWindow: () => void;
 }
 type CreateAddPostAsyncTask = (params: Params, store: Store) => AsyncTaskUnit;
 export const createDeletePostAsyncTask: CreateAddPostAsyncTask = (params, store) => {
@@ -79,6 +80,7 @@ export const createDeletePostAsyncTask: CreateAddPostAsyncTask = (params, store)
                     post_count: store.folderObj[initFolderId].post_count - 1,
                 }
             })
+            store.closePostWindow();
         },
     })
 }

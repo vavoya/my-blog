@@ -11,6 +11,8 @@ import useAsyncTaskManager from "@/hook/useAsyncTaskManager";
 import {validatePost} from "@/validation/client/post/validatePost";
 import {createDeletePostAsyncTask} from "@/app/management/_window/post/handlers/createDeletePostAsyncTask";
 import {createUpdatePostAsyncTask} from "@/app/management/_window/post/handlers/createUpdatePostAsyncTask";
+import {WindowCommandBuilder} from "@/app/management/_window/provider/utils/windowCommands";
+import useToast from "@/app/management/_hook/toast/useToast";
 
 export type OnDanger = () => void;
 export type PostState = {
@@ -31,6 +33,7 @@ export default function PostWindow({paginatedPost}: PostWindowProps) {
     const asyncTaskManager = useAsyncTaskManager();
     const userInfo = useManagementStore((state) => state.userInfo);
     const folderObj = useManagementStore((state) => state.folderObj);
+    const setWindows = useManagementStore((state) => state.setWindows);
     const setFolderObj = useManagementStore((state) => state.setFolderObj);
     const { data } = usePostQuery(userInfo._id, paginatedPost.post_url)
     const [lastStep, setLastStep] = useState(false);
@@ -38,6 +41,7 @@ export default function PostWindow({paginatedPost}: PostWindowProps) {
         status: "fetching",
         data: undefined,
     });
+    const addToast = useToast();
 
     // 포스트 가져온거 판단
     useEffect(() => {
@@ -94,6 +98,29 @@ export default function PostWindow({paginatedPost}: PostWindowProps) {
     const fetchPost: FetchPost = (thumbnail, folderId, description) => {
         const validationResult = validatePost(postState.data.post_name, postState.data.post_content, folderId);
         if (!validationResult.isValid) {
+            if (validationResult.type === 'folderId') {
+                addToast({
+                    type: 'warning',
+                    message: '포스트의 폴더를 정해주세요',
+                    id: new Date().toISOString(),
+                    height: 0
+                })
+            } else if (validationResult.type === 'name') {
+                addToast({
+                    type: 'warning',
+                    message: '포스트 제목을 입력해주세요',
+                    id: new Date().toISOString(),
+                    height: 0
+                })
+            } else if (validationResult.type === 'content') {
+                addToast({
+                    type: 'warning',
+                    message: '포스트 내용을 작성해주세요',
+                    id: new Date().toISOString(),
+                    height: 0
+                })
+            }
+
             return false;
         }
 
@@ -128,6 +155,13 @@ export default function PostWindow({paginatedPost}: PostWindowProps) {
             {
                 folderObj,
                 setFolderObj,
+                closePostWindow: () => {
+                    const windowId = `PostWindow-${paginatedPost._id}`;
+                    const commands = new WindowCommandBuilder().remove([
+                        windowId
+                    ]).returnCommand()
+                    setWindows(commands)
+                }
             }
         ));
     }

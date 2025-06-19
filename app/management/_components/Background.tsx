@@ -15,10 +15,12 @@ import queryClient from "../_queries";
 import ManagementProvider from "@/store/ManagementProvider";
 import NewPostWindow from "@/app/management/_window/post/NewPostWindow";
 import {buildTrie} from "@/app/management/_utils/buildTrie";
-import TaskPanel from "@/app/management/_components/taskPanel/TaskPanel";
+import TaskPanel from "@/app/management/_components/task-panel/TaskPanel";
 import ClientOnly from "@/components/ClientOnly";
 import AboutWindow from "@/app/management/_window/about/AboutWindow";
 import SeriesWindow from "@/app/management/_window/series/SeriesWindow";
+import SettingWindow from "@/app/management/_window/setting/SettingWindow";
+import useToast from "@/app/management/_hook/toast/useToast";
 
 
 type BackgroundProps = {
@@ -39,6 +41,7 @@ function BackgroundContent({ userInfo, folderInfo, seriesInfo }: BackgroundProps
     const folderObj = toObj(folderInfo);
     const seriesObj = toObj(seriesInfo)
     const trie = useMemo(() => buildTrie(folderObj), [folderObj])
+    const addToast = useToast();
 
 
     const [windowCommands, setWindowCommands] = useState<WindowCommands>();
@@ -85,6 +88,21 @@ function BackgroundContent({ userInfo, folderInfo, seriesInfo }: BackgroundProps
 
     const openSetting = useCallback<MouseEventHandler>(() => {
 
+
+        const window = createWindowObj(
+            "SettingWindow",
+            "설정",
+            <SettingWindow />,
+            0,
+            0,
+            670,
+            520
+        )
+
+        const commands = new WindowCommandBuilder().add([
+            window
+        ]).returnCommand()
+        setWindows(commands)
     }, [])
 
     const openWriting = useCallback<MouseEventHandler>(() => {
@@ -155,6 +173,17 @@ function BackgroundContent({ userInfo, folderInfo, seriesInfo }: BackgroundProps
                         <button tabIndex={0}
                                 onClick={openSetting}>
                             <span>설정</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button tabIndex={0}
+                                onClick={() => addToast({
+                                    id: new Date().toISOString(),
+                                    type: 'info',
+                                    message: "vavoya6324@gmail.com로 문의주시면 제공해드리곘습니다.",
+                                    height: 0
+                                })}>
+                            <span>통계</span>
                         </button>
                     </li>
                 </ul>

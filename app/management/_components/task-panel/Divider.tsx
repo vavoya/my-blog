@@ -1,4 +1,4 @@
-import {TaskState} from "@/app/management/_components/taskPanel/TaskPanel";
+import {TaskState} from "@/app/management/_components/task-panel/TaskPanel";
 import styles from "./divider.module.css"
 
 type DividerProps = {

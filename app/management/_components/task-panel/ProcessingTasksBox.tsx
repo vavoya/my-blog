@@ -1,5 +1,5 @@
 
-import {TaskState} from "@/app/management/_components/taskPanel/TaskPanel";
+import {TaskState} from "@/app/management/_components/task-panel/TaskPanel";
 import styles from "./taskBox.module.scss";
 
 type ProcessingTasksBoxProps = {

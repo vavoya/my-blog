@@ -1,0 +1,15 @@
+.inputBox {
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+    width: 100%;
+    gap: 15px;
+}
+
+.inputTitle {
+    font-size: 1rem;
+    font-weight: 500;
+}
+.inputText {
+    font-size: 1.125rem;
+}

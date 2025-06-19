@@ -6,6 +6,7 @@ import getSeriesInfoByUserId from "@/fetch/server/series/getByUserId";
 import {redirect} from "next/navigation";
 import Background from "@/app/management/_components/Background";
 import {redirects} from "@/lib/redirects";
+import ClientOnly from "@/components/ClientOnly";
 
 export default async function Page() {
     await redirects('/management', '/login');
@@ -31,6 +32,8 @@ export default async function Page() {
     const folderInfo = folderInfoResponse.data;
 
     return (
-        <Background userInfo={userInfo} folderInfo={folderInfo} seriesInfo={seriesInfo}/>
+        <ClientOnly>
+            <Background userInfo={userInfo} folderInfo={folderInfo} seriesInfo={seriesInfo}/>
+        </ClientOnly>
     )
 }

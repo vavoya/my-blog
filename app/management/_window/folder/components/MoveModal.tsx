@@ -4,7 +4,7 @@ import moveModalStyles from "./moveModal.module.scss"
 import {FolderInfoResponse} from "@/lib/mongoDB/types/documents/folderInfo.type";
 import {FolderObj} from "@/components/modal/utils/toObj";
 import {useManagementStore} from "@/store/ManagementProvider";
-import SearchFolder, {SelectFolder} from "@/app/management/_components/searchFolder/SearchFolder";
+import SearchFolder, {SelectFolder} from "@/app/management/_components/search-folder/SearchFolder";
 import {MoveFolder} from "@/app/management/_window/folder/FolderWindow";
 
 type MoveModalProps = {

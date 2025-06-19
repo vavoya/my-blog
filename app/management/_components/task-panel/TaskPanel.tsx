@@ -2,10 +2,10 @@
 import useAsyncTaskManager from "@/hook/useAsyncTaskManager";
 import {useEffect, useState} from "react";
 import {Observer} from "@/utils/AsyncTaskManager";
-import ProcessingTasksBox from "@/app/management/_components/taskPanel/ProcessingTasksBox";
-import PendingTasksBox from "@/app/management/_components/taskPanel/PendingTaskBox";
+import ProcessingTasksBox from "@/app/management/_components/task-panel/ProcessingTasksBox";
+import PendingTasksBox from "@/app/management/_components/task-panel/PendingTaskBox";
 import styles from "./TaskPanel.module.scss"
-import Divider from "@/app/management/_components/taskPanel/Divider";
+import Divider from "@/app/management/_components/task-panel/Divider";
 
 export type TaskState = Parameters<Observer>[number] | null;
 export default function TaskPanel() {

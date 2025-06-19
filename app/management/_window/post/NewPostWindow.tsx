@@ -6,6 +6,7 @@ import PostMeta from "@/app/management/_window/post/components/PostMeta";
 import useAsyncTaskManager from "@/hook/useAsyncTaskManager";
 import {validatePost} from "@/validation/client/post/validatePost";
 import {createAddPostAsyncTask} from "@/app/management/_window/post/handlers/createAddPostAsyncTask";
+import useToast from "@/app/management/_hook/toast/useToast";
 
 
 export type OnNextStep = (name: PostInfoResponse['post_name'], content: PostInfoResponse['post_content']) => void;
@@ -26,6 +27,7 @@ export default function NewPostWindow() {
         folderId: "",
         description: "",
     });
+    const addToast = useToast();
 
     const onNextStep: OnNextStep = (name: PostInfoResponse['post_name'], content: PostInfoResponse['post_content']) => {
         setPostState({
@@ -47,6 +49,28 @@ export default function NewPostWindow() {
     const fetchPost: FetchPost = (thumbnail, folderId, description) => {
         const validationResult = validatePost(postState.postName, postState.postContent, folderId);
         if (!validationResult.isValid) {
+            if (validationResult.type === 'folderId') {
+                addToast({
+                    type: 'warning',
+                    message: '포스트의 폴더를 정해주세요',
+                    id: new Date().toISOString(),
+                    height: 0
+                })
+            } else if (validationResult.type === 'name') {
+                addToast({
+                    type: 'warning',
+                    message: '포스트 제목을 입력해주세요',
+                    id: new Date().toISOString(),
+                    height: 0
+                })
+            } else if (validationResult.type === 'content') {
+                addToast({
+                    type: 'warning',
+                    message: '포스트 내용을 작성해주세요',
+                    id: new Date().toISOString(),
+                    height: 0
+                })
+            }
             return false;
         }
 

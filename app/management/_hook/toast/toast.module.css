@@ -1,0 +1,50 @@
+
+
+.toastContainer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0;
+    overflow: visible;
+}
+
+
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+    }
+}
+
+.toastBase {
+    /* 공통 스타일 */
+    position: absolute;
+    transition: transform 0.3s ease-in-out;
+    transform: translate(-50%, 0);
+    left: 50%;
+    top: 0;
+    background-color: rgb(var(--background-color));
+    font-size: 1rem;
+    font-weight: 500;
+
+    min-width: 300px;
+    padding: 12px 24px;
+    border-radius: 20px;
+    text-align: center;
+
+    animation: fadeOut 0.3s ease forwards;
+    animation-delay: 4s;
+}
+
+.toastSuccess,
+.toastInfo {
+    border: 1px solid rgb(var(--primary-color));
+
+}
+
+.toastWarning,
+.toastError {
+    border: 1px solid rgb(var(--error-color));
+    color: rgb(var(--error-color));
+}

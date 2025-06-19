@@ -32,7 +32,7 @@ export default function TableBody(rest: TableBodyProps) {
                 rest.pages.map(paginatedPost => {
                     const openPostWindow: OpenPostWindow = () => {
                         const window = createWindowObj(
-                            `PostWindow-${rest.folderId}`,
+                            `PostWindow-${paginatedPost._id}`,
                             buildFolderPath(folderObj[rest.folderId], folderObj) + '/' + paginatedPost.post_name,
                             <PostWindow paginatedPost={paginatedPost}/>,
                             0,
