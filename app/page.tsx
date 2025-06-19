@@ -6,7 +6,7 @@ import Header from "@/app/[blog]/_component/Header";
 import React from "react";
 import RootSideBar from "@/components/sideBar/RootSideBar";
 import 'github-markdown-css/github-markdown.css'
-import Link from "next/link";
+import ProcessingOverlayLink from "@/components/ProcessingOverlayLink";
 
 export default async function Home() {
     return (
@@ -137,13 +137,16 @@ export default async function Home() {
                         <br/>
                         <br/>
                         당장 많은 기능을 추가하기는 어렵지만, 앞으로 더 많은 사용자들이 sim-log를 찾고 사용하게 된다면 더 편리하고 강력한 기능들을 추가할 계획입니다.
+                        <br/>
+                        <br/>
+                        연락처: vavoya6324@gmail.com
                     </p>
                 </section>
-                <Link className={styles.button} href="/management">
+                <ProcessingOverlayLink className={styles.button} href="/management">
                     <span>
                         시작하기
                     </span>
-                </Link>
+                </ProcessingOverlayLink>
             </main>
         </div>
     )
