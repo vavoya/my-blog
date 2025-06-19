@@ -27,7 +27,7 @@ export async function generateMetadata(
         return {}
     }
 
-    const title = userInfoResponse.data.blog_name.substring(0, TITLE_LIMIT);
+    const title = `${userInfoResponse.data.blog_name.substring(0, TITLE_LIMIT)} - sim-log`;
     const description = aboutInfo.data.content.substring(0, DESCRIPTION_LIMIT);
 
     return {

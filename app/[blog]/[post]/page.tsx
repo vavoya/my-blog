@@ -30,7 +30,7 @@ export async function generateMetadata(
         return { };
     }
 
-    const title = postInfoResponse.data.post_name.substring(0, TITLE_LIMIT);
+    const title = `${postInfoResponse.data.post_name.substring(0, TITLE_LIMIT)} - sim-log`;
     const description = (postInfoResponse.data.post_description.trim().length === 0 ? postInfoResponse.data.post_content : postInfoResponse.data.post_description).substring(0, DESCRIPTION_LIMIT);
 
     return {
