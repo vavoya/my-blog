@@ -74,6 +74,11 @@ export default async function createByAuthId(params: CreateInput & { authId: str
                 last_modified: new Date(),
                 is_deleted: false,
                 last_login_at: new Date(),
+                agreements: {
+                    privacy: true,
+                    terms: true,
+                    email: false,
+                }
             },
             session
         )
