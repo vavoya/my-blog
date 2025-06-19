@@ -3,15 +3,21 @@ import {client} from "@/lib/mongoDB/mongoClient";
 import {COLLECTION_USER, DB} from "@/lib/mongoDB/const";
 import {UserInfoDocument} from "@/lib/mongoDB/types/documents/userInfo.type";
 
-export default async function updateLastModified(userId: UserInfoDocument['_id'], lastModified: UserInfoDocument['last_modified'], session?: ClientSession) {
+export default async function updateUserInfo(
+    userId: UserInfoDocument['_id'],
+    userName: UserInfoDocument['user_name'],
+    blogName: UserInfoDocument['blog_name'],
+    agreementsEmail: UserInfoDocument['agreements']['email'],
+    session?: ClientSession) {
     return await client.db(DB).collection<UserInfoDocument>(COLLECTION_USER).findOneAndUpdate(
         {
             _id: userId,
-            last_modified: lastModified,
         },
         {
             $set: {
-                last_modified: new Date(),
+                user_name: userName,
+                blog_name: blogName,
+                'agreements.email': agreementsEmail,
             }
         },
         { returnDocument: 'after', session: session }

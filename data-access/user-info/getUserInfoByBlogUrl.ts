@@ -9,6 +9,7 @@ export default async function getUserInfoByBlogUrl(blogUrl: UserInfoDocument['bl
     const coll = client.db(DB).collection<UserInfoDocument>(COLLECTION_USER);
     const filter = {
         blog_url: blogUrl,
+        is_deleted: false,
     };
     const projection = {
         'blog_name': 1,
