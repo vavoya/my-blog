@@ -78,7 +78,7 @@ export const POST = auth(async function POST(req): Promise<NextResponse<ResBodyT
         }
     } catch (e) {
         console.error(e);
-        return jsonResponse(response.error('서버 오류: 포스트 정보를 처리하는 중 문제가 발생했습니다.'));
+        return jsonResponse(response.error('서버 오류: 회원 등록을 처리하는 중 문제가 발생했습니다.'));
     }
 
 })
