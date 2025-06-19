@@ -13,6 +13,11 @@ export type UserInfoDocument = {
     last_modified: Date;
     is_deleted: boolean;
     last_login_at: Date;
+    agreements: {
+        terms: boolean;
+        privacy: boolean;
+        email: boolean;
+    };
 }
 
 export type UserInfoResponse = {
@@ -27,6 +32,11 @@ export type UserInfoResponse = {
     last_modified: string;
     is_deleted: boolean;
     last_login_at: string;
+    agreements: {
+        terms: boolean;
+        privacy: boolean;
+        email: boolean;
+    };
 }
 
 export const userInfoResponseShape = {
@@ -41,4 +51,9 @@ export const userInfoResponseShape = {
     last_modified: "string",
     is_deleted: "boolean",
     last_login_at: "string",
+    agreements: {
+        terms: "boolean",
+        privacy: "boolean",
+        email: "boolean",
+    },
 }
