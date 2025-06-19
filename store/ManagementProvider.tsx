@@ -39,6 +39,11 @@ const dummyStore = createStore<Store>((set) => ({
         last_modified: "",
         is_deleted: false,
         last_login_at: "",
+        agreements: {
+            terms: false,
+            privacy: false,
+            email: false
+        }
     },
     setUserInfo: (userInfo) => set({ userInfo }),
     folderObj: {},
