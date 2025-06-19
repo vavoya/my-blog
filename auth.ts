@@ -76,7 +76,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 }
             }
 
-
             return session
         },
         async signIn({ account }) {
@@ -94,8 +93,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
     },
     session: {
-        strategy: "jwt",
-        maxAge: 10 * 60, // 10분
-        updateAge: 4 * 60, // 4분마다 갱신
+        strategy: 'jwt',
+        maxAge: 60 * 60,      // 1시간
+        updateAge: 15 * 60    // 15분
     }
 })
