@@ -3,26 +3,6 @@ import {createRoot} from "react-dom/client";
 import {Dispatch, SetStateAction, useCallback, useEffect, useRef, useState} from "react";
 import styles from "./toast.module.css"
 
-
-// 이거는 ClientOnly 아래에 선언해줘야한다.
-// document 때문에
-const toastContainer = document.createElement('div');
-toastContainer.className = styles.toastContainer;
-toastContainer.id = 'toast-container';
-document.body.appendChild(toastContainer)
-const root = createRoot(toastContainer)
-root.render(<ToastManager />) // ToastManager는 render 대상 컴포넌트
-
-const handler = () => {
-    root.unmount()
-    toastContainer.remove()
-}
-
-window.addEventListener('popstate', handler, { once: true })
-
-
-
-
 type AddToast = (toastObj: ToastObj) => void
 const addToastRef = {
     addToast: (toastObj: ToastObj) => {
@@ -39,6 +19,22 @@ const addToastRef = {
  * }
  */
 export default function useToast() {
+    useEffect(() => {
+        const toastContainer = document.createElement('div');
+        toastContainer.className = styles.toastContainer;
+        toastContainer.id = 'toast-container';
+        document.body.appendChild(toastContainer)
+        const root = createRoot(toastContainer)
+        root.render(<ToastManager />) // ToastManager는 render 대상 컴포넌트
+
+        const handler = () => {
+            root.unmount()
+            toastContainer.remove()
+        }
+
+        window.addEventListener('popstate', handler, { once: true })
+    }, []);
+
     return useCallback<AddToast>((toastObj) => {
         addToastRef.addToast(toastObj)
     }, []);
