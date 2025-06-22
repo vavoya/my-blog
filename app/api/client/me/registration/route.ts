@@ -69,6 +69,7 @@ export const POST = auth(async function POST(req): Promise<NextResponse<ResBodyT
             case "SignupDisabled":
                 return jsonResponse(response.forbidden(results.message));
             case "AlreadyRegistered":
+            case "BlogAlreadyExists":
                 return jsonResponse(response.conflict(results.message));
             case "RegistrationFailed":
             case "TransactionError":
