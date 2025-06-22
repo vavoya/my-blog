@@ -148,6 +148,9 @@ export default async function Home() {
                     </span>
                 </ProcessingOverlayLink>
             </main>
+            <footer>
+
+            </footer>
         </div>
     )
 }

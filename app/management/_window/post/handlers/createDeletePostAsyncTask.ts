@@ -30,7 +30,6 @@ export const createDeletePostAsyncTask: CreateAddPostAsyncTask = (params, store)
                 lastModified: prevValue ?? params.lastModified,
                 userId: params.userId,
                 postId: params.postId,
-                folderId: params.folderId,
             })
 
             // 4. fetch 응답 처리

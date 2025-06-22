@@ -21,6 +21,7 @@ import AboutWindow from "@/app/management/_window/about/AboutWindow";
 import SeriesWindow from "@/app/management/_window/series/SeriesWindow";
 import SettingWindow from "@/app/management/_window/setting/SettingWindow";
 import useToast from "@/app/management/_hook/toast/useToast";
+import {useBodyAndHtmlOverflowHidden} from "@/app/management/_hook/useBodyAndHtmlOverflowHidden";
 
 
 type BackgroundProps = {
@@ -41,6 +42,7 @@ function BackgroundContent({ userInfo, folderInfo, seriesInfo }: BackgroundProps
     const folderObj = toObj(folderInfo);
     const seriesObj = toObj(seriesInfo)
     const trie = useMemo(() => buildTrie(folderObj), [folderObj])
+    useBodyAndHtmlOverflowHidden(true)
     const addToast = useToast();
 
 
@@ -138,7 +140,6 @@ function BackgroundContent({ userInfo, folderInfo, seriesInfo }: BackgroundProps
         ]).returnCommand()
         setWindows(commands)
     }, [setWindows])
-
 
 
     return (

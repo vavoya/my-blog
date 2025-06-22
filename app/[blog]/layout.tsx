@@ -17,6 +17,9 @@ export default async function Layout({children, params}: {children: React.ReactN
         <>
             <Header blog={blog} blogName={userInfoResponse.data.blog_name} />
             {children}
+            <footer>
+
+            </footer>
         </>
     );
 }
