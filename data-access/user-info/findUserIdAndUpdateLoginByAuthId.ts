@@ -2,8 +2,9 @@ import {client} from "@/lib/mongoDB/mongoClient";
 import {UserInfoDocument} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {UserIdDocumentByAuthId} from "@/data-access/user-info/types";
 import {COLLECTION_USER, DB} from "@/lib/mongoDB/const";
+import {ClientSession} from "mongodb";
 
-export default async function findUserIdAndUpdateLoginByAuthId(authId: UserInfoDocument["auth_id"]): Promise<UserIdDocumentByAuthId | null> {
+export default async function findUserIdAndUpdateLoginByAuthId(authId: UserInfoDocument["auth_id"], session?: ClientSession): Promise<UserIdDocumentByAuthId | null> {
     const coll = client.db(DB).collection<UserInfoDocument>(COLLECTION_USER);
     const filter = {
         auth_id: authId,
@@ -25,6 +26,7 @@ export default async function findUserIdAndUpdateLoginByAuthId(authId: UserInfoD
         {
             projection,
             returnDocument: "after",
+            session: session,
         }
     );
 }

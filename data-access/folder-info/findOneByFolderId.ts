@@ -5,7 +5,7 @@ import {ClientSession} from "mongodb";
 import {FolderInfoDocument} from "@/lib/mongoDB/types/documents/folderInfo.type";
 
 
-export default async function findOneAndDeleteFolderByFolderId(userId: UserInfoDocument['_id'], folderId: FolderInfoDocument['_id'], session?: ClientSession) {
+export default async function findOneByFolderId(userId: UserInfoDocument['_id'], folderId: FolderInfoDocument['_id'], session?: ClientSession) {
     const coll = client.db(DB).collection<FolderInfoDocument>(COLLECTION_FOLDER);
 
     const filter = {
@@ -13,5 +13,5 @@ export default async function findOneAndDeleteFolderByFolderId(userId: UserInfoD
         _id: folderId,
     };
 
-    return coll.findOneAndDelete(filter, { session: session });
+    return coll.findOne(filter, { session: session });
 }
