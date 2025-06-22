@@ -14,7 +14,7 @@ export default async function removeByUserId(params: RemoveInput): Promise<Remov
     session.startTransaction();
 
     try {
-        // 회원 정보 수정으로 끝내
+        // 1. 회원 정보 수정으로 끝내
         const result = await updateIsDeletedAndLastModified(new ObjectId(params.userId), session);
         if (!result) {
             await session.abortTransaction();

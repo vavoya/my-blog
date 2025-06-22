@@ -9,6 +9,7 @@ import {parseBlocks, shikiPromise} from "md-ast-parser";
 import getUserInfoByBlogUrl from "@/data-access/user-info/getUserInfoByBlogUrl";
 import getBannedAuthDocument from "@/data-access/banned-auth-list/getBannedAuthDocument";
 import isSignupAllowed from "@/data-access/settings/isSignupAllowed";
+import findUserIdAndUpdateLoginByAuthId from "@/data-access/user-info/findUserIdAndUpdateLoginByAuthId";
 
 
 export type CreateByAuthIdResult =
@@ -27,18 +28,7 @@ export default async function createByAuthId(params: CreateInput & { authId: str
     const blogUrl = `@${params.blogUrl}`
 
     try {
-        // 먼저 중복 url 여부 확인
-        const userInfoByBlogurl = await getUserInfoByBlogUrl(blogUrl, session);
-        if (userInfoByBlogurl) {
-            await session.abortTransaction();
-            return {
-                success: false,
-                error: "AlreadyRegistered", // 또는 "BlogAlreadyExists"
-                message: "이미 등록된 블로그입니다."
-            }
-        }
-
-        // 회원가입 가능한지 확인
+        // 1. 회원가입 가능한지 확인
         const isAllowed = await isSignupAllowed();
         if (!isAllowed) {
             await session.abortTransaction();
@@ -49,7 +39,18 @@ export default async function createByAuthId(params: CreateInput & { authId: str
             };
         }
 
-        // 차단된 유저의 회원가입 막기
+        // 2. 먼저 중복 url 여부 확인
+        const userInfoByBlogurl = await getUserInfoByBlogUrl(blogUrl, session);
+        if (userInfoByBlogurl) {
+            await session.abortTransaction();
+            return {
+                success: false,
+                error: "BlogAlreadyExists", // 또는 "BlogAlreadyExists"
+                message: "이미 등록된 블로그입니다."
+            }
+        }
+
+        // 3. 차단된 유저의 회원가입 막기
         const bannedUserDocument = await getBannedAuthDocument(params.authId);
         if (!!bannedUserDocument) {
             await session.abortTransaction();
@@ -60,8 +61,19 @@ export default async function createByAuthId(params: CreateInput & { authId: str
             };
         }
 
-        // users 생성 -> userId 얻기
-        const userInfo = await insertOneUserInfo(
+        // 4. 이미 등록된 유저
+        const userInfo = await findUserIdAndUpdateLoginByAuthId(params.authId, session);
+        if (userInfo) {
+            await session.abortTransaction();
+            return {
+                success: false,
+                error: "AlreadyRegistered",
+                message: "이미 등록된 계정입니다."
+            };
+        }
+
+        // 5. users 생성 -> userId 얻기
+        const newUserInfo = await insertOneUserInfo(
             {
                 _id: new ObjectId(),
                 auth_id: params.authId,
@@ -82,7 +94,7 @@ export default async function createByAuthId(params: CreateInput & { authId: str
             },
             session
         )
-        if (!userInfo.acknowledged) {
+        if (!newUserInfo.acknowledged) {
             await session.abortTransaction();
             return {
                 success: false,
@@ -93,12 +105,12 @@ export default async function createByAuthId(params: CreateInput & { authId: str
 
         await shikiPromise;
 
-        // folders, series, about 기본 생성
+        // 6. folders, series, about 기본 생성
         const results = await Promise.all([
             insertOneAboutInfo(
                 {
                     _id: new ObjectId,
-                    user_id: userInfo.insertedId,
+                    user_id: newUserInfo.insertedId,
                     content: "",
                     ast: parseBlocks([""]),
                 },
@@ -110,14 +122,14 @@ export default async function createByAuthId(params: CreateInput & { authId: str
                     folder_name: "~",
                     pfolder_id: null,
                     post_count: 0,
-                    user_id: userInfo.insertedId,
+                    user_id: newUserInfo.insertedId,
                 },
                 session
             ),
             insertOneSeries(
                 {
                     _id: new ObjectId,
-                    user_id: userInfo.insertedId,
+                    user_id: newUserInfo.insertedId,
                     series_name: "기본 시리즈",
                     series_description: "기본 시리즈입니다.",
                     post_list: [],
@@ -127,7 +139,6 @@ export default async function createByAuthId(params: CreateInput & { authId: str
                 session
             )
         ])
-
         if (results.some(result => !result.acknowledged)) {
             await session.abortTransaction();
             return {
@@ -136,7 +147,6 @@ export default async function createByAuthId(params: CreateInput & { authId: str
                 message: "기본 파일 생성에 실패했습니다."
             }
         }
-
 
         await session.commitTransaction();
         return {

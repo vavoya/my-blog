@@ -3,7 +3,7 @@ import {ObjectId} from "mongodb";
 import {UserInfoDocument} from "@/lib/mongoDB/types/documents/userInfo.type";
 import findOneAndUpdatePostCount from "@/data-access/folder-info/findOneAndUpdatePostCount";
 import {DeleteByUserIdType} from "@/services/server/folder/deleteByUserId.type";
-import deleteFolderByPostId from "@/data-access/folder-info/findOneAndDeleteFolderByFolderId";
+import findOneAndDeleteFolderByFolderId from "@/data-access/folder-info/findOneAndDeleteFolderByFolderId";
 import movePostsByFolderId from "@/data-access/post-info/movePostsByFolderId";
 import updateManyByPFolderId from "@/data-access/folder-info/updateManyByPFolderId";
 import {checkLastModified} from "@/services/server/checkLastModified";
@@ -35,7 +35,7 @@ export default async function deleteByUserId({lastModified, ...post}: DeleteByUs
         const newLastModified = checkedResult.lastModified;
 
         // 1. 폴더 찾고 삭제
-        const deletedFolder = await deleteFolderByPostId(userIdObjId, folderIdObjId, session);
+        const deletedFolder = await findOneAndDeleteFolderByFolderId(userIdObjId, folderIdObjId, session);
         if (!deletedFolder) {
             // 폴더 정보 못찾음
             await session.abortTransaction();

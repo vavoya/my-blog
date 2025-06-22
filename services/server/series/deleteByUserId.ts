@@ -42,7 +42,7 @@ export default async function deleteByUserId({lastModified, ...post}: DeleteByUs
             }
         }
 
-        // 시리즈가 포스트가 있으면  포스트들의 series_id를 null로 변경
+        // 2. 시리즈가 포스트가 있으면  포스트들의 series_id를 null로 변경
         const { acknowledged } = await updateManyByPostIds(userIdObjId, deletedSeries.post_list, {series_id: null}, session)
         if (!acknowledged) {
             await session.abortTransaction();

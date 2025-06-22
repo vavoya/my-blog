@@ -4,12 +4,14 @@ import {UserInfoDocument} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {MoveInput} from "@/services/server/folder/moveByUserId.type";
 import findOneAndUpdateByFolderId from "@/data-access/folder-info/findOneAndUpdateByFolderId";
 import {checkLastModified} from "@/services/server/checkLastModified";
+import findOneByFolderId from "@/data-access/folder-info/findOneByFolderId";
 
 
 export type PostByUserIdResult =
     | { success: true; data: {lastModified: UserInfoDocument['last_modified']}}
     | { success: false; error: "LastModifiedMismatch"; message: string }
     | { success: false; error: "UserNotFound"; message: string }
+    | { success: false; error: "pForderNotFound"; message: string }
     | { success: false; error: "UpdateFailed"; message: string }
     | { success: false; error: "TransactionError"; message: string; stack?: string };
 export default async function moveByUserId({
@@ -23,6 +25,8 @@ export default async function moveByUserId({
     session.startTransaction();
 
     const userIdObjId = new ObjectId(userId)
+    const pFolderIdObjId = new ObjectId(pFolderId)
+    const folderIdObjId = new ObjectId(folderId)
 
     try {
         // 버전 체크 & postId 갱신
@@ -33,8 +37,19 @@ export default async function moveByUserId({
         }
         const newLastModified = checkedResult.lastModified;
 
+        // 1. 루트 폴더를 선택
+        const pfolder = await findOneByFolderId(userIdObjId, pFolderIdObjId, session)
+        if (!pfolder) {
+            await session.abortTransaction();
+            return {
+                success: false,
+                error: "pForderNotFound",
+                message: "부모 폴더가 없습니다."
+            }
+        }
+
         // 2. 폴더 찾고 업데이트
-        const result = await findOneAndUpdateByFolderId(new ObjectId(userId), new ObjectId(folderId), {pfolder_id: new ObjectId(pFolderId)})
+        const result = await findOneAndUpdateByFolderId(userIdObjId, folderIdObjId, {pfolder_id: pFolderIdObjId}, session)
         if (!result) {
             await session.abortTransaction();
             return {
@@ -43,6 +58,7 @@ export default async function moveByUserId({
                 message: "폴더 갱신에 실패했습니다."
             }
         }
+
 
         await session.commitTransaction();
         return {

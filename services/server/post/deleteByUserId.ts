@@ -32,7 +32,7 @@ export default async function deleteByUserId({lastModified, ...post}: DeleteByUs
 
 
 
-        // 포스트 찾고 삭제
+        // 1. 포스트 찾고 삭제
         const deletedPost = await deletePostByPostId(userIdObjId, new ObjectId(post.postId), session);
         if (!deletedPost) {
             // 포스트 정보 못찾음
@@ -44,7 +44,7 @@ export default async function deleteByUserId({lastModified, ...post}: DeleteByUs
             }
         }
 
-        // 포스트가 series_id가 있으면 series_id에 포스트 삭제
+        // 2. 포스트가 series_id가 있으면 series_id에 포스트 삭제
         if (deletedPost.series_id) {
             const { acknowledged } = await removePosts(userIdObjId, deletedPost.series_id, [deletedPost._id], session)
             if (!acknowledged) {
@@ -59,8 +59,8 @@ export default async function deleteByUserId({lastModified, ...post}: DeleteByUs
         }
 
 
-        // [folderId] 찾고 count 업데이트
-        const updatedPrevFolderInfo = await findOneAndUpdatePostCount(userIdObjId, new ObjectId(post.folderId), -1);
+        // 3. [folderId] 찾고 count 업데이트
+        const updatedPrevFolderInfo = await findOneAndUpdatePostCount(userIdObjId, new ObjectId(deletedPost.folder_id), -1);
         if (!updatedPrevFolderInfo) {
             // 폴더 정보 못찾음
             await session.abortTransaction();

@@ -1,11 +1,11 @@
 import {client} from "@/lib/mongoDB/mongoClient";
-import {COLLECTION_FOLDER, DB} from "@/lib/mongoDB/const";
 import {ObjectId} from "mongodb";
 import {UserInfoDocument} from "@/lib/mongoDB/types/documents/userInfo.type";
-import getFolderInfoByUserId from "@/data-access/folder-info/getFolderInfoByUserId";
 import {FolderInfoDocument} from "@/lib/mongoDB/types/documents/folderInfo.type";
 import {PostInput} from "@/services/server/folder/postByUserId.type";
 import {checkLastModified} from "@/services/server/checkLastModified";
+import findOneByFolderId from "@/data-access/folder-info/findOneByFolderId";
+import insertOne from "@/data-access/folder-info/insertOne";
 
 
 export type Data = {folderId: FolderInfoDocument['_id'], lastModified: UserInfoDocument['last_modified']}
@@ -24,9 +24,6 @@ export default async function postByUserId({
                                            }: PostInput & { lastModified: string }): Promise<PostByUserIdResult> {
     const session = client.startSession()
 
-    const database = client.db(DB);
-    const folderInfoCollection = database.collection<FolderInfoDocument>(COLLECTION_FOLDER);
-
     session.startTransaction();
 
     const userIdObjId = new ObjectId(userId);
@@ -41,8 +38,8 @@ export default async function postByUserId({
         const newLastModified = checkedResult.lastModified;
 
         // 1. 부모 [folderId] 확인
-        const updatedFolderInfo = await getFolderInfoByUserId(new ObjectId(userId), new ObjectId(pFolderId));
-        if (!updatedFolderInfo) {
+        const pFolderInfo = await findOneByFolderId(new ObjectId(userId), new ObjectId(pFolderId), session);
+        if (!pFolderInfo) {
             // 폴더 정보 못찾음
             await session.abortTransaction();
             return {
@@ -61,7 +58,7 @@ export default async function postByUserId({
 
         }
         // 2. 폴더 생성
-        const result = await folderInfoCollection.insertOne(newFolder, {forceServerObjectId: true, session: session})
+        const result = await insertOne(newFolder, session);
         if (!result.acknowledged) {
             await session.abortTransaction();
             return {

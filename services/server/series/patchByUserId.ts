@@ -38,7 +38,7 @@ export default async function patchByUserId({
         }
         const newLastModified = checkedResult.lastModified;
 
-        // 시리즈 findOneAndUpdate로 찾으면서 업데이트 하기
+        // 1. 시리즈 findOneAndUpdate로 찾으면서 업데이트 하기
         const newPostListObjId = newPostList.map(postId => new ObjectId(postId))
         const seriesUpdateFields = {
             series_name: seriesName,
@@ -56,7 +56,7 @@ export default async function patchByUserId({
             }
         }
 
-        // 그리고 추가되는 녀석과 삭제 되는 녀석 분류해서 포스트 업데이트 하기
+        // 2. 그리고 추가되는 녀석과 삭제 되는 녀석 분류해서 포스트 업데이트 하기
         const {add, remove} = getAddedAndRemovedObjectIds(prevSeries.post_list, newPostListObjId);
 
         const addResult = await updateManyByPostIds(userIdObjId, add, {series_id: seriesIdObjId}, session)

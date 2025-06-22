@@ -1,5 +1,4 @@
 import {client} from "@/lib/mongoDB/mongoClient";
-import {COLLECTION_POST, DB} from "@/lib/mongoDB/const";
 import {PostInfoDocument} from "@/lib/mongoDB/types/documents/postInfo.type";
 import {PostInput} from "@/services/server/post/postByUserId.type";
 import {ObjectId} from "mongodb";
@@ -9,6 +8,7 @@ import {UserInfoDocument} from "@/lib/mongoDB/types/documents/userInfo.type";
 import findOneAndUpdatePostCount from "@/data-access/folder-info/findOneAndUpdatePostCount";
 import {parseBlocks, shikiPromise} from "md-ast-parser";
 import {slugify} from "@/utils/slugify";
+import insertOne from "@/data-access/post-info/insertOne";
 
 
 export type PostByUserIdResult =
@@ -28,9 +28,6 @@ export default async function postByUserId({
                                                lastModified,
 }: PostInput & { lastModified: string }): Promise<PostByUserIdResult> {
     const session = client.startSession()
-
-    const database = client.db(DB);
-    const postInfoCollection = database.collection<PostInfoDocument>(COLLECTION_POST);
 
     session.startTransaction();
 
@@ -58,7 +55,7 @@ export default async function postByUserId({
             }
         }
 
-        // 버전 체크 & postId 갱신
+        //  버전 체크 & postId 갱신
         const updatedUserInfo = await updateNextPostIdAndLastModified(new ObjectId(userId), new Date(lastModified), session);
         /*
         유저 정보를 못찾거나
@@ -68,7 +65,7 @@ export default async function postByUserId({
             const userInfo = await getUserInfoByUserId(new ObjectId(userId));
             await session.abortTransaction();
 
-            // 유저 정보를 찾았으면 버전 불일치
+            // 1. 유저 정보를 찾았으면 버전 불일치
             if (userInfo) {
                 return {
                     success: false,
@@ -76,7 +73,7 @@ export default async function postByUserId({
                     message: "블로그 정보가 최신 상태가 아닙니다."
                 }
             } else {
-                // 유저 정보 못찾음
+                // 2. 유저 정보 못찾음
                 return {
                     success: false,
                     error: "UserNotFound",
@@ -85,7 +82,7 @@ export default async function postByUserId({
             }
         }
 
-        // [folderId] 찾고 count 업데이트
+        // 3. [folderId] 찾고 count 업데이트
         const updatedFolderInfo = await findOneAndUpdatePostCount(new ObjectId(userId), new ObjectId(folderId), 1);
         if (!updatedFolderInfo) {
             // 폴더 정보 못찾음
@@ -100,7 +97,8 @@ export default async function postByUserId({
         // postId를 slug 뒤에 붙이기
         newPostInfo.post_url += `-${updatedUserInfo.next_post_id - 1}`
 
-        const result = await postInfoCollection.insertOne(newPostInfo, {session: session, forceServerObjectId: true});
+        // 4. 새 포스트 생성
+        const result = await insertOne(newPostInfo, session);
         if (!result.acknowledged) {
             await session.abortTransaction();
             return {
@@ -109,7 +107,6 @@ export default async function postByUserId({
                 message: "포스트 생성에 실패했습니다."
             }
         }
-
 
         await session.commitTransaction();
         return {

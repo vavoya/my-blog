@@ -50,7 +50,7 @@ export default async function postByUserId({
             user_id: new ObjectId(userId),
 
         }
-        // 2. 폴더 생성
+        // 1. 시리즈 생성
         const result = await insertOne(newSeries, session);
         if (!result.acknowledged) {
             await session.abortTransaction();

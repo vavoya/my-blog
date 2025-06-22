@@ -33,10 +33,10 @@ export default async function patchByUserId({lastModified, ...post}: PatchInput 
         }
         const newLastModified = checkedResult.lastModified;
 
+        // 1. 포스트 못찾음
         const postIdObjId = new ObjectId(post._id)
         const oldPost = await getPostByPostId(userIdObjId, postIdObjId);
         if (!oldPost) {
-            // 폴더 정보 못찾음
             await session.abortTransaction();
             return {
                 success: false,
@@ -50,7 +50,7 @@ export default async function patchByUserId({lastModified, ...post}: PatchInput 
             const updatedPrevFolderInfo = await findOneAndUpdatePostCount(userIdObjId, oldPost.folder_id, -1, session);
             const updatedNextFolderInfo = await findOneAndUpdatePostCount(userIdObjId, nextFolderIdObjId, 1, session);
             if (!updatedPrevFolderInfo || !updatedNextFolderInfo) {
-                // 폴더 정보 못찾음
+                // 2. 폴더 정보 못찾음
                 await session.abortTransaction();
                 return {
                     success: false,
@@ -75,6 +75,7 @@ export default async function patchByUserId({lastModified, ...post}: PatchInput 
             }
         };
 
+        // 3. 포스트 수정에 실패
         const result = await findOneAndUpdateByPostId(userIdObjId, postIdObjId, updateFields, session)
         if (!result) {
             await session.abortTransaction();

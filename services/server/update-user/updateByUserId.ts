@@ -27,7 +27,7 @@ export default async function updateByUserId(params: UpdateInput & { lastModifie
 
         const newLastModified = checkedResult.lastModified;
 
-        // 회원 정보 수정으로 끝내
+        // 1. 회원 정보 수정으로 끝내
         const result = await updateUserInfo(
             userIdObjId,
             params.userName,
