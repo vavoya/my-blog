@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import Image from "next/image";
 import {isValidUrl} from "@/utils/isValidUrl";
 
-const ERROR_MESSAGE = {
+export const ERROR_MESSAGE = {
     INVALID_URL: "유효하지 않은 url 입니다.",
     LOADING: "이미지를 불러올 수 없습니다.",
 }
