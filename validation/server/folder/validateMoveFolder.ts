@@ -6,7 +6,5 @@ export function validateMoveFolder(body: any): body is MoveInput {
         return false
     }
 
-    return !(body.pFolderId === "");
+    return body.folderId !== "" || body.pFolderId !== "" || body.folderId !== body.pFolderId;
 }
-
-validateMoveFolder({})
