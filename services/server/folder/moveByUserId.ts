@@ -6,7 +6,6 @@ import findOneAndUpdateByFolderId from "@/data-access/folder-info/findOneAndUpda
 import {checkLastModified} from "@/services/server/checkLastModified";
 import findOneByFolderId from "@/data-access/folder-info/findOneByFolderId";
 
-
 export type PostByUserIdResult =
     | { success: true; data: {lastModified: UserInfoDocument['last_modified']}}
     | { success: false; error: "LastModifiedMismatch"; message: string }
@@ -14,6 +13,21 @@ export type PostByUserIdResult =
     | { success: false; error: "pForderNotFound"; message: string }
     | { success: false; error: "UpdateFailed"; message: string }
     | { success: false; error: "TransactionError"; message: string; stack?: string };
+/**
+ * 주어진 userId와 folderId, pFolderId에 해당하는 사용자의 폴더를 이동합니다..
+ *
+ * 다음 절차로 동작합니다:
+ * 1. 트랜잭션 시작
+ * 2. `lastModified` 버전 검증
+ * 3. 이동할 폴더를 찾습니다 (루트 폴더이면 실패)
+ * 4. 이동할 폴더의 pfolder_id를 수정합니다.
+ * 5. 트랜잭션 커밋
+ *
+ * 중간에 실패 시 트랜잭션을 중단하고 에러 정보를 반환합니다.
+ *
+ * @param input 사용자 ID, 폴더 ID, 이동 대상 폴더 ID, lastModified 버전을 포함한 요청 데이터
+ * @returns 업데이트 성공 여부 및 새로운 lastModified 값 또는 에러 정보
+ */
 export default async function moveByUserId({
                                                  userId,
                                                  folderId,

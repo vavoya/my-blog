@@ -16,6 +16,21 @@ export type PostByUserIdResult =
     | { success: false; error: "FolderNotFound"; message: string }
     | { success: false; error: "InsertFailed"; message: string }
     | { success: false; error: "TransactionError"; message: string; stack?: string };
+/**
+ * 주어진 userId와 pFolderId에 해당하는 사용자의 폴더를 생성합니다.
+ *
+ * 다음 절차로 동작합니다:
+ * 1. 트랜잭션 시작
+ * 2. `lastModified` 버전 검증
+ * 3. 부모 폴더의 존재 여부를 확인합니다.
+ * 4. 부모 폴더 하위에 새 폴더를 생성합니다.
+ * 5. 트랜잭션 커밋
+ *
+ * 중간에 실패 시 트랜잭션을 중단하고 에러 정보를 반환합니다.
+ *
+ * @param input 사용자 ID, 부모 폴더 ID, 새 폴더 이름, lastModified 버전을 포함한 요청 데이터
+ * @returns 업데이트 성공 여부 및 새로운 lastModified 값 또는 에러 정보
+ */
 export default async function postByUserId({
                                                userId,
                                                pFolderId,

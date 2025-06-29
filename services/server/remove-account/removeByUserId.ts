@@ -8,6 +8,20 @@ export type RemoveByUserIdResult =
     | { success: true;}
     | { success: false; error: "UserNotFound"; message: string }
     | { success: false; error: "TransactionError"; message: string; stack?: string };
+/**
+ * 주어진 정보로 사용자 정보를 제거합니다.
+ *
+ * 다음 절차로 동작합니다:
+ * 1. 트랜잭션 시작
+ * 2. `lastModified` 버전 검증
+ * 6. 회원 정보를 탈퇴로 수정합니다.
+ * 6. 트랜잭션 커밋
+ *
+ * 중간에 실패 시 트랜잭션을 중단하고 에러 정보를 반환합니다.
+ *
+ * @param params userId
+ * @returns 업데이트 성공 여부 및 새로운 lastModified 값 또는 에러 정보
+ */
 export default async function removeByUserId(params: RemoveInput): Promise<RemoveByUserIdResult> {
     const session = client.startSession()
 

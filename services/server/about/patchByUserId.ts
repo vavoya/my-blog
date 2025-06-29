@@ -13,6 +13,21 @@ export type PatchByUserIdResult =
     | { success: false; error: "UserNotFound"; message: string }
     | { success: false; error: "UpdateAboutError"; message: string }
     | { success: false; error: "TransactionError"; message: string; stack?: string };
+/**
+ * 주어진 userId에 해당하는 사용자의 소개글을 수정합니다.
+ *
+ * 다음 절차로 동작합니다:
+ * 1. 트랜잭션 시작
+ * 2. `lastModified` 버전 검증
+ * 3. Markdown 파싱 및 AST 생성
+ * 4. 소개글 문서 업데이트
+ * 5. 트랜잭션 커밋
+ *
+ * 중간에 실패 시 트랜잭션을 중단하고 에러 정보를 반환합니다.
+ *
+ * @param input 사용자 ID, 콘텐츠, lastModified 버전을 포함한 요청 데이터
+ * @returns 업데이트 성공 여부 및 새로운 lastModified 값 또는 에러 정보
+ */
 export default async function patchByUserId({lastModified, ...post}: PatchInput & { lastModified: string }): Promise<PatchByUserIdResult> {
     const session = client.startSession()
 

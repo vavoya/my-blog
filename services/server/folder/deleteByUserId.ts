@@ -17,6 +17,22 @@ export type DeleteByUserIdResult =
     | { success: false; error: "DeleteFailed"; message: string }
     | { success: false; error: "UpdatePostFailed"; message: string }
     | { success: false; error: "TransactionError"; message: string; stack?: string };
+/**
+ * 주어진 userId와 folderId에 해당하는 사용자의 폴더를 삭제합니다.
+ *
+ * 다음 절차로 동작합니다:
+ * 1. 트랜잭션 시작
+ * 2. `lastModified` 버전 검증
+ * 3. 타겟 폴더를 찾고 삭제
+ * 4. 상위 폴더에 타겟 폴더의 postCount를 이관
+ * 5. 타겟 폴더 요소의 포스트들의 folder_id를 상위 folder_id로 변경
+ * 6. 트랜잭션 커밋
+ *
+ * 중간에 실패 시 트랜잭션을 중단하고 에러 정보를 반환합니다.
+ *
+ * @param input 사용자 ID, 폴더 ID, lastModified 버전을 포함한 요청 데이터
+ * @returns 업데이트 성공 여부 및 새로운 lastModified 값 또는 에러 정보
+ */
 export default async function deleteByUserId({lastModified, ...post}: DeleteByUserIdType & { lastModified: string }): Promise<DeleteByUserIdResult> {
     const session = client.startSession()
 

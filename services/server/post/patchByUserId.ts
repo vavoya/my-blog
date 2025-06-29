@@ -17,6 +17,21 @@ export type PutByUserIdResult =
     | { success: false; error: "UpdateFolderError"; message: string }
     | { success: false; error: "PostNotFound"; message: string }
     | { success: false; error: "TransactionError"; message: string; stack?: string };
+/**
+ * 주어진 userId와 postId 해당하는 사용자의 포스트를 수정합니다.
+ *
+ * 다음 절차로 동작합니다:
+ * 1. 트랜잭션 시작
+ * 2. `lastModified` 버전 검증
+ * 3. 해당 포스트를 탐색합니다.
+ * 4. 포스트 내용을 ast 트리로 변환하고, 포스트를 업데이트 합니다.
+ * 5. 트랜잭션 커밋
+ *
+ * 중간에 실패 시 트랜잭션을 중단하고 에러 정보를 반환합니다.
+ *
+ * @param input 사용자 ID, 폴더 ID, 폴더 정보, lastModified 버전을 포함한 요청 데이터
+ * @returns 업데이트 성공 여부 및 새로운 lastModified 값 또는 에러 정보
+ */
 export default async function patchByUserId({lastModified, ...post}: PatchInput & { lastModified: string }): Promise<PutByUserIdResult> {
     const session = client.startSession()
 

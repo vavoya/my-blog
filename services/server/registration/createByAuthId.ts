@@ -20,6 +20,23 @@ export type CreateByAuthIdResult =
     | { success: false; error: "BlogAlreadyExists"; message: string }
     | { success: false; error: "BannedUser"; message: string }
     | { success: false; error: "TransactionError"; message: string; stack?: string };
+/**
+ * 주어진 정보로 사용자 정보를 생성합니다..
+ *
+ * 다음 절차로 동작합니다:
+ * 1. 트랜잭션 시작
+ * 2. `lastModified` 버전 검증
+ * 3. 이미 등록된 url 인지 확인합니다
+ * 4. 차단된 authId의 가입을 막습니다
+ * 5. 이미 등록된 유저인지 확입합니다
+ * 6. users 생성하고, userId를 얻습니다.
+ * 6. 트랜잭션 커밋
+ *
+ * 중간에 실패 시 트랜잭션을 중단하고 에러 정보를 반환합니다.
+ *
+ * @param params 사용자 이름, 블로그 이름, 블로그 URL, lastModified 버전을 포함한 요청 데이터
+ * @returns 업데이트 성공 여부 및 새로운 lastModified 값 또는 에러 정보
+ */
 export default async function createByAuthId(params: CreateInput & { authId: string, email: string }): Promise<CreateByAuthIdResult> {
     const session = client.startSession()
 

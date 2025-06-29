@@ -11,6 +11,20 @@ export type UpdateByUserIdResult =
     | { success: false; error: "LastModifiedMismatch"; message: string }
     | { success: false; error: "UserNotFound"; message: string }
     | { success: false; error: "TransactionError"; message: string; stack?: string };
+/**
+ * 주어진 userId의 사용자 정보를 수정합니다..
+ *
+ * 다음 절차로 동작합니다:
+ * 1. 트랜잭션 시작
+ * 2. `lastModified` 버전 검증
+ * 3. 유저 정보를 수정합니다
+ * 4. 트랜잭션 커밋
+ *
+ * 중간에 실패 시 트랜잭션을 중단하고 에러 정보를 반환합니다.
+ *
+ * @param params 사용자 ID, 사용자 정보, lastModified 버전을 포함한 요청 데이터
+ * @returns 업데이트 성공 여부 및 새로운 lastModified 값 또는 에러 정보
+ */
 export default async function updateByUserId(params: UpdateInput & { lastModified: string }): Promise<UpdateByUserIdResult> {
     const session = client.startSession()
 
