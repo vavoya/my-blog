@@ -125,7 +125,7 @@ export default function WindowProvider({ commands }: WindowProviderProps) {
                     }
 
                     return (
-                        <WindowLayout key={windowObj.id} zIndex={zIndex} deleteWindow={deleteWindow} onFocusChange={onFocusChange} isFocused={isFocused} x={windowObj.x} y={windowObj.y} width={windowObj.width} height={windowObj.height} name={windowObj.name}>
+                        <WindowLayout id={windowObj.id} key={windowObj.id} zIndex={zIndex} deleteWindow={deleteWindow} onFocusChange={onFocusChange} isFocused={isFocused} x={windowObj.x} y={windowObj.y} width={windowObj.width} height={windowObj.height} name={windowObj.name}>
                             {windowObj.node}
                         </WindowLayout>
                     )

@@ -4,7 +4,7 @@ import {useCallback, useMemo} from "react";
 import styles from "./seriesWindow.module.scss";
 import {createAddSeriesAsyncTask} from "@/app/management/_window/series/handlers/createAddSeriesAsyncTask";
 import {formatDate} from "@/utils/formatDate";
-import SeriesContentWindow from "@/app/management/_window/seriesContent/SeriesContentWindow";
+import SeriesContentWindow from "@/app/management/_window/series-content/SeriesContentWindow";
 import {WindowCommandBuilder} from "@/app/management/_window/provider/utils/windowCommands";
 import createWindowObj from "@/app/management/_window/provider/utils/createWindowObj";
 

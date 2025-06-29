@@ -18,7 +18,7 @@ export default function TreeBranch({folderObj, folderChildrenMap, folderId, open
     const folderChildren = folderChildrenMap[folderId];
 
     return (
-        <div className={styles.treeBranch}>
+        <div id={folder._id} className={styles.treeBranch}>
             <div className={styles.folder}>
                 <button tabIndex={0}
                         className={styles.folderInfo}

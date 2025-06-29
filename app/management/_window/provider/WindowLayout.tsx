@@ -17,6 +17,7 @@ export type Layout = {
     height: number;
 }
 type WindowLayoutProps = {
+    id: string;
     zIndex: number;
     x: number;
     y: number;
@@ -28,7 +29,7 @@ type WindowLayoutProps = {
     isFocused?: boolean;
     children: ReactNode;
 }
-export default function WindowLayout({zIndex, x, y, width, height, name, deleteWindow, onFocusChange, isFocused = false, children}: WindowLayoutProps) {
+export default function WindowLayout({id, zIndex, x, y, width, height, name, deleteWindow, onFocusChange, isFocused = false, children}: WindowLayoutProps) {
     const elementRef = useRef<HTMLDivElement>(null);
     const headRef = useRef<HTMLDivElement>(null);
     const nextLayout = useRef<Layout>({
@@ -119,7 +120,7 @@ export default function WindowLayout({zIndex, x, y, width, height, name, deleteW
 
 
     return (
-        <div style={{zIndex: zIndex}} className={isFocused ? styles.windowLayout : styles.windowLayout_disabled} ref={elementRef} onPointerDown={onFocusChange}>
+        <div id={id} style={{zIndex: zIndex}} className={isFocused ? styles.windowLayout : styles.windowLayout_disabled} ref={elementRef} onPointerDown={onFocusChange}>
             <div className={isFocused ? styles.windowPointerLayout : styles.windowPointerLayout_disabled}>
                 <div className={styles.windowHeader} ref={headRef} onPointerDown={positionHandler.onPointerDown} onPointerMove={positionHandler.onPointerMove} onPointerUp={positionHandler.onPointerUp}>
                     <h2>{name}</h2>

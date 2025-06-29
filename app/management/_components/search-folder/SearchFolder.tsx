@@ -1,7 +1,7 @@
 import {FolderInfoResponse} from "@/lib/mongoDB/types/documents/folderInfo.type";
 import {FolderObj} from "@/components/modal/utils/toObj";
 import TrieSearch from "trie-search";
-import {useRef, useState} from "react";
+import {useMemo, useRef, useState} from "react";
 import useRootMouseDownOutside from "@/hook/useRootMouseDownOutside";
 import {buildFolderPath} from "@/utils/buildFolderPath";
 
@@ -20,15 +20,19 @@ type SearchFolderProps = {
     }
     placeholder?: string;
     labelText?: string;
+    excludeIds?: FolderInfoResponse['_id'][];
 }
 
-export default function SearchFolder({ selectFolder, folderObj, trie, initFolderId, classNames = {}, placeholder, labelText }: SearchFolderProps) {
+export default function SearchFolder({ selectFolder, folderObj, trie, initFolderId, classNames = {}, placeholder, labelText, excludeIds }: SearchFolderProps) {
     const [ searchNameList, setSearchNameList] = useState<FolderInfoResponse[]>([]);
     const [ selectedFolder, setSelectedFolder ] = useState<FolderInfoResponse | undefined>(initFolderId ? folderObj[initFolderId] : undefined);
     const ulRef = useRef<HTMLUListElement>(null);
     useRootMouseDownOutside(ulRef, () => setSearchNameList([]))
 
     const selectedFolderPath = selectedFolder ? buildFolderPath(selectedFolder, folderObj) : undefined;
+
+    const excludeSet = useMemo(() => new Set(excludeIds), [excludeIds]);
+    const filteredList = searchNameList.filter(folder => !excludeSet.has(folder._id));
 
     return (
         <>
@@ -46,29 +50,30 @@ export default function SearchFolder({ selectFolder, folderObj, trie, initFolder
                    placeholder={placeholder ?? "이동할 폴더 이름을 입력하세요."} />
             <div className={classNames?.listBoxRoot}>
                 {
-                    (searchNameList.length > 0) && (
+                    (filteredList.length > 0) && (
                         <ul ref={ulRef} role="listbox" className={classNames?.listBox}>
                             {
-                                searchNameList.map(folder => (
-                                    <li role="option"
+                                filteredList.map(folder => (
+                                    <li
+                                        role="option"
                                         aria-selected="false"
                                         tabIndex={0}
                                         key={folder._id}
                                         className={classNames?.list}
                                         onClick={() => {
-                                            setSearchNameList([])
+                                            setSearchNameList([]);
                                             setSelectedFolder(folder);
                                             selectFolder(folder);
-                                        }}>
-                                    <span>
-                                        {buildFolderPath(folder, folderObj)}
-                                    </span>
+                                        }}
+                                    >
+                                        <span>{buildFolderPath(folder, folderObj)}</span>
                                     </li>
                                 ))
                             }
                         </ul>
                     )
                 }
+
             </div>
             <span className={classNames?.text}>
                 { selectedFolderPath  }

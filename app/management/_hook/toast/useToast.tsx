@@ -10,13 +10,25 @@ const addToastRef = {
     }
 }
 /**
+ * 토스트 알림 기능을 제공하는 커스텀 훅
  *
- * @Return: addToast {
- *     id: new Date().toISOString()
- *     message: 메세지,
- *     height: 0 (디폴트 고정),
- *     type: success | error | warning | info
+ * @return addToast {
+ *   id: 타임스탬프 문자열 (new Date().toISOString()),
+ *   message: 표시할 메시지 내용,
+ *   height: 토스트의 높이값 (0으로 고정),
+ *   type: 토스트 유형 (success | error | warning | info)
  * }
+ *
+ * 사용 예시:
+ * ```js
+ * const addToast = useToast();
+ * addToast({
+ *   id: new Date().toISOString(),
+ *   message: '저장되었습니다',
+ *   type: 'success',
+ *   height: 0
+ * });
+ * ```
  */
 export default function useToast() {
     useEffect(() => {

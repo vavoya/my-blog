@@ -161,6 +161,7 @@ export default function FolderWindow() {
                     <MoveModal
                         ref={modalRef}
                         folderObj={folderObj}
+                        currentFolderId={folderId}
                         name={folderObj[folderId].folder_name}
                         moveFolder={moveFolder}
                         cancel={cancel}/>, document.body

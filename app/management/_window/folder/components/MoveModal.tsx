@@ -13,8 +13,9 @@ type MoveModalProps = {
     folderObj: FolderObj;
     moveFolder: MoveFolder;
     cancel: MouseEventHandler;
+    currentFolderId: FolderInfoResponse["_id"];
 }
-export default function MoveModal({ref, name, folderObj, cancel, moveFolder} : MoveModalProps) {
+export default function MoveModal({ref, name, folderObj, cancel, moveFolder, currentFolderId} : MoveModalProps) {
     const [ selectedFolder, setSelectedFolder ] = useState<FolderInfoResponse>();
     const trie = useManagementStore((state) => state.trie);
 
@@ -32,6 +33,7 @@ export default function MoveModal({ref, name, folderObj, cancel, moveFolder} : M
                 <SearchFolder selectFolder={selectFolder}
                               folderObj={folderObj}
                               trie={trie}
+                              excludeIds={[currentFolderId]}
                               classNames={{
                                   input: styles.modalText,
                                   listBoxRoot: moveModalStyles.listBoxRoot,

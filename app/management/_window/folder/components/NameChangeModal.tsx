@@ -24,7 +24,8 @@ export default function NameChangeModal({ref, name, cancel, renameFolder} : Name
                        tabIndex={0}
                        className={styles.modalText}
                        maxLength={FOLDER_NAME_LIMIT}
-                       placeholder={name} onChange={e => {
+                       placeholder={name}
+                       onChange={e => {
                            setNewName(e.target.value);
                        }}/>
             </div>

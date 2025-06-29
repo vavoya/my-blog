@@ -12,13 +12,14 @@ import {formatDate} from "@/utils/formatDate";
 import useRootMouseDownOutside from "@/hook/useRootMouseDownOutside";
 import ConfirmModal from "@/app/management/_window/folder/components/ConfirmModal";
 import useAsyncTaskManager from "@/hook/useAsyncTaskManager";
-import {createDeleteSeriesAsyncTask} from "@/app/management/_window/seriesContent/handlers/createDeleteSeriesAsyncTask";
-import {createUpdateSeriesAsyncTask} from "@/app/management/_window/seriesContent/handlers/createUpdateSeriesAsyncTask";
+import {createDeleteSeriesAsyncTask} from "@/app/management/_window/series-content/handlers/createDeleteSeriesAsyncTask";
+import {createUpdateSeriesAsyncTask} from "@/app/management/_window/series-content/handlers/createUpdateSeriesAsyncTask";
 import {useQueryClient} from "@tanstack/react-query";
 import {WindowCommandBuilder} from "@/app/management/_window/provider/utils/windowCommands";
 import {WindowObj} from "@/app/management/_window/provider/types";
 import {FolderObj, SeriesObj} from "@/components/modal/utils/toObj";
 import {UserInfoResponse} from "@/lib/mongoDB/types/documents/userInfo.type";
+import {reorderSeriesIds} from "@/app/management/_window/series-content/utils/reorderSeriesIds";
 
 
 type SeriesContentWindowProps = {
@@ -244,18 +245,8 @@ function SeriesContentSection({folderObj, seriesId, seriesObj, userInfo}: Series
                                                        const target = e.target as HTMLInputElement;
                                                        const number = e.target.valueAsNumber;
 
-                                                       const newPostIds = [...postIds];
-
-                                                       if (!isNaN(number)) {
-                                                           const t = Math.max(number - 1, 0); // 0-based index
-                                                           const t2 = Math.min(t, postIds.length - 1); // 최대 index까지 허용
-
-                                                           newPostIds.splice(order, 1);
-                                                           newPostIds.splice(t2, 0, post._id);
-
-                                                           target.value = String(t2 + 1); // 사용자에게는 1-based로 보여줌
-                                                       }
-
+                                                       const newPostIds = reorderSeriesIds(number, postIds, order, post._id);
+                                                       target.value = String(order + 1);
                                                        setPostIds(newPostIds);
                                                    }}
                                                    onKeyDown={(e) => {

@@ -24,7 +24,8 @@ export default function AddFolderModal({ref, name, cancel, addFolder} : AddFolde
                        tabIndex={0}
                        className={styles.modalText}
                        maxLength={FOLDER_NAME_LIMIT}
-                       placeholder={"새 폴더"} onChange={e => {
+                       placeholder={"새 폴더"}
+                       onChange={e => {
                            setChildName(e.target.value);
                        }}/>
             </div>
