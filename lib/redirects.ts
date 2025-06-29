@@ -8,7 +8,7 @@ export async function redirects(pathname: string, redirectTo: string) {
     // 절대 경로 또는 origin이 다른 경우에는 루트로 보내기
     try {
         if ((new URL(redirectTo)).origin !== origin) {
-            return redirect('/')
+            return redirect(encodeURI('/'))
         }
     } catch {
 
@@ -29,17 +29,18 @@ export async function redirects(pathname: string, redirectTo: string) {
 
     // 관리 페이지: 인증 필요
     if (isManagement && needAuth) {
-        return redirect(`/login?redirectTo=${pathname}`)
+        return redirect(encodeURI(`/login?redirectTo=${pathname}`));
     }
 
     // 등록 페이지: 등록 안 된 사용자만 접근 가능
     if (isRegister && !(!needAuth && needRegistration)) {
-        return redirect(redirectTo || '/');
+
+        return redirect(encodeURI(redirectTo || '/'));
     }
 
     // 로그인 페이지
     if (isLogin && !needAuth && !needRegistration) {
-        return redirect(redirectTo || '/'); // 이미 완료된 사용자
+        return redirect(encodeURI(redirectTo || '/')); // 이미 완료된 사용자
     }
 
     return null;
