@@ -10,32 +10,52 @@ import {revalidateTag} from "next/cache";
 import {auth} from "@/auth";
 
 /**
- * POST /api/client/posts/by-session
+ * POST /api/client/me/posts
  *
- * 사용자 세션 기반으로 새로운 포스트를 생성합니다.
+ * 인증된 사용자의 새로운 포스트를 생성한다.
+ * 제목, 내용, 설명, 썸네일 URL, 폴더 ID 등의 정보를 포함하여 포스트를 생성한다.
  *
  * @param {NextRequest} req - Next.js API 요청 객체
- * @returns {Promise<Response>} - API 응답 객체
+ * @returns {Promise<NextResponse<ResBodyType>>} - API 응답 객체
  *
  * 성공 시:
- *   - 200 OK 및 생성된 포스트 정보 반환
- * 클라이언트 오류:
- *   - 400 Bad Request: 입력 데이터 유효성 검사 실패
- *   - 401 Unauthorized: 인증 실패 (checkAuth 내부 처리)
- * 서버 오류:
- *   - 404 Not Found: 유저 정보 또는 관련 리소스를 찾을 수 없음
- *   - 409 Conflict: 버전 충돌
- *   - 500 Internal Server Error: 서버 내부 처리 오류 발생
- *
- * 요청 바디 예시:
+ * ```json
  * {
- *   "userId": "유저 아이디", (근데 어차피 auth 걸로 대체)
+ *   "status": 200,
+ *   "data": {
+ *     "lastModified": "ISO8601 문자열"
+ *   }
+ * }
+ * ```
+ *
+ * 클라이언트 오류:
+ * ```json
+ * {
+ *   "status": 400|401,
+ *   "message": "오류 메시지"
+ * }
+ * ```
+ *
+ * 서버 오류:
+ * ```json
+ * {
+ *   "status": 404|409|500,
+ *   "message": "오류 메시지"
+ * }
+ * ```
+ *
+ * 요청 예시:
+ * ```json
+ * POST /api/client/me/posts
+ * {
  *   "postName": "제목",
  *   "postContent": "내용",
  *   "postDescription": "설명",
  *   "thumbUrl": "썸네일 URL",
- *   "[folderId]": "폴더 ID"
+ *   "folderId": "폴더 ID",
+ *   "lastModified": "2024-05-28T01:23:45.678Z"
  * }
+ * ```
  */
 export const POST = auth(async function POST(req): Promise<NextResponse<ResBodyType>> {
     const authResult = await checkAuth(req);

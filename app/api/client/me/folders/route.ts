@@ -10,32 +10,60 @@ import {revalidateTag} from "next/cache";
 import {auth} from "@/auth";
 
 /**
- * POST /api/client/folders-info/by-session
+ * PATCH /api/client/me/folders/[folderId]
  *
- * 사용자 세션 기반으로 새로운 폴더를 생성한다.
+ * 인증된 사용자의 특정 폴더 정보를 부분 수정한다.
+ * 경로 파라미터 folderId에 해당하는 폴더의 이름 또는 위치(부모 폴더)를 수정한다.
  *
  * @param {NextRequest} req - Next.js API 요청 객체
- * @returns {Promise<Response>} - API 응답 객체
+ * @param {Object} params - 경로 파라미터 객체
+ * @param {string} params.folderId - 수정할 폴더의 고유 ID
+ * @returns {Promise<NextResponse<PatchResBodyType>>} - API 응답 객체
  *
  * 성공 시:
- *   - 200 OK
- * 클라이언트 오류:
- *   - 400 Bad Request: 입력 데이터 유효성 검사 실패
- *   - 401 Unauthorized: 인증 실패 (checkAuth 내부 처리)
- * 서버 오류:
- *   - 404 Not Found: 유저 정보 또는 관련 리소스를 찾을 수 없음
- *   - 409 Conflict: 버전 충돌
- *   - 500 Internal Server Error: 서버 내부 처리 오류 발생
- *
- * 요청 바디 예시: todo: 폴더로 고치기
+ * ```json
  * {
- *   "postName": "제목",
- *   "postContent": "내용",
- *   "postDescription": "설명",
- *   "thumbUrl": "썸네일 URL",
- *   "[folderId]": "폴더 ID",
- *   "lastModified": "2024-05-29T00:00:00.000Z" // ISO8601 문자열, 필수
+ *   "status": 200,
+ *   "data": {
+ *     "lastModified": "ISO8601 문자열"
+ *   }
  * }
+ * ```
+ *
+ * 클라이언트 오류:
+ * ```json
+ * {
+ *   "status": 400|401,
+ *   "message": "오류 메시지"  
+ * }
+ * ```
+ *
+ * 서버 오류:
+ * ```json
+ * {
+ *   "status": 404|409|500,
+ *   "message": "오류 메시지"
+ * }
+ * ```
+ *
+ * 요청 예시:
+ * ```json
+ * PATCH /api/client/me/folders/abc123
+ * {
+ *   "folderId": "abc123",
+ *   "name": "새 폴더 이름",
+ *   "lastModified": "2024-05-28T01:23:45.678Z"
+ * }
+ * ```
+ * 또는
+ * ```json 
+ * PATCH /api/client/me/folders/abc123
+ * {
+ *   "folderId": "abc123",
+ *   "parentFolderId": "부모폴더ID",
+ *   "lastModified": "2024-05-28T01:23:45.678Z"
+ * }
+ * ```
  */
 export const POST =  auth(async function POST(req): Promise<NextResponse<ResBodyType>> {
     const authResult = await checkAuth(req);

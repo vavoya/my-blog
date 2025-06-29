@@ -9,35 +9,50 @@ import {revalidateTag} from "next/cache";
 
 
 /**
- * POST /api/client/registration/by-session
+ * PATCH /api/client/me/registration
  *
- * 세션 기반 사용자 정보를 바탕으로 신규 등록(회원 생성 또는 블로그 사용자 등록)을 수행합니다.
+ * 인증된 사용자의 회원 정보를 부분 수정한다.
+ * 블로그 이름, 사용자 이름, 블로그 URL 등의 정보를 수정할 수 있다.
  *
  * @param {NextRequest} req - Next.js API 요청 객체
- * @returns {Promise<NextResponse<ResBodyType>>} - JSON 형태의 API 응답
+ * @returns {Promise<NextResponse<PatchResBodyType>>} - API 응답 객체
  *
- * 요청 본문(JSON):
+ * 성공 시:
+ * ```json
  * {
- *   "postName": "제목",
- *   "postContent": "본문",
- *   "postDescription": "설명",
- *   "thumbUrl": "썸네일 이미지 URL",
- *   "[folderId]": "소속 폴더 ID"
+ *   "status": 200,
+ *   "data": {
+ *     "lastModified": "ISO8601 문자열"
+ *   }
  * }
- * ※ userId는 세션에서 자동 추출되므로 요청에 포함하지 않음
+ * ```
  *
- * 응답 종류:
- *   - 200 OK: 등록 성공
- *   - 400 Bad Request: 입력 데이터 유효성 실패
- *   - 401 Unauthorized: 인증 세션 없음
- *   - 404 Not Found: 폴더 또는 사용자 정보 없음
- *   - 409 Conflict: 요청 시점의 데이터 버전 충돌
- *   - 500 Internal Server Error: 데이터 삽입 또는 트랜잭션 처리 중 서버 오류
+ * 클라이언트 오류:
+ * ```json
+ * {
+ *   "status": 400|401,
+ *   "message": "오류 메시지"
+ * }
+ * ```
  *
- * 내부 처리 흐름:
- *   1. 세션 인증 (`auth()`) → 인증 실패 시 401
- *   2. 요청 바디 유효성 검사 → 실패 시 400
- *   3. createByAuthId() 호출 → 상황별 오류 분기 및 메시지 전송
+ * 서버 오류:
+ * ```json
+ * {
+ *   "status": 404|409|500, 
+ *   "message": "오류 메시지"
+ * }
+ * ```
+ *
+ * 요청 예시:
+ * ```json
+ * PATCH /api/client/me/registration 
+ * {
+ *   "name": "새 이름",
+ *   "blogName": "새 블로그 이름",
+ *   "blogUrl": "새 블로그 URL",
+ *   "lastModified": "2024-05-28T01:23:45.678Z"
+ * }
+ * ```
  */
 export const POST = auth(async function POST(req): Promise<NextResponse<ResBodyType>> {
     const session = req.auth;

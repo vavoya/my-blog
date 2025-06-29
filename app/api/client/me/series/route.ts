@@ -10,28 +10,49 @@ import {validateSeries} from "@/validation/server/series/validateSeries";
 import {auth} from "@/auth";
 
 /**
- * POST /api/client/series/by-session
+ * POST /api/client/me/series
  *
- * 사용자 세션 기반으로 새로운 시리즈를 생성한다.
+ * 인증된 사용자의 새로운 시리즈를 생성한다.
  *
  * @param {NextRequest} req - Next.js API 요청 객체
- * @returns {Promise<Response>} - API 응답 객체
+ * @returns {Promise<NextResponse<ResBodyType>>} - API 응답 객체
  *
  * 성공 시:
- *   - 200 OK
- * 클라이언트 오류:
- *   - 400 Bad Request: 입력 데이터 유효성 검사 실패
- *   - 401 Unauthorized: 인증 실패 (checkAuth 내부 처리)
- * 서버 오류:
- *   - 409 Conflict: 버전 충돌
- *   - 500 Internal Server Error: 서버 내부 처리 오류 발생
- *
- * 요청 바디 예시: todo: 폴더로 고치기
+ * ```json
  * {
- *   "userId": "유저 아이디", (근데 어차피 auth 걸로 대체)
- *   "seriesName": "제목",
- *   "lastModified": "2024-05-29T00:00:00.000Z" // ISO8601 문자열, 필수
+ *   "status": 200,
+ *   "data": {
+ *     "seriesId": "생성된 시리즈 ID",
+ *     "createdAt": "ISO8601 문자열",
+ *     "updatedAt": "ISO8601 문자열",
+ *     "lastModified": "ISO8601 문자열"
+ *   }
  * }
+ * ```
+ *
+ * 클라이언트 오류:
+ * ```json
+ * {
+ *   "status": 400|401,
+ *   "message": "오류 메시지"
+ * }
+ * ```
+ *
+ * 서버 오류:
+ * ```json
+ * {
+ *   "status": 404|409|500,
+ *   "message": "오류 메시지"
+ * }
+ * ```
+ *
+ * 요청 바디 예시:
+ * ```json
+ * {
+ *   "seriesName": "시리즈명",
+ *   "lastModified": "2024-05-28T01:23:45.678Z"
+ * }
+ * ```
  */
 export const POST =  auth(async function POST(req): Promise<NextResponse<ResBodyType>> {
     const authResult = await checkAuth(req);

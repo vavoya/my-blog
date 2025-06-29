@@ -14,44 +14,55 @@ import {revalidateTag} from "next/cache";
 import {auth} from "@/auth";
 
 /**
- * PATCH /api/client/posts/by-session/[seriesId]
+ * PATCH /api/client/me/posts/[postId]
  *
- * 인증된 사용자의 특정 포스트 정보를 전체 교체(덮어쓰기)한다.
- * 경로 파라미터 postId에 해당하는 포스트를, 요청 body의 데이터로 대체한다.
+ * 인증된 사용자의 특정 포스트 정보를 부분 수정한다.
+ * 경로 파라미터 postId에 해당하는 포스트의 제목, 내용, 설명, 썸네일, 폴더를 수정한다.
  *
  * @param {NextRequest} req - Next.js API 요청 객체
  * @param {Object} params - 경로 파라미터 객체
- * @param {string} params.postId - 교체할 포스트의 고유 ID
- * @returns {Promise<NextResponse<ResBodyType>>} - API 응답 객체
+ * @param {string} params.postId - 수정할 포스트의 고유 ID
+ * @returns {Promise<NextResponse<PatchResBodyType>>} - API 응답 객체
  *
  * 성공 시:
- *   - 200 OK: 포스트가 정상적으로 교체됨
- *     {
- *       "lastModified": "ISO8601 문자열"
- *     }
+ * ```json
+ * {
+ *   "status": 200,
+ *   "data": {
+ *     "lastModified": "ISO8601 문자열"
+ *   }
+ * }
+ * ```
  *
  * 클라이언트 오류:
- *   - 400 Bad Request: 입력 데이터 형식, 필수값 누락, postId 불일치 등 유효성 검사 실패
- *   - 401 Unauthorized: 인증 실패 (checkAuth 내부 처리)
+ * ```json
+ * {
+ *   "status": 400|401,
+ *   "message": "오류 메시지"
+ * }
+ * ```
  *
  * 서버 오류:
- *   - 404 Not Found: 해당 유저 또는 리소스를 찾을 수 없음
- *   - 409 Conflict: lastModified 불일치 등 버전 충돌
- *   - 500 Internal Server Error: 서버 내부 처리 오류, DB 내부 오류
+ * ```json
+ * {
+ *   "status": 404|409|500, 
+ *   "message": "오류 메시지"
+ * }
+ * ```
  *
- * 요청 경로 예시:
- *   PATCH /api/client/posts/by-session/abc123
- *
- * 요청 바디 예시:
- *   {
- *     "_id": "abc123",              // 경로 postId와 반드시 일치
- *     "postName": "제목",
- *     "postContent": "내용",
- *     "postDescription": "설명",
- *     "thumbUrl": "썸네일 URL",
- *     "[folderId]": "폴더 ID",
- *     "lastModified": "2024-05-28T01:23:45.678Z"
- *   }
+ * 요청 예시:
+ * ```json
+ * PATCH /api/client/me/posts/abc123
+ * {
+ *   "_id": "abc123",              // 경로 postId와 반드시 일치 
+ *   "postName": "새 제목",
+ *   "postContent": "새 내용",
+ *   "postDescription": "새 설명", 
+ *   "thumbUrl": "새 썸네일 URL",
+ *   "folderId": "새 폴더 ID",
+ *   "lastModified": "2024-05-28T01:23:45.678Z"
+ * }
+ * ```
  */
 export const PATCH = auth(async function PATCH(req, { params }: { params: Promise<{ postId: string }> }): Promise<NextResponse<PutResBodyType>> {
     const authResult = await checkAuth(req);
@@ -109,11 +120,8 @@ export const PATCH = auth(async function PATCH(req, { params }: { params: Promis
 })
 
 
-
-
-
 /**
- * DELETE /api/client/posts/by-session/[seriesId]
+ * DELETE /api/client/me/posts/[postId]
  *
  * 인증된 사용자의 특정 포스트 정보를 삭제한다.
  * 경로 파라미터 postId에 해당하는 포스트를, 요청 body의 데이터 검증 후 삭제 처리한다.
@@ -121,33 +129,44 @@ export const PATCH = auth(async function PATCH(req, { params }: { params: Promis
  * @param {NextRequest} req - Next.js API 요청 객체
  * @param {Object} params - 경로 파라미터 객체
  * @param {string} params.postId - 삭제할 포스트의 고유 ID
- * @returns {Promise<NextResponse<ResBodyType>>} - API 응답 객체
+ * @returns {Promise<NextResponse<DeleteResBodyType>>} - API 응답 객체
  *
  * 성공 시:
- *   - 200 OK: 포스트가 정상적으로 삭제됨
- *     {
- *       "lastModified": "ISO8601 문자열"
- *     }
+ * ```json
+ * {
+ *   "status": 200,
+ *   "data": {
+ *     "lastModified": "ISO8601 문자열"
+ *   }
+ * }
+ * ```
  *
  * 클라이언트 오류:
- *   - 400 Bad Request: 입력 데이터 형식, 필수값 누락, postId 불일치 등 유효성 검사 실패
- *   - 401 Unauthorized: 인증 실패 (checkAuth 내부 처리)
+ * ```json
+ * {
+ *   "status": 400|401,
+ *   "message": "오류 메시지"
+ * }
+ * ```
  *
  * 서버 오류:
- *   - 404 Not Found: 해당 유저 또는 리소스를 찾을 수 없음
- *   - 409 Conflict: lastModified 불일치 등 버전 충돌
- *   - 500 Internal Server Error: 서버 내부 처리 오류, DB 내부 오류
+ * ```json
+ * {
+ *   "status": 404|409|500,
+ *   "message": "오류 메시지"
+ * }
+ * ```
  *
- * 요청 경로 예시:
- *   DELETE /api/client/posts/by-session/abc123
- *
- * 요청 바디 예시:
- *   {
- *     "postId": "abc123",            // 경로 postId와 반드시 일치
- *     "userId": string,
- *     "[folderId]": string,
- *     "lastModified": "2024-05-28T01:23:45.678Z"
- *   }
+ * 요청 예시:
+ * ```json
+ * DELETE /api/client/me/posts/abc123
+ * {
+ *   "postId": "abc123",            // 경로 postId와 반드시 일치
+ *   "userId": string,
+ *   "[folderId]": string,
+ *   "lastModified": "2024-05-28T01:23:45.678Z"
+ * }
+ * ```
  */
 export const DELETE = auth(async function DELETE(req, { params }: { params: Promise<{ postId: string }> }): Promise<NextResponse<DeleteResBodyType>> {
     const authResult = await checkAuth(req);

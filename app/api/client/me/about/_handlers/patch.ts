@@ -30,11 +30,13 @@ import type {NextAuthRequest} from "next-auth";
  *   - 500 Internal Server Error: 데이터베이스 트랜잭션 또는 기타 내부 오류
  *
  * 요청 본문(JSON):
+ * ```json
  * {
  *   "userId": "userId",
  *   "content": "내용",
  *   "lastModified": "2024-05-29T00:00:00.000Z" // ISO8601 형식 문자열 (필수)
  * }
+ * ```
  */
 export async function pathHandler(req: NextAuthRequest): Promise<NextResponse<ResBodyType>> {
     const authResult = await checkAuth(req);

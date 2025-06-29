@@ -11,20 +11,46 @@ type Params = Promise<{
 }>
 
 /**
- * GET /api/client/about/by-userId
+ * GET /api/client/users/[userId]/about
  *
- * 사용자 ID(`userid`)를 기준으로 소개글 정보를 조회합니다.
+ * 사용자의 소개글 정보를 조회한다.
+ * 경로 파라미터로 전달된 userId에 해당하는 사용자의 소개글 정보를 조회한다.
  *
- * @param {NextRequest} req - Next.js에서 전달되는 HTTP 요청 객체
- * @param params
- * @returns {Promise<Response>} - 소개글 정보에 대한 응답
+ * @param {NextRequest} req - Next.js API 요청 객체
+ * @param {Object} params - 경로 파라미터 객체
+ * @param {string} params.userId - 조회할 사용자의 고유 ID (MongoDB ObjectId 문자열)
+ * @returns {Promise<NextResponse>} - API 응답 객체
  *
- * - 성공 시: `200 OK`와 소개글 데이터
- * - 잘못된 쿼리 파라미터: `400 Bad Request`
- * - 소개글 정보 없음: `404 Not Found`
- * - 내부 서버 오류: `500 Internal Server Error`
+ * 성공 시:
+ * ```json
+ * {
+ *   "status": 200,
+ *   "data": {
+ *     // 소개글 정보 객체
+ *   }
+ * }
+ * ```
  *
- * @queryparam {string} userid - 사용자 ID (MongoDB ObjectId 문자열)
+ * 클라이언트 오류:
+ * ```json
+ * {
+ *   "status": 400,
+ *   "message": "userId 파라미터가 유효하지 않습니다."
+ * }
+ * ```
+ *
+ * 서버 오류:
+ * ```json
+ * {
+ *   "status": 404|500,
+ *   "message": "오류 메시지"
+ * }
+ * ```
+ *
+ * 요청 예시:
+ * ```
+ * GET /api/client/users/507f1f77bcf86cd799439011/about
+ * ```
  */
 export async function GET(req: NextRequest, { params }: { params: Params }): Promise<Response> {
     let { userId } = await params;

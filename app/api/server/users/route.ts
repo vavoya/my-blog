@@ -6,18 +6,51 @@ import validateAndTransform from "@/app/api/validateAndTransform";
 import getUserInfoByBlogUrl from "@/data-access/user-info/getUserInfoByBlogUrl";
 
 /**
- * GET /api/server/users/by-authid
+ * GET /api/server/users
  *
- * 주어진 authId에 대응하는 사용자 정보를 조회합니다.
+ * 주어진 조건에 맞는 사용자 정보를 조회한다.
+ * auth-id 또는 blog-url 중 하나의 쿼리 파라미터를 통해 사용자를 검색할 수 있다.
  *
- * 요청 쿼리 파라미터:
- * - authid: string (필수) - 인증 제공자의 사용자 ID
+ * @param {NextRequest} req - Next.js API 요청 객체
+ * @returns {Promise<Response>} - API 응답 객체
  *
- * 응답 코드:
- * - 200 OK: 사용자 정보 조회 성공 (JSON 반환)
- * - 400 Bad Request: authid가 유효하지 않음
- * - 404 Not Found: 해당 authId에 대한 사용자 정보 없음
- * - 500 Internal Server Error: 서버 처리 중 오류 발생
+ * 성공 시:
+ * ```json
+ * {
+ *   "status": 200,
+ *   "data": {
+ *     "userId": "사용자ID",
+ *     "email": "이메일",
+ *     "name": "이름",
+ *     "blogUrl": "블로그URL"
+ *   }
+ * }
+ * ```
+ *
+ * 클라이언트 오류:
+ * ```json
+ * {
+ *   "status": 400,
+ *   "message": "오류 메시지"
+ * }
+ * ```
+ *
+ * 서버 오류:
+ * ```json
+ * {
+ *   "status": 404|500,
+ *   "message": "오류 메시지"
+ * }
+ * ```
+ *
+ * 요청 예시:
+ * ```
+ * GET /api/server/users?auth-id=abc123
+ * ```
+ * 또는
+ * ```
+ * GET /api/server/users?blog-url=myblog.com
+ * ```
  */
 export async function GET(req: NextRequest): Promise<Response> {
     const searchParams = req.nextUrl.searchParams;

@@ -13,47 +13,49 @@ import updateByUserId from "@/services/server/update-user/updateByUserId";
 import {ResBodyType as PatchResBodyType} from "@/app/api/client/me/patch.type";
 
 /**
- * PATCH /api/client/posts/by-session/[seriesId]
+ * PATCH /api/client/me/patch
  *
- * 인증된 사용자의 특정 폴더 정보를 부분 수정한다.
- * 경로 파라미터 folderId에 해당하는 폴더의 이름 또는 위치(부모 폴더)를 수정한다.
+ * 인증된 사용자의 정보를 부분 수정한다.
  *
  * @param {NextRequest} req - Next.js API 요청 객체
- * @param {Object} params - 경로 파라미터 객체
- * @param {string} params.[folderId] - 수정할 폴더의 고유 ID
- * @returns {Promise<NextResponse<PutResBodyType>>} - API 응답 객체
+ * @returns {Promise<NextResponse<PatchResBodyType>>} - API 응답 객체
  *
  * 성공 시:
- *   - 200 OK: 폴더 정보가 정상적으로 수정됨
- *     {
- *       "lastModified": "ISO8601 문자열"
- *     }
+ * ```json
+ * {
+ *   "status": 200,
+ *   "data": {
+ *     "lastModified": "ISO8601 문자열"
+ *   }
+ * }
+ * ```
  *
  * 클라이언트 오류:
- *   - 400 Bad Request: 입력 데이터 형식, 필수값 누락, [folderId] 불일치 등 유효성 검사 실패
- *   - 401 Unauthorized: 인증 실패 (checkAuth 내부 처리)
+ * ```json
+ * {
+ *   "status": 400|401,
+ *   "message": "오류 메시지"
+ * }
+ * ```
  *
  * 서버 오류:
- *   - 404 Not Found: 해당 유저 또는 폴더 리소스를 찾을 수 없음
- *   - 409 Conflict: lastModified 불일치 등 버전 충돌
- *   - 500 Internal Server Error: 서버 내부 처리 오류, DB 내부 오류
+ * ```json
+ * {
+ *   "status": 404|409|500,
+ *   "message": "오류 메시지"
+ * }
+ * ```
  *
- * 요청 경로 예시:
- *   PATCH /api/client/posts/by-session/abc123
- *
- * 요청 바디 예시 (이름 변경):
- *   {
- *     "[folderId]": "abc123",              // 경로 folderId와 반드시 일치
- *     "name": "새 폴더 이름",
- *     "lastModified": "2024-05-28T01:23:45.678Z"
- *   }
- *
- * 요청 바디 예시 (폴더 이동):
- *   {
- *     "[folderId]": "abc123",              // 경로 folderId와 반드시 일치
- *     "parentFolderId": "부모폴더ID",
- *     "lastModified": "2024-05-28T01:23:45.678Z"
- *   }
+ * 요청 예시:
+ * ```json
+ * PATCH /api/client/me/patch
+ * {
+ *   "userId": "유저ID", 
+ *   "userName": "새 유저 이름",
+ *   "blogName": "새 블로그 이름",
+ *   "lastModified": "2024-05-28T01:23:45.678Z"
+ * }
+ * ```
  */
 export const PATCH = auth(async function PATCH(req): Promise<NextResponse<PatchResBodyType>> {
     const authResult = await checkAuth(req);
@@ -108,42 +110,46 @@ export const PATCH = auth(async function PATCH(req): Promise<NextResponse<PatchR
 })
 
 
-
 /**
- * DELETE /api/client/posts/by-session/[seriesId]
+ * DELETE /api/client/me
  *
- * 인증된 사용자의 특정 폴더 정보를 삭제한다.
- * 경로 파라미터 folderId에 해당하는 폴더를, 요청 body 데이터 검증 후 삭제 처리한다.
+ * 인증된 사용자의 계정을 삭제한다.
+ * 요청 body 데이터 검증 후 계정 삭제를 처리한다.
  *
  * @param {NextRequest} req - Next.js API 요청 객체
- * @param {Object} params - 경로 파라미터 객체
- * @param {string} params.[folderId] - 삭제할 폴더의 고유 ID
- * @returns {Promise<NextResponse<DeleteResBodyType>>} - API 응답 객체
+ * @returns {Promise<NextResponse<ResBodyType>>} - API 응답 객체
  *
  * 성공 시:
- *   - 200 OK: 폴더가 정상적으로 삭제됨
- *     {
- *       "lastModified": "ISO8601 문자열"
- *     }
+ * ```json
+ * {
+ *   "status": 200,
+ *   "data": true
+ * }
+ * ```
  *
  * 클라이언트 오류:
- *   - 400 Bad Request: 입력 데이터 형식, 필수값 누락, [folderId] 불일치 등 유효성 검사 실패
- *   - 401 Unauthorized: 인증 실패 (checkAuth 내부 처리)
+ * ```json
+ * {
+ *   "status": 400|401,
+ *   "message": "오류 메시지"
+ * }
+ * ```
  *
  * 서버 오류:
- *   - 404 Not Found: 해당 유저 또는 폴더 리소스를 찾을 수 없음
- *   - 409 Conflict: lastModified 불일치 등 버전 충돌
- *   - 500 Internal Server Error: 서버 내부 처리 오류, DB 내부 오류
+ * ```json
+ * {
+ *   "status": 404|500,
+ *   "message": "오류 메시지"
+ * }
+ * ```
  *
- * 요청 경로 예시:
- *   DELETE /api/client/posts/by-session/abc123
- *
- * 요청 바디 예시:
- *   {
- *     "[folderId]": "abc123",            // 경로 folderId와 반드시 일치
- *     "userId": "유저 아이디",
- *     "lastModified": "2024-05-28T01:23:45.678Z"
- *   }
+ * 요청 예시:
+ * ```json
+ * DELETE /api/client/me
+ * {
+ *   "userId": "유저ID"
+ * }
+ * ```
  */
 export const DELETE = auth(async function DELETE(req): Promise<NextResponse<ResBodyType>> {
     const authResult = await checkAuth(req);

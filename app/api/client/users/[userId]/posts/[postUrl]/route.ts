@@ -11,22 +11,47 @@ type Params = Promise<{
 }>
 
 /**
- * GET /api/client/posts/by-posturl
+ * GET /api/client/users/[userId]/posts/[postUrl]
  *
- * 사용자 ID(`userid`)와 포스트 URL(`posturl`)을 기준으로 해당 포스트 정보를 조회합니다.
+ * 사용자 ID와 포스트 URL을 기준으로 해당 포스트 정보를 조회한다.
  *
- * @param {NextRequest} req - Next.js에서 전달되는 HTTP 요청 객체
- * @param params
- * @returns {Promise<Response>} - 포스트 응답
- * - 성공 시: `200 OK`와 포스트 데이터
- * - 잘못된 쿼리 파라미터: `400 Bad Request`
- * - 포스트 정보 없음: `404 Not Found`
- * - 내부 서버 오류: `500 Internal Server Error`
+ * @param {NextRequest} req - Next.js API 요청 객체
+ * @param {Object} params - 경로 파라미터 객체
+ * @param {string} params.userId - 사용자 ID (ObjectId 문자열)
+ * @param {string} params.postUrl - 포스트 URL (고유 문자열)
+ * @returns {Promise<NextResponse>} - API 응답 객체
  *
- * @queryparam {string} userid - 사용자 ID (ObjectId 문자열)
- * @queryparam {string} posturl - 포스트 URL (고유 문자열)
+ * 성공 시:
+ * ```json
+ * {
+ *   "status": 200,
+ *   "data": {
+ *     "postInfo": "포스트 정보 객체"
+ *   }
+ * }
+ * ```
+ *
+ * 클라이언트 오류:
+ * ```json
+ * {
+ *   "status": 400,
+ *   "message": "잘못된 요청 파라미터 메시지"
+ * }
+ * ```
+ *
+ * 서버 오류:
+ * ```json
+ * {
+ *   "status": 404|500,
+ *   "message": "오류 메시지"
+ * }
+ * ```
+ *
+ * 요청 예시:
+ * ```
+ * GET /api/client/users/507f1f77bcf86cd799439011/posts/my-first-post
+ * ```
  */
-
 export async function GET(req: NextRequest, { params }: { params: Params }): Promise<Response> {
     let { userId, postUrl } = await params;
 

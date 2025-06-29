@@ -11,23 +11,48 @@ type Params = Promise<{
 }>
 
 /**
- * GET /api/server/page-number/by-folderid
+ * GET /api/server/users/[userId]/folders/[folderId]/page-number
  *
- * 특정 폴더 내에서 주어진 포스트가 최신순 정렬 기준으로 몇 번째 페이지에 있는지 조회합니다.
+ * 특정 폴더 내에서 주어진 포스트가 최신순 정렬 기준으로 몇 번째 페이지에 있는지 조회한다.
+ * 포스트 ID를 쿼리 파라미터로 받아서 해당 포스트가 폴더 내의 몇 번째 페이지에 위치하는지 반환한다.
  *
- * @param {NextRequest} req - Next.js에서 전달되는 HTTP 요청 객체
- * @param params
- * @returns {Promise<Response>} - 페이지 번호 응답
- * - 성공 시: `200 OK`와 `{ pageNumber: number }`
- * - 잘못된 쿼리 파라미터: `400 Bad Request`
- * - 해당 포스트가 폴더 내에 존재하지 않는 경우: `404 Not Found`
- * - 내부 서버 오류: `500 Internal Server Error`
+ * @param {NextRequest} req - Next.js API 요청 객체
+ * @param {Object} params - 경로 파라미터 객체
+ * @param {string} params.userId - 사용자의 고유 ID
+ * @param {string} params.folderId - 조회할 폴더의 고유 ID
+ * @returns {Promise<NextResponse>} - API 응답 객체
  *
- * @queryparam {string} userid - 사용자 ID (ObjectId 문자열)
- * @queryparam {string} folderid - 폴더 ID (ObjectId 문자열)
- * @queryparam {string} postid - 포스트 ID (ObjectId 문자열)
+ * 성공 시:
+ * ```json
+ * {
+ *   "status": 200,
+ *   "data": {
+ *     "pageNumber": 1
+ *   }
+ * }
+ * ```
+ *
+ * 클라이언트 오류:
+ * ```json
+ * {
+ *   "status": 400,
+ *   "message": "파라미터가 유효하지 않습니다"
+ * }
+ * ```
+ *
+ * 서버 오류:
+ * ```json
+ * {
+ *   "status": 404|500,
+ *   "message": "오류 메시지"
+ * }
+ * ```
+ *
+ * 요청 예시:
+ * ```
+ * GET /api/server/users/123/folders/456/page-number?post-id=789
+ * ```
  */
-
 export async function GET(req: NextRequest, { params }: { params: Params}): Promise<Response> {
     const searchParams = req.nextUrl.searchParams;
     let { userId, folderId } = await params;

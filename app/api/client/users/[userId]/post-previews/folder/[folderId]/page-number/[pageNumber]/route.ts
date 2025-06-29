@@ -14,22 +14,57 @@ type Params = Promise<{
 }>
 
 /**
- * GET /api/client/paginated-posts/by-folderid
+ * GET /api/client/users/[userId]/post-previews/folder/[folderId]/page-number/[pageNumber]
  *
- * 사용자 ID(`userid`), 폴더 ID(`folderid`), 페이지 번호(`page-number`)를 기반으로
- * 해당 폴더의 포스트 목록을 페이지네이션하여 조회합니다.
+ * 특정 사용자의 특정 폴더에 있는 포스트 목록을 페이지네이션하여 조회한다.
  *
- * @param {NextRequest} req - Next.js에서 전달되는 HTTP 요청 객체
- * @param params
- * @returns {Promise<Response>} - 포스트 목록 응답
- * - 성공 시: `200 OK`와 포스트 데이터 배열
- * - 잘못된 쿼리 파라미터: `400 Bad Request`
- * - 해당 페이지 또는 폴더 없음: `404 Not Found`
- * - 내부 서버 오류: `500 Internal Server Error`
+ * @param {NextRequest} req - Next.js API 요청 객체
+ * @param {Object} params - 경로 파라미터 객체
+ * @param {string} params.userId - 사용자의 고유 ID (MongoDB ObjectId)
+ * @param {string} params.folderId - 폴더의 고유 ID (MongoDB ObjectId)
+ * @param {string|number} params.pageNumber - 조회할 페이지 번호 (1부터 시작)
+ * @returns {Promise<NextResponse>} - API 응답 객체
  *
- * @queryparam {string} userid - 사용자 ID (ObjectId 문자열)
- * @queryparam {string} folderid - 폴더 ID (ObjectId 문자열)
- * @queryparam {number} page-number - 1부터 시작하는 페이지 번호
+ * 성공 시:
+ * ```json
+ * {
+ *   "status": 200,
+ *   "data": {
+ *     "posts": [
+ *       {
+ *         "id": "포스트ID",
+ *         "title": "제목",
+ *         "summary": "요약",
+ *         "thumbnail": "썸네일URL",
+ *         "createdAt": "생성일시"
+ *       }
+ *     ],
+ *     "totalPages": 10,
+ *     "currentPage": 1
+ *   }
+ * }
+ * ```
+ *
+ * 클라이언트 오류:
+ * ```json
+ * {
+ *   "status": 400,
+ *   "message": "userid|folderid|page-number 파라미터가 유효하지 않습니다."
+ * }
+ * ```
+ *
+ * 서버 오류:
+ * ```json
+ * {
+ *   "status": 404|500,
+ *   "message": "오류 메시지"
+ * }
+ * ```
+ *
+ * 요청 예시:
+ * ```
+ * GET /api/client/users/abc123/post-previews/folder/def456/page-number/1
+ * ```
  */
 export async function GET(req: NextRequest, { params }: { params: Params}): Promise<Response> {
     let { userId, folderId, pageNumber } = await params;

@@ -1,6 +1,9 @@
 import {Response} from "@/app/api/types";
 
-
+/**
+ * 표준화된 HTTP 응답 객체를 생성하는 유틸리티 메서드들을 포함한 객체입니다.
+ * 각 메서드는 특정 HTTP 상태 코드를 갖는 응답 객체를 반환합니다.
+ */
 export const response = {
     ok<T>(data: T): Response<T> {
         return { status: 200, data }

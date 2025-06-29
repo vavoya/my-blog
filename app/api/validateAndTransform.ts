@@ -1,3 +1,11 @@
+/**
+ * 제공된 입력값을 검증하고 지정된 타입으로 변환합니다.
+ *
+ * @param {string | null} input 검증 및 변환할 입력값.
+ * @param {'number'} type 입력값을 변환할 대상 타입. 현재는 'number'만 지원합니다.
+ * @return {number} 검증이 성공하면 변환된 값을 반환합니다.
+ * @throws {Error} 입력값이 유효하지 않거나 지정된 타입으로 변환할 수 없는 경우 에러가 발생합니다.
+ */
 export default function validateAndTransform(
     input: string | null,
     type: 'number'

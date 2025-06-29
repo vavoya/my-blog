@@ -7,16 +7,43 @@ import getBannedAuthDocument from "@/data-access/banned-auth-list/getBannedAuthD
 /**
  * GET /api/server/banned-auth-list/by-authid
  *
- * 주어진 authId의 차단 여부 조회
+ * 인증 제공자의 인증 ID를 통해 해당 계정이 차단된 계정인지 조회한다.
  *
- * 요청 쿼리 파라미터:
- * - authid: string (필수) - 인증 제공자의 사용자 ID
+ * @param {NextRequest} req - Next.js API 요청 객체
+ * @returns {Promise<NextResponse<GetResBodyType>>} - API 응답 객체
  *
- * 응답 코드:
- * - 200 OK: 사용자 정보 조회 성공 (JSON 반환)
- * - 400 Bad Request: authid가 유효하지 않음
- * - 404 Not Found: 해당 authId에 대한 사용자 정보 없음
- * - 500 Internal Server Error: 서버 처리 중 오류 발생
+ * 성공 시:
+ * ```json
+ * {
+ *   "status": 200,
+ *   "data": {
+ *     "isBanned": boolean,
+ *     "cause": string,
+ *     "blockedAt": "ISO8601 문자열"
+ *   }
+ * }
+ * ```
+ *
+ * 클라이언트 오류:
+ * ```json
+ * {
+ *   "status": 400,
+ *   "message": "오류 메시지"
+ * }
+ * ```
+ *
+ * 서버 오류:
+ * ```json
+ * {
+ *   "status": 500,
+ *   "message": "오류 메시지"
+ * }
+ * ```
+ *
+ * 요청 예시:
+ * ```json
+ * GET /api/server/banned-auth-list/by-authid?authid=123456789
+ * ```
  */
 export async function GET(req: NextRequest): Promise<Response> {
     const searchParams = req.nextUrl.searchParams;

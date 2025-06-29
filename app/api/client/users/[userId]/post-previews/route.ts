@@ -11,21 +11,65 @@ type Params = Promise<{
 }>
 
 /**
- * GET /api/client/paginated-posts/by-postids
+ * GET /api/client/users/[userId]/post-previews
  *
- * 주어진 사용자 ID(`userid`)와 포스트 ID 목록(`postids`)을 기반으로
- * 해당 포스트들의 정보를 조회합니다.
+ * 주어진 사용자 ID와 포스트 ID 목록으로 해당 포스트들의 미리보기 정보를 조회합니다.
  *
- * @param {NextRequest} req - Next.js HTTP 요청 객체
- * @param params
- * @returns {Promise<Response>} - JSON 형태의 응답
- * - 성공: 200 OK와 포스트 정보 배열
- * - 잘못된 파라미터: 400 Bad Request
- * - 결과 없음: 404 Not Found
- * - 서버 오류: 500 Internal Server Error
+ * @param {NextRequest} req - Next.js API 요청 객체
+ * @param {Object} params - 경로 파라미터 객체
+ * @param {string} params.userId - 사용자 고유 ID
+ * @returns {Promise<Response>} API 응답 객체
  *
- * @queryparam {string} userid - 사용자 ID (ObjectId 문자열)
- * @queryparam {string[]} postids - 조회할 포스트 ID 배열 (ObjectId 문자열)
+ * 성공 시:
+ * ```json
+ * {
+ *   "status": 200,
+ *   "data": [
+ *     {
+ *       "id": "포스트ID",
+ *       "title": "포스트제목",
+ *       "description": "포스트설명", 
+ *       "thumbnailUrl": "썸네일URL",
+ *       "createdAt": "생성일시"
+ *     }
+ *   ]
+ * }
+ * ```
+ *
+ * 클라이언트 오류:
+ * ```json
+ * {
+ *   "status": 400,
+ *   "message": "user-id 파라미터가 유효하지 않습니다."
+ * }
+ * ```
+ * 또는
+ * ```json
+ * {
+ *   "status": 400, 
+ *   "message": "id 파라미터가 유효하지 않습니다."
+ * }
+ * ```
+ *
+ * 서버 오류:
+ * ```json
+ * {
+ *   "status": 404,
+ *   "message": "페이지 정보가 없습니다."
+ * }
+ * ```
+ * 또는
+ * ```json
+ * {
+ *   "status": 500,
+ *   "message": "서버 오류: 페이지 정보를 불러오는 중 문제가 발생했습니다."
+ * }
+ * ```
+ *
+ * 요청 예시:
+ * ```
+ * GET /api/client/users/abc123/post-previews?id=post1&id=post2
+ * ```
  */
 export async function GET(req: NextRequest, { params }: { params: Params }): Promise<Response> {
     const searchParams = req.nextUrl.searchParams;

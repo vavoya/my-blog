@@ -6,16 +6,46 @@ import {checkAuth} from "@/app/api/_utils/checkAuth";
 import {auth} from "@/auth";
 
 /**
- * GET /api/server/users/by-userid
+ * GET /api/server/me/user
  *
- * 현재 인증된 사용자의 userId를 기반으로 사용자 정보를 조회합니다.
- * @returns {Promise<Response>} - 사용자 정보 응답
+ * 현재 인증된 사용자의 정보를 조회한다.
  *
- * 응답 형태:
- * - 200 OK: 사용자 정보 조회 성공
- * - 401 Unauthorized: 인증 정보가 없거나 유효하지 않음
- * - 404 Not Found: 사용자 정보를 찾을 수 없음
- * - 500 Internal Server Error: 서버 내부 오류
+ * @param {NextAuthRequest} req - API 요청 객체
+ * @returns {Promise<Response>} - API 응답 객체
+ *
+ * 성공 시:
+ * ```json
+ * {
+ *   "status": 200,
+ *   "data": {
+ *     "user": {
+ *        // 사용자 정보 객체
+ *     }
+ *   }
+ * }
+ * ```
+ *
+ * 클라이언트 오류:
+ * ```json
+ * {
+ *   "status": 401,
+ *   "message": "인증 오류: 인증 정보가 없습니다."
+ * }
+ * ```
+ *
+ * 서버 오류:
+ * ```json
+ * {
+ *   "status": 404|500,
+ *   "message": "오류 메시지"
+ * }
+ * ```
+ *
+ * 요청 예시:
+ * ```json
+ * GET /api/server/me/user
+ * Authorization: Bearer {access_token}
+ * ```
  */
 export const GET = auth(async function GET(req): Promise<Response> {
     const authResult = await checkAuth(req);
