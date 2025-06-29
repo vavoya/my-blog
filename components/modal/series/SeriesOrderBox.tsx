@@ -3,14 +3,14 @@ import styles from "@/components/modal/series/SeriesOrderBox.module.css";
 
 
 
-export default function SeriesOrderBox({sereisOrder}: {sereisOrder: number}) {
+export default function SeriesOrderBox({seriesOrder}: {seriesOrder: number}) {
 
 
 
     return (
         <div className={styles.box}>
             <span className={styles.order}>
-                {sereisOrder}
+                {seriesOrder}
             </span>
         </div>
     )

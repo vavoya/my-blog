@@ -13,8 +13,8 @@ type CardBodyProps = {
     path: string;
 }
 
-const LOADING_MESSAGE = "불러오는 중...";
-const NO_POSTS_MESSAGE = "해당 폴더에 포스트가 없어요";
+export const LOADING_MESSAGE = "불러오는 중...";
+export const NO_POSTS_MESSAGE = "해당 폴더에 포스트가 없어요";
 export default function CardBody({isLoading, isError, errorMessage, postCount, url, paginatedPosts, path}: CardBodyProps) {
     const noPosts = postCount === 0;
 

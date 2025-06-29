@@ -5,7 +5,7 @@ export default function ProcessingOverlay({text, onClick}: {text: string, onClic
 
 
     return (
-        <div className={styles.container}>
+        <div id='processing-overlay' className={styles.container}>
             <button onClick={onClick}>
                 {text}
             </button>

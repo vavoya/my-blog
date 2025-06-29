@@ -38,7 +38,7 @@ export default function CardItem({url, href, thumbUrl, name, description, create
             {
                 seriesOrder === 0
                     ? null
-                    : <SeriesOrderBox sereisOrder={seriesOrder} />
+                    : <SeriesOrderBox seriesOrder={seriesOrder} />
             }
             {
                 thumbUrl && (

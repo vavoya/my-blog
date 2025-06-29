@@ -29,6 +29,7 @@ export function NavButton({userId, url, initPageNumber, initFolderId, folderInfo
         setIsModalOpen(false);
     };
 
+
     return (
         <button
             className={styles.button}

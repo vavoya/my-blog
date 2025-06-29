@@ -1,5 +1,5 @@
 import styles from "@/components/modal/components/modal.module.scss";
-import React from "react";
+import {CSSProperties} from "react";
 
 export default function MoveBackgroundAnimation({width, height}: {width: number, height: number}) {
 
@@ -9,6 +9,6 @@ export default function MoveBackgroundAnimation({width, height}: {width: number,
                  "--modalItme-svg-width": `${height}px`,
                  "--modalItem-animation-time": `${height / 35}s`,
                  backgroundSize: width < height ? "cover" : "contain",
-             } as React.CSSProperties}/>
+             } as CSSProperties}/>
     )
 }

@@ -1,6 +1,6 @@
 import React, {useMemo, useState} from "react";
 
-// _components
+// components
 import ModalLayout from "@/components/modal/components/ModalLayout";
 
 // types

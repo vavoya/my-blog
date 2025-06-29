@@ -13,7 +13,6 @@ type CardItemProps = {
     setPost: (post: PaginatedPostsResponse) => void;
     path: string;
 }
-
 export default function CardItem({paginatedPost, seriesId, setPost, path}: CardItemProps) {
     const ref = useRef<HTMLDivElement>(null);
     const [isMounted, setIsMounted] = useState(false);
@@ -45,7 +44,7 @@ export default function CardItem({paginatedPost, seriesId, setPost, path}: CardI
             }
             {
                 disabled
-                    ? <div style={{
+                    ? <div id='disabled-overlay' style={{
                         position: 'absolute',
                         top: 0,
                         left: 0,

@@ -2,7 +2,7 @@ import {useState} from "react";
 
 import queryClient from "@/components/modal/_queries";
 
-// _components
+// components
 import ModalLayout from "@/components/modal/components/ModalLayout";
 import NavHeader from "@/components/modal/series/NavHeader";
 import NavBody from "@/components/modal/series/NavBody";

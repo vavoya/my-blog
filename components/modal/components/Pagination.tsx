@@ -30,7 +30,7 @@ export default function Pagination({getPaginatedPosts, pageNum, maxPageNum}: {
                 { pageNum < maxPageNum ? <SvgNext/> : null}
             </button>
             <button disabled={!(pageNum < maxPageNum - 1)} onClick={() => {
-                getPaginatedPosts(maxPageNum - 1)
+                getPaginatedPosts(maxPageNum)
             }}>
                 { pageNum < maxPageNum - 1 ? <SvgLast/> : null}
             </button>
