@@ -1,7 +1,7 @@
 
 import useAsyncTaskManager from "@/hook/useAsyncTaskManager";
 import {useEffect, useState} from "react";
-import {Observer} from "@/utils/AsyncTaskManager";
+import {Observer} from "@/lib/AsyncTaskManager";
 import ProcessingTasksBox from "@/app/management/_components/task-panel/ProcessingTasksBox";
 import PendingTasksBox from "@/app/management/_components/task-panel/PendingTaskBox";
 import styles from "./TaskPanel.module.scss"
