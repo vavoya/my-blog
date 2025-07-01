@@ -1,4 +1,4 @@
-import {AsyncTaskUnit, typedAsyncTaskUnit} from "@/utils/AsyncTaskManager";
+import {AsyncTaskUnit, typedAsyncTaskUnit} from "@/lib/AsyncTaskManager";
 import removeAccountBySession from "@/fetch/client/remove-account/removeAccountBySession";
 
 

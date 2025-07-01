@@ -1,4 +1,4 @@
-import {AsyncTaskUnit, typedAsyncTaskUnit} from "@/utils/AsyncTaskManager";
+import {AsyncTaskUnit, typedAsyncTaskUnit} from "@/lib/AsyncTaskManager";
 import { UserInfoResponse } from "@/lib/mongoDB/types/documents/userInfo.type";
 import {SeriesObj} from "@/components/modal/utils/toObj";
 import {SeriesInfoResponse} from "@/lib/mongoDB/types/documents/seriesInfo.type";

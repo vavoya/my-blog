@@ -1,5 +1,5 @@
 import patchBySession from "@/fetch/client/posts/patchBySession";
-import {AsyncTaskUnit, typedAsyncTaskUnit} from "@/utils/AsyncTaskManager";
+import {AsyncTaskUnit, typedAsyncTaskUnit} from "@/lib/AsyncTaskManager";
 import {UserInfoResponse} from "@/lib/mongoDB/types/documents/userInfo.type";
 import {FolderObj} from "@/components/modal/utils/toObj";
 import {updatePaginatedPostsQuery} from "@/app/management/_queries/usePaginatedPostsQuery";

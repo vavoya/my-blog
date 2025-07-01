@@ -1,6 +1,6 @@
 import deleteBySession from "@/fetch/client/folders/deleteBySession";
 import {buildTrie, FolderTrie} from "@/app/management/_utils/buildTrie";
-import {AsyncTaskUnit, typedAsyncTaskUnit} from "@/utils/AsyncTaskManager";
+import {AsyncTaskUnit, typedAsyncTaskUnit} from "@/lib/AsyncTaskManager";
 import { UserInfoResponse } from "@/lib/mongoDB/types/documents/userInfo.type";
 import { FolderInfoResponse } from "@/lib/mongoDB/types/documents/folderInfo.type";
 import {FolderObj} from "@/components/modal/utils/toObj";
