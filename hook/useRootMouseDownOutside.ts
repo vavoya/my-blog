@@ -1,5 +1,5 @@
 import {RefObject, useEffect} from "react";
-import {Callback, getRootMouseEventManager} from "@/utils/RootMouseEventManager";
+import {Callback, getRootMouseEventManager} from "@/lib/RootMouseEventManager";
 
 export default function useRootMouseDownOutside(ref: RefObject<HTMLElement | null>, onOutside: (event: MouseEvent) => void) {
     useEffect(() => {

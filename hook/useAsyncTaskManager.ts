@@ -1,5 +1,5 @@
 import {useMemo} from "react";
-import {getAsyncTaskManager} from "@/utils/AsyncTaskManager";
+import {getAsyncTaskManager} from "@/lib/AsyncTaskManager";
 
 
 export default function useAsyncTaskManager(id: string = '0') {
