@@ -52,9 +52,7 @@ export default function ModalLayout({closeModal, NavHeader, NavBody, CardSection
                         </div>
                         <NavCloseButton onClick={() => setNavOpen(false)}/>
                     </div>
-                    <div className={styles.modalCardSection}>
-                        {CardSection}
-                    </div>
+                    {CardSection}
                     <button
                         onClick={closeModal}
                         className={styles.modalCloseButton}>
