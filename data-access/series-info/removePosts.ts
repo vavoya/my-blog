@@ -13,7 +13,7 @@ export default async function removePosts(userId: UserInfoDocument['_id'], serie
             _id: seriesId
         },
         {
-            $pull: { tags: { $in: posts } }
+            $pull: { post_list: { $in: posts } } as any
         },
         {
             session,

@@ -6,7 +6,7 @@ import {Url} from "@/components/sideBar/types";
 import seriesInfoGetByUserId from "@/fetch/server/series/getByUserId";
 import folderInfoGetByUserId from "@/fetch/server/folders/getByUserId";
 import getByPostUrl from "@/fetch/server/posts/getByPostUrl";
-import FallBackButton from "@/components/sideBar/folder/FallBackNavButton";
+import FallBackButton from "@/components/sideBar/series/FallBackNavButton";
 import {LIMIT} from "@/const/page";
 import {SeriesInfoResponse} from "@/lib/mongoDB/types/documents/seriesInfo.type";
 import {FolderInfoResponse} from "@/lib/mongoDB/types/documents/folderInfo.type";

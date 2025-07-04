@@ -63,7 +63,7 @@ export async function GET(req: NextRequest, { params }: { params: Params }): Pro
 
     try {
         const results = await getSeriesInfoByUserId(new ObjectId(userId));
-        if (!results || results.length === 0) {
+        if (!results) {
             return jsonResponse(response.notFound('시리즈 정보가 없습니다.'));
         }
 
