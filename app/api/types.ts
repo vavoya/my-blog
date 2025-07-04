@@ -5,6 +5,7 @@ export type ErrorResponse =
     | { status: 404; message: string }
     | { status: 408; message: string }
     | { status: 409; message: string }
+    | { status: 424; message: string }
     | { status: 429; message: string }
     | { status: 500; message: string };
 

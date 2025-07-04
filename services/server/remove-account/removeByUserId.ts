@@ -2,11 +2,13 @@ import {client} from "@/lib/mongoDB/mongoClient";
 import {ObjectId} from "mongodb";
 import updateIsDeletedAndLastModified from "@/data-access/user-info/updateIsDeletedAndLastModified";
 import {RemoveInput} from "@/services/server/remove-account/removeByUserId.type";
+import deleteToken from "@/fetch/server/naver/deleteToken";
 
 
 export type RemoveByUserIdResult =
     | { success: true;}
     | { success: false; error: "UserNotFound"; message: string }
+    | { success: false; error: "NaverOAuthUnlinkFailed"; message: string }
     | { success: false; error: "TransactionError"; message: string; stack?: string };
 /**
  * 주어진 정보로 사용자 정보를 제거합니다.
@@ -36,6 +38,17 @@ export default async function removeByUserId(params: RemoveInput): Promise<Remov
                 success: false,
                 error: "UserNotFound",
                 message: "유저 정보를 찾지 못했습니다."
+            }
+        }
+
+        // 2. 네이버에서 탈퇴 처리
+        const result2 = await deleteToken(result.auth_id)
+        if (result2.status !== 200 || result2.data.result !== 'success') {
+            await session.abortTransaction();
+            return {
+                success: false,
+                error: "NaverOAuthUnlinkFailed",
+                message: "네이버 계정 연결 해제에 실패했습니다."
             }
         }
 

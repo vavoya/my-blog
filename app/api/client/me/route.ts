@@ -184,6 +184,8 @@ export const DELETE = auth(async function DELETE(req): Promise<NextResponse<ResB
         switch (results.error) {
             case "UserNotFound":
                 return jsonResponse(response.notFound(results.message));
+            case "NaverOAuthUnlinkFailed":
+                return jsonResponse(response.failedDependency(results.message));
             case "TransactionError":
                 return jsonResponse(response.error(results.message)); // 500 Internal Server Error
             default:

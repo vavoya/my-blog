@@ -26,6 +26,9 @@ export const response = {
     conflict(message: string): Response<never> {
         return { status: 409, message }
     },
+    failedDependency(message: string): Response<never> {
+        return { status: 424, message }
+    },
     toManyRequests(message: string): Response<never> {
         return { status: 429, message }
     },
