@@ -12,6 +12,7 @@ export default async function getSitemapPage(pageNumber: number) {
     const projection = {
         user_name: 1,
         blog_url: 1,
+        last_modified: 1,
     };
 
     const skip = LIMIT * (pageNumber - 1);

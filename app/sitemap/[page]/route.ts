@@ -16,7 +16,10 @@ export async function GET(_: any, { params }: { params: Params }) {
     // 유저 사이트맵 연결
     const sitemapEntries = sitemapPages.map(user => {
         const loc = `${process.env.NEXT_PUBLIC_BASE_URL}/sitemap/user/${user.blog_url}/1`;
-        return `<sitemap><loc>${loc}</loc></sitemap>`;
+        const lastmod = user.last_modified
+            ? `<lastmod>${user.last_modified}</lastmod>`
+            : ""; // 없으면 생략
+        return `<sitemap><loc>${loc}</loc>${lastmod}</sitemap>`;
     });
 
     // 다음 페이지
