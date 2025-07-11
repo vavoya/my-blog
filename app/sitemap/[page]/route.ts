@@ -25,7 +25,11 @@ export async function GET(_: any, { params }: { params: Params }) {
     // 다음 페이지
     if (sitemapPages.length === LIMIT) {
         const nextLoc = `${process.env.NEXT_PUBLIC_BASE_URL}/sitemap/${pageNumber + 1}`;
-        sitemapEntries.push(`<sitemap><loc>${nextLoc}</loc></sitemap>`);
+        const now = new Date().toISOString(); // ISO 8601 형식
+
+        sitemapEntries.push(
+            `<sitemap><loc>${nextLoc}</loc><lastmod>${now}</lastmod></sitemap>`
+        );
     }
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
