@@ -1,7 +1,6 @@
 import React from "react"
 import { render, screen } from "@testing-library/react"
 import { describe, test, vi, expect, beforeEach } from "vitest"
-import CardItem from "@/components/modal/components/CardItem"
 
 // Image mocking
 vi.mock("next/image", () => ({
@@ -38,8 +37,10 @@ vi.mock("@/components/ProcessingOverlayLink", () => {
 
 vi.mock("@/components/modal/series/SeriesOrderBox", () => ({
     __esModule: true,
-    default: ({ sereisOrder }: any) => <div data-testid="series">{sereisOrder}</div>
+    default: ({ seriesOrder }: any) => <div data-testid="series">{seriesOrder}</div>
 }))
+
+import CardItem from "@/components/modal/components/CardItem"
 
 beforeEach(() => {
     Object.defineProperty(HTMLElement.prototype, "offsetWidth", { configurable: true, value: 100 })
@@ -92,7 +93,7 @@ describe("CardItem", () => {
             seriesOrder={2}
         />)
 
-        expect(screen.getByTestId("series")).toHaveTextContent("2")
+        expect(screen.queryByTestId("series")).toHaveTextContent("2")
     })
 
     test("href와 currentHref가 같으면 overlay div가 렌더링된다", () => {
