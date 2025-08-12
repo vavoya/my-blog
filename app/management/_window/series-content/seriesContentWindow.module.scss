@@ -85,6 +85,12 @@
   @include table.bRow();
 }
 
+.col3,
+.col2,
+.col1 {
+  @include table.col();
+}
+
 .col3 {
   flex: 3;
   min-width: 150px;
@@ -98,10 +104,4 @@
 .col1 {
   width: 50px;
   max-width: 50px;
-}
-
-.col3,
-.col2,
-.col1 {
-  @include table.col();
 }
